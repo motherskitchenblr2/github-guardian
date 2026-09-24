@@ -991,84 +991,143 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* GitHub Standard Profile Row (Compact, Clean, GitHub UI style) */
-    .user-profile-badge {
+    /* GitHub Account Profile Card (Supreme Cyber Dark Theme) */
+    .gh-profile-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .gh-profile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .gh-profile-user {
       display: flex;
       align-items: center;
       gap: 0.65rem;
-      background: #161B22;
-      border: 1px solid #30363D;
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      flex-shrink: 0;
+      min-width: 0;
     }
 
     .user-avatar {
-      width: 32px;
-      height: 32px;
-      min-width: 32px;
-      max-width: 32px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      max-width: 34px;
       flex-shrink: 0;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1.5px solid rgba(56, 189, 248, 0.5);
       object-fit: cover;
       background: #0D1117;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
     }
 
-    .user-profile-info {
-      flex: 1;
+    .gh-profile-titles {
       min-width: 0;
       display: flex;
       flex-direction: column;
       gap: 0.15rem;
     }
 
-    .user-profile-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.4rem;
-    }
-
-    .user-profile-handle {
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: #F0F6FC;
+    .gh-profile-handle {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #FFFFFF;
       letter-spacing: -0.01em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    .user-profile-status-row {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.2rem;
+    }
+
+    .gh-profile-subtitle {
       font-size: 0.68rem;
-      font-weight: 400;
-      color: #8B949E;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .status-dot {
-      color: #238636;
-      font-size: 0.65rem;
-      line-height: 1;
+    .gh-stats-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.55rem;
     }
 
-    /* Modal Navigation Tab Switcher */
+    .gh-stat-chip {
+      background: rgba(10, 15, 26, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .gh-stat-chip.online {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .gh-stat-chip.offline {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      display: inline-block;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    .offline-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--danger);
+      display: inline-block;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Modal Navigation Tab Switcher (Themed) */
     .modal-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background: rgba(7, 11, 20, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 15, 26, 0.85);
+      border: 1px solid var(--card-border);
       border-radius: 12px;
       padding: 4px;
       gap: 6px;
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
       flex-shrink: 0;
     }
 
@@ -1076,7 +1135,7 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       padding: 0.65rem 0.5rem;
       border-radius: 9px;
@@ -1084,9 +1143,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      min-height: 44px;
+      min-height: 42px;
       white-space: nowrap;
     }
 
@@ -1098,103 +1157,106 @@
       box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
     }
 
-    /* Authentication Guide Banner */
+    /* Authentication Guide Banner (Themed Cyber Info Callout) */
     .auth-guide-banner {
-      background: rgba(56, 189, 248, 0.05);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 12px;
-      padding: 0.85rem;
-      margin-bottom: 1rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 0.85rem;
     }
 
     .auth-guide-title {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 0.3rem;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
+      margin-bottom: 0.25rem;
     }
 
     .auth-guide-text {
       font-size: 0.72rem;
-      color: #94A3B8;
-      line-height: 1.5;
-      font-weight: 400;
+      color: var(--text-dim);
+      line-height: 1.45;
     }
 
-    /* Premium Connect Buttons */
-    .btn-github-primary {
-      height: 46px;
-      background: linear-gradient(135deg, #0284C7, #4F46E5);
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      border-radius: 10px;
-      color: #FFFFFF;
-      font-size: 0.8rem;
+    /* Auth Scopes Specs Box */
+    .auth-scopes-box {
+      background: rgba(10, 15, 26, 0.65);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .auth-scopes-title {
+      font-size: 0.7rem;
       font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
-      transition: all 0.2s;
-      flex: 1;
-    }
-    .btn-github-primary:active {
-      transform: scale(0.98);
-      filter: brightness(1.1);
+      gap: 0.4rem;
+      margin-bottom: 0.45rem;
     }
 
-    .btn-github-secondary {
-      height: 46px;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      color: #F8FAFC;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .auth-scopes-list {
+      display: flex;
+      flex-direction: column;
       gap: 0.35rem;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-github-secondary:active {
-      transform: scale(0.98);
     }
 
-    .btn-github-oauth {
-      height: 46px;
-      width: 100%;
-      background: #24292F;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 10px;
-      color: #FFFFFF;
-      font-size: 0.8rem;
+    .auth-scope-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.71rem;
+      font-family: var(--font-mono);
+    }
+
+    .auth-scope-tag {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
       font-weight: 700;
+      font-size: 0.68rem;
+    }
+
+    .auth-scope-desc {
+      color: var(--text-dim);
+      font-size: 0.69rem;
+    }
+
+    .btn-input-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
-      text-decoration: none;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-      transition: all 0.2s;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s;
     }
-    .btn-github-oauth:active {
-      transform: scale(0.98);
-      background: #2f363d;
+    .btn-input-icon:hover {
+      color: var(--primary);
     }
 
     /* Device Flow Box */
     .device-code-box {
       background: #030712;
-      border: 1.5px dashed rgba(56, 189, 248, 0.5);
-      border-radius: 14px;
+      border: 1.5px dashed rgba(56, 189, 248, 0.45);
+      border-radius: var(--radius-md);
       padding: 1.15rem;
       text-align: center;
       margin: 0.75rem 0;
@@ -1279,8 +1341,9 @@
           Authenticated as <strong>@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
         </div>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="action-btn" style="flex: 1; padding: 0.45rem 0.75rem; font-size: 0.72rem;" onclick="openGithubModal()">
-            <span>🐙 Account Authorization Settings (Token / Login)</span>
+          <button class="action-btn" style="flex: 1; padding: 0.45rem 0.75rem; font-size: 0.72rem; justify-content: center;" onclick="openGithubModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#38BDF8"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Account Authorization Settings (Token / Login)</span>
           </button>
         </div>
       </div>
@@ -1592,30 +1655,41 @@
     </div>
 
     <div class="modal-body">
-      <!-- Active Account Profile Card (GitHub Standard: 32px circular avatar, clean row) -->
-      <div class="user-profile-badge" id="gh-active-profile">
-        <img src="https://github.com/motherskitchenblr2.png" class="user-avatar" id="gh-profile-avatar" alt="GitHub Avatar">
-        <div class="user-profile-info">
-          <div class="user-profile-header-row">
-            <span class="user-profile-handle" id="gh-profile-name">motherskitchenblr2</span>
-            <span class="card-badge badge-merged" id="gh-scope-badge" style="font-size: 0.62rem; padding: 2px 7px;">Active</span>
+      <!-- Active Account Profile Card (Supreme Cyber Dark Card) -->
+      <div class="gh-profile-card" id="gh-active-profile">
+        <div class="gh-profile-top">
+          <div class="gh-profile-user">
+            <img src="https://github.com/motherskitchenblr2.png" class="user-avatar" id="gh-profile-avatar" alt="GitHub Avatar">
+            <div class="gh-profile-titles">
+              <div class="gh-profile-handle">
+                <span style="color: var(--primary);">@</span><span id="gh-profile-name">motherskitchenblr2</span>
+              </div>
+              <div class="gh-profile-subtitle" id="gh-profile-subtitle">Enterprise Guardian Account</div>
+            </div>
           </div>
-          <div class="user-profile-status-row" id="gh-profile-status">
-            <span class="status-dot">●</span>
-            <span style="color: #3fb950; font-weight: 500;">Connected</span>
-            <span style="color: #484f58;">•</span>
-            <span>242 repos (228 public, 14 private)</span>
-          </div>
+          <span class="card-badge badge-merged" id="gh-scope-badge">Active</span>
+        </div>
+
+        <div class="gh-stats-row" id="gh-profile-status">
+          <span class="gh-stat-chip online">
+            <span class="pulse-dot"></span>
+            <span id="gh-status-text">Connected</span>
+          </span>
+          <span class="gh-stat-chip">
+            <span style="color: var(--primary); font-weight: 700;" id="gh-repo-count">242</span> Repositories (228 Public · 14 Private)
+          </span>
         </div>
       </div>
 
-      <!-- Segmented Auth Options Tabs -->
+      <!-- Segmented Auth Options Tabs (Themed, SVG Icons) -->
       <div class="modal-tabs">
         <button class="modal-tab-btn active" id="tab-btn-token" onclick="switchGithubAuthTab('token')">
-          <span>🔑 Personal Access Token</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9a5.5 5.5 0 1 0 7.5 7.5l7.5-7.5V2h-2z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
+          <span>Personal Access Token</span>
         </button>
         <button class="modal-tab-btn" id="tab-btn-login" onclick="switchGithubAuthTab('login')">
-          <span>🌐 Login Authentication</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          <span>Login Authentication</span>
         </button>
       </div>
 
@@ -1623,36 +1697,53 @@
       <div id="auth-tab-token">
         <div class="auth-guide-banner">
           <div class="auth-guide-title">
-            <span>🛡️ Personal Access Token (Classic or Fine-Grained)</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Personal Access Token (Classic or Fine-Grained)</span>
           </div>
           <div class="auth-guide-text">
-            Provide a token to enable autonomous PR reviews, merge conflict resolutions, and fork synchronization. Credentials are encrypted client-side in the AES-GCM-256 hardware vault.
+            Enables autonomous PR auto-merge, conflict rebase, and fork synchronization. Credentials are encrypted client-side in the AES-GCM-256 hardware vault.
           </div>
         </div>
 
         <div class="config-field" style="margin-bottom: 0.85rem;">
-          <label class="config-label" style="font-size: 0.72rem; font-weight: 700; color: #E2E8F0;">GitHub Personal Access Token (PAT)</label>
+          <label class="config-label">GitHub Personal Access Token (PAT)</label>
           <div style="position: relative;">
-            <input type="password" class="config-input" id="gh-input-token" placeholder="ghp_... or github_pat_..." style="padding-right: 2.5rem; height: 46px; font-size: 0.82rem; background: #030712; border-color: rgba(255,255,255,0.12);">
-            <button type="button" onclick="toggleGhTokenVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.9rem;" id="gh-token-eye">👁️</button>
+            <input type="password" class="config-input" id="gh-input-token" placeholder="ghp_... or github_pat_..." style="padding-right: 2.75rem; height: 46px; font-size: 0.82rem;">
+            <button type="button" onclick="toggleGhTokenVisibility()" class="btn-input-icon" id="gh-token-eye" title="Toggle visibility">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="gh-eye-svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
           </div>
         </div>
 
-        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.75rem 0.85rem; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1rem;">
-          <div style="color: var(--primary); font-weight: 700; font-size: 0.74rem; margin-bottom: 0.35rem;">Required Token Permissions:</div>
-          <div style="line-height: 1.6;">
-            <div>✔ <code style="color: #38BDF8;">repo</code> — Full control of repositories & PR conflict fixes</div>
-            <div>✔ <code style="color: #38BDF8;">workflow</code> — Update GitHub Action workflows</div>
-            <div>✔ <code style="color: #38BDF8;">security_events</code> — Scan Dependabot & secret alerts</div>
+        <div class="auth-scopes-box">
+          <div class="auth-scopes-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Required OAuth / PAT Scopes</span>
+          </div>
+          <div class="auth-scopes-list">
+            <div class="auth-scope-item">
+              <span class="auth-scope-tag">repo</span>
+              <span class="auth-scope-desc">PR review, auto-merge & conflict rebase</span>
+            </div>
+            <div class="auth-scope-item">
+              <span class="auth-scope-tag">workflow</span>
+              <span class="auth-scope-desc">GitHub Actions CI/CD workflows</span>
+            </div>
+            <div class="auth-scope-item">
+              <span class="auth-scope-tag">security_events</span>
+              <span class="auth-scope-desc">Vulnerability alerts & secret defense</span>
+            </div>
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.6rem;">
-          <button class="btn-github-primary" onclick="verifyAndSaveGithubToken()">
-            <span>🔒 Verify & Connect Token</span>
+        <div style="display: flex; gap: 0.65rem;">
+          <button class="action-btn primary" style="flex: 2; height: 46px; justify-content: center;" onclick="verifyAndSaveGithubToken()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            <span>Verify & Connect Token</span>
           </button>
-          <a href="https://github.com/settings/tokens/new?scopes=repo,workflow,security_events&description=GitHub+Guardian+Agent" target="_blank" class="btn-github-secondary">
-            <span>Generate Token ↗</span>
+          <a href="https://github.com/settings/tokens/new?scopes=repo,workflow,security_events&description=GitHub+Guardian+Agent" target="_blank" class="action-btn" style="flex: 1.2; height: 46px; justify-content: center; text-decoration: none; white-space: nowrap;">
+            <span>Generate Token</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
       </div>
@@ -1661,7 +1752,8 @@
       <div id="auth-tab-login" style="display: none;">
         <div class="auth-guide-banner">
           <div class="auth-guide-title">
-            <span>🌐 Browser Login & Device Authorization</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>Browser Login & Device Authorization</span>
           </div>
           <div class="auth-guide-text">
             Authenticate directly through GitHub with RFC 8628 Device Flow or Web OAuth without manually copying or generating a token.
@@ -1669,46 +1761,59 @@
         </div>
 
         <!-- Device Flow Section -->
-        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 1rem; margin-bottom: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 0.84rem; font-weight: 700; color: white;">📱 GitHub Device Flow (RFC 8628)</div>
-            <span class="card-badge badge-public" style="font-size: 0.62rem;">Mobile & Termux</span>
+        <div class="touch-card" style="margin-bottom: 0.85rem; border-color: rgba(56, 189, 248, 0.25);">
+          <div class="card-top">
+            <div style="font-size: 0.82rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.4rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              <span>GitHub Device Flow (RFC 8628)</span>
+            </div>
+            <span class="card-badge badge-public">Mobile & Termux</span>
           </div>
-          <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.3rem; line-height: 1.4;">
+          <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.2rem; line-height: 1.4;">
             Authorize in seconds: generate your one-time code and confirm in your browser.
           </p>
 
           <div class="device-code-box" id="device-code-box" style="display: none;">
-            <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">Enter this code on GitHub:</div>
+            <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Enter this code on GitHub:</div>
             <div class="device-code-display" id="device-user-code">WD7S-9K42</div>
             <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.75rem; flex-wrap: wrap;">
-              <button class="btn-github-secondary" style="height: 38px; font-size: 0.72rem;" onclick="copyDeviceCode()">Copy Code</button>
-              <a id="device-auth-url" href="https://github.com/login/device" target="_blank" class="btn-github-primary" style="height: 38px; font-size: 0.72rem; text-decoration: none; padding: 0 1rem; flex: none;">Open github.com/login/device ↗</a>
+              <button class="action-btn" style="height: 40px; font-size: 0.72rem; padding: 0 0.85rem;" onclick="copyDeviceCode()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Code</span>
+              </button>
+              <a id="device-auth-url" href="https://github.com/login/device" target="_blank" class="action-btn primary" style="height: 40px; font-size: 0.72rem; text-decoration: none; padding: 0 0.85rem; flex: none;">
+                <span>Open github.com/login/device ↗</span>
+              </a>
             </div>
             <div style="font-size: 0.68rem; color: var(--warning); margin-top: 0.75rem; font-weight: 500;" id="device-poll-status">
-              ⏳ Waiting for your authorization in the browser...
+              Waiting for your authorization in the browser...
             </div>
           </div>
 
-          <button class="btn-github-primary" id="btn-start-device-flow" style="width: 100%; margin-top: 0.75rem;" onclick="startDeviceFlow()">
-            <span>🚀 Start Device Sign-In</span>
+          <button class="action-btn primary" id="btn-start-device-flow" style="width: 100%; margin-top: 0.75rem; justify-content: center;" onclick="startDeviceFlow()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Start Device Sign-In</span>
           </button>
         </div>
 
         <!-- OAuth Sign-In Button -->
         <div style="margin-top: 0.5rem;">
-          <a href="https://github.com/login/oauth/authorize?client_id=github_guardian&scope=repo,workflow,security_events" target="_blank" class="btn-github-oauth">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span>Sign In with GitHub Web OAuth</span>
+          <a href="https://github.com/login/oauth/authorize?client_id=github_guardian&scope=repo,workflow,security_events" target="_blank" class="action-btn" style="width: 100%; height: 46px; justify-content: center; background: rgba(30, 41, 59, 0.9); border-color: rgba(56, 189, 248, 0.3); text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#38BDF8"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span style="color: white; font-weight: 700; font-size: 0.8rem;">Sign In with GitHub Web OAuth</span>
           </a>
         </div>
       </div>
 
       <!-- Connection Details & Sign Out Button -->
       <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.85rem; margin-top: 0.25rem; display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-size: 0.7rem; color: var(--text-dim); font-family: var(--font-mono);" id="gh-rate-limit-text">Rate Limit: 5,000 / hr</span>
-        <button class="action-btn" style="width: auto; padding: 0.35rem 0.75rem; color: #EF4444; border-color: rgba(239, 68, 68, 0.35); font-size: 0.72rem; font-weight: 600;" onclick="disconnectGithubAccount()">
-          <span>Disconnect / Sign Out</span>
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span style="font-size: 0.7rem; color: var(--text-dim); font-family: var(--font-mono);" id="gh-rate-limit-text">Rate Limit: 5,000 / hr</span>
+        </div>
+        <button class="action-btn" style="width: auto; padding: 0.4rem 0.85rem; color: var(--danger); border-color: rgba(239, 68, 68, 0.35); font-size: 0.72rem; font-weight: 600; min-height: 36px;" onclick="disconnectGithubAccount()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Disconnect Account</span>
         </button>
       </div>
     </div>
@@ -2342,8 +2447,13 @@
     function toggleGhTokenVisibility() {
       ghTokenVisible = !ghTokenVisible;
       const inp = document.getElementById('gh-input-token');
-      inp.type = ghTokenVisible ? 'text' : 'password';
-      document.getElementById('gh-token-eye').innerText = ghTokenVisible ? '🔒' : '👁️';
+      if (inp) inp.type = ghTokenVisible ? 'text' : 'password';
+      const eyeBtn = document.getElementById('gh-token-eye');
+      if (eyeBtn) {
+        eyeBtn.innerHTML = ghTokenVisible ?
+          `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>` :
+          `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      }
     }
 
     async function verifyAndSaveGithubToken() {
@@ -2411,10 +2521,13 @@
 
     function updateGithubProfileUI(user, scopes) {
       if (!user) return;
-      document.getElementById('gh-profile-name').innerText = user.login;
-      document.getElementById('header-user-login').innerText = '@' + user.login;
+      const nameEl = document.getElementById('gh-profile-name');
+      if (nameEl) nameEl.innerText = user.login;
+      const hdrLogin = document.getElementById('header-user-login');
+      if (hdrLogin) hdrLogin.innerText = '@' + user.login;
       if (user.avatar_url) {
-        document.getElementById('gh-profile-avatar').src = user.avatar_url;
+        const avatarEl = document.getElementById('gh-profile-avatar');
+        if (avatarEl) avatarEl.src = user.avatar_url;
         const hdrAvatar = document.getElementById('header-avatar');
         if (hdrAvatar) hdrAvatar.src = user.avatar_url;
       }
@@ -2423,10 +2536,13 @@
       const statusContainer = document.getElementById('gh-profile-status');
       if (statusContainer) {
         statusContainer.innerHTML = `
-          <span class="status-dot">●</span>
-          <span style="color: #3fb950; font-weight: 500;">Connected</span>
-          <span style="color: #484f58;">•</span>
-          <span>${pub + priv} repos (${pub} public, ${priv} private)</span>
+          <span class="gh-stat-chip online">
+            <span class="pulse-dot"></span>
+            <span id="gh-status-text">Connected</span>
+          </span>
+          <span class="gh-stat-chip">
+            <span style="color: var(--primary); font-weight: 700;" id="gh-repo-count">${pub + priv}</span> Repositories (${pub} Public · ${priv} Private)
+          </span>
         `;
       }
       const descEl = document.getElementById('overview-gh-desc');
@@ -2448,8 +2564,10 @@
     function disconnectGithubAccount() {
       localStorage.removeItem('guardian_github_token');
       localStorage.removeItem('guardian_github_user');
-      document.getElementById('header-user-login').innerText = 'Connect GitHub';
-      document.getElementById('gh-profile-name').innerText = 'Not Connected';
+      const hdrLogin = document.getElementById('header-user-login');
+      if (hdrLogin) hdrLogin.innerText = 'Connect GitHub';
+      const nameEl = document.getElementById('gh-profile-name');
+      if (nameEl) nameEl.innerText = 'Not Connected';
       const badge = document.getElementById('overview-gh-badge');
       if (badge) {
         badge.innerText = 'Disconnected';
@@ -2462,9 +2580,18 @@
       }
       const statusContainer = document.getElementById('gh-profile-status');
       if (statusContainer) {
-        statusContainer.innerHTML = `<span style="color: #f85149;">● Disconnected</span>`;
+        statusContainer.innerHTML = `
+          <span class="gh-stat-chip offline">
+            <span class="offline-dot"></span>
+            <span>Disconnected</span>
+          </span>
+          <span class="gh-stat-chip">
+            <span style="color: var(--text-dim);">No Active Repositories</span>
+          </span>
+        `;
       }
-      document.getElementById('gh-input-token').value = '';
+      const inp = document.getElementById('gh-input-token');
+      if (inp) inp.value = '';
       showToast('GitHub account disconnected');
     }
 
