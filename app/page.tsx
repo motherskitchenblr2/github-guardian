@@ -17,7 +17,15 @@ import {
   Zap,
   Star,
   Layers,
+  Sparkles,
+  SlidersHorizontal,
+  Bot,
 } from "lucide-react";
+import { HardwareAdvisor } from "@/components/ai/HardwareAdvisor";
+import { ApiKeyModal } from "@/components/ai/ApiKeyModal";
+import { ModelSelectorModal } from "@/components/ai/ModelSelectorModal";
+import { AgentChatDrawer } from "@/components/ai/AgentChatDrawer";
+import { AutonomyMode, ModelAssignments, DEFAULT_MODEL_ASSIGNMENTS } from "@/lib/ai/router";
 
 interface PullRequest {
   id: number;
@@ -56,8 +64,12 @@ interface RepositoryItem {
 }
 
 export default function GuardianDashboard() {
-  const [activeTab, setActiveTab] = useState<"prs" | "repos" | "forks" | "secrets" | "security">("repos");
+  const [activeTab, setActiveTab] = useState<"repos" | "prs" | "forks" | "secrets" | "ai">("repos");
   const [repoVisibilityFilter, setRepoVisibilityFilter] = useState<"all" | "public" | "private">("all");
+
+  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
+  const [isRouterModalOpen, setIsRouterModalOpen] = useState(false);
+  const [modelAssignments, setModelAssignments] = useState<ModelAssignments>(DEFAULT_MODEL_ASSIGNMENTS);
 
   const [stats, setStats] = useState<any>({
     account: "motherskitchenblr2",
@@ -130,6 +142,10 @@ export default function GuardianDashboard() {
 
   useEffect(() => {
     loadData();
+    try {
+      const stored = localStorage.getItem("guardian_model_assignments");
+      if (stored) setModelAssignments(JSON.parse(stored));
+    } catch {}
   }, []);
 
   const handleMergePr = async (repo: string, prNumber: number, title: string) => {
@@ -226,7 +242,22 @@ export default function GuardianDashboard() {
     );
 
   return (
-    <div className="flex flex-col min-h-screen pb-24 md:pb-8">
+    <div className="flex flex-col min-h-screen pb-32 md:pb-16">
+      {/* Modals */}
+      <ApiKeyModal
+        isOpen={isKeyModalOpen}
+        onClose={() => setIsKeyModalOpen(false)}
+        onSave={() => showToast("AI Provider Keys updated!")}
+      />
+      <ModelSelectorModal
+        isOpen={isRouterModalOpen}
+        onClose={() => setIsRouterModalOpen(false)}
+        onSave={(newAssignments) => {
+          setModelAssignments(newAssignments);
+          showToast(`Autonomy Mode set to ${newAssignments.autonomy_mode.toUpperCase()}`);
+        }}
+      />
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 border border-sky-500/40 text-sky-200 px-4 py-3 rounded-xl shadow-2xl text-xs sm:text-sm font-medium flex items-center gap-2 max-w-[90vw] animate-in fade-in slide-in-from-top-4">
@@ -254,24 +285,38 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setIsRouterModalOpen(true)}
+              className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white touch-press"
+              title="Configure AI Models & Autonomy"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setIsKeyModalOpen(true)}
+              className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white touch-press"
+              title="AI Provider Keys"
+            >
+              <KeyRound className="w-4 h-4" />
+            </button>
+
             <button
               onClick={loadData}
               disabled={loading}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 touch-press"
+              className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white touch-press"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">Refresh</span>
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1">
+      <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1 space-y-5">
         {/* Metric Cards Carousel / Grid */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mb-6">
-          {/* Card 1: Total Repos & Split */}
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
           <div
             onClick={() => setActiveTab("repos")}
             className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-sky-500/30 transition-all touch-press"
@@ -288,7 +333,6 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          {/* Card 2: PRs Merged */}
           <div
             onClick={() => setActiveTab("prs")}
             className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500/30 transition-all touch-press"
@@ -303,7 +347,6 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          {/* Card 3: Forks */}
           <div
             onClick={() => setActiveTab("forks")}
             className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-indigo-500/30 transition-all touch-press"
@@ -318,24 +361,25 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          {/* Card 4: Secret Guard */}
           <div
-            onClick={() => setActiveTab("secrets")}
+            onClick={() => setActiveTab("ai")}
             className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-pink-500/30 transition-all touch-press"
           >
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider">Secret Guard</span>
-              <KeyRound className="w-4 h-4 text-pink-400" />
+              <span className="text-[11px] font-semibold uppercase tracking-wider">Agent Autonomy</span>
+              <Bot className="w-4 h-4 text-pink-400" />
             </div>
-            <div className="text-xl sm:text-2xl font-extrabold text-emerald-400">CLEAN</div>
+            <div className="text-xl sm:text-2xl font-extrabold text-sky-300">
+              {modelAssignments.autonomy_mode === "yolo" ? "YOLO" : "GUARD"}
+            </div>
             <div className="text-[10px] sm:text-xs text-slate-400 mt-1 flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Zero exposed PATs
+              <Sparkles className="w-3 h-3" /> Multimodal Router
             </div>
           </div>
         </section>
 
         {/* Tab Selection Bar */}
-        <div className="flex items-center justify-between gap-2 mb-4 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/5">
             <button
               onClick={() => setActiveTab("repos")}
@@ -377,6 +421,18 @@ export default function GuardianDashboard() {
             </button>
 
             <button
+              onClick={() => setActiveTab("ai")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                activeTab === "ai"
+                  ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Hardware & AI Advisor</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab("secrets")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
                 activeTab === "secrets"
@@ -387,25 +443,12 @@ export default function GuardianDashboard() {
               <KeyRound className="w-3.5 h-3.5" />
               <span>Secrets</span>
             </button>
-
-            <button
-              onClick={() => setActiveTab("security")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
-                activeTab === "security"
-                  ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Hardening</span>
-            </button>
           </div>
         </div>
 
-        {/* TAB: REPOSITORIES (ALL, PUBLIC, PRIVATE) */}
+        {/* TAB 1: REPOSITORIES (ALL, PUBLIC, PRIVATE) */}
         {activeTab === "repos" && (
           <div className="space-y-4">
-            {/* Sub-Filters: All, Public, Private */}
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-1.5 bg-slate-900/50 p-1 rounded-xl border border-white/10">
                 <button
@@ -450,7 +493,6 @@ export default function GuardianDashboard() {
               </div>
             </div>
 
-            {/* Search Box */}
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -462,7 +504,6 @@ export default function GuardianDashboard() {
               />
             </div>
 
-            {/* Repositories Touch Cards List */}
             <div className="space-y-3">
               {filteredRepos.length === 0 ? (
                 <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
@@ -474,7 +515,6 @@ export default function GuardianDashboard() {
                     key={repo.id}
                     className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-2.5"
                   >
-                    {/* Header Row: Title & Badges */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-1.5 min-w-0">
                         {repo.private ? (
@@ -512,12 +552,10 @@ export default function GuardianDashboard() {
                       </div>
                     </div>
 
-                    {/* Description */}
                     <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
                       {repo.description}
                     </p>
 
-                    {/* Footer Row: Language, Stats, and Date */}
                     <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-white/5 flex-wrap gap-2">
                       <div className="flex items-center gap-3">
                         <span className="flex items-center gap-1 text-slate-300 font-medium">
@@ -552,7 +590,6 @@ export default function GuardianDashboard() {
         {/* TAB 2: PULL REQUESTS */}
         {activeTab === "prs" && (
           <div className="space-y-4">
-            {/* Search Box */}
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -679,7 +716,14 @@ export default function GuardianDashboard() {
           </div>
         )}
 
-        {/* TAB 4: SECRET LEAK DEFENSE */}
+        {/* TAB 4: HARDWARE & AI ADVISOR */}
+        {activeTab === "ai" && (
+          <div className="space-y-4">
+            <HardwareAdvisor />
+          </div>
+        )}
+
+        {/* TAB 5: SECRET LEAK DEFENSE */}
         {activeTab === "secrets" && (
           <div className="space-y-4">
             <div className="glass-panel p-5 rounded-2xl text-center flex flex-col items-center">
@@ -698,43 +742,16 @@ export default function GuardianDashboard() {
             </div>
           </div>
         )}
-
-        {/* TAB 5: SECURITY HARDENING */}
-        {activeTab === "security" && (
-          <div className="space-y-3">
-            <div className="p-4 glass-panel rounded-2xl">
-              <h3 className="text-sm font-bold text-white">Fleet Vulnerability Defense</h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Dependabot alerts and automated vulnerability patches are automatically maintained across all
-                repositories.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              {["VOLT-CODE-AI-v5.0", "generative-ai", "immich", "hermes-agent_0118", "LibreChat", "onyx"].map(
-                (repo) => (
-                  <div
-                    key={repo}
-                    className="glass-panel p-3.5 rounded-xl flex items-center justify-between text-xs"
-                  >
-                    <span className="font-semibold text-slate-200">{repo}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-mono text-[10px]">
-                        ALERTS: ON
-                      </span>
-                      <span className="px-2 py-0.5 rounded bg-sky-500/15 text-sky-400 font-mono text-[10px]">
-                        AUTO-FIX: ON
-                      </span>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
       </main>
 
-      {/* Floating Bottom Navigation Bar (Optimized for One-Hand Thumb Reach) */}
+      {/* Floating Autonomous AI Agent Chat Drawer */}
+      <AgentChatDrawer
+        onOpenKeys={() => setIsKeyModalOpen(true)}
+        onOpenRouter={() => setIsRouterModalOpen(true)}
+        autonomyMode={modelAssignments.autonomy_mode}
+      />
+
+      {/* Floating Bottom Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-2xl border-t border-white/10 px-2 py-2 flex items-center justify-around md:hidden">
         <button
           onClick={() => setActiveTab("repos")}
@@ -767,6 +784,16 @@ export default function GuardianDashboard() {
         </button>
 
         <button
+          onClick={() => setActiveTab("ai")}
+          className={`flex flex-col items-center gap-1 touch-press ${
+            activeTab === "ai" ? "text-sky-400" : "text-slate-400"
+          }`}
+        >
+          <Sparkles className="w-5 h-5" />
+          <span className="text-[10px] font-medium">AI Advisor</span>
+        </button>
+
+        <button
           onClick={() => setActiveTab("secrets")}
           className={`flex flex-col items-center gap-1 touch-press ${
             activeTab === "secrets" ? "text-sky-400" : "text-slate-400"
@@ -774,16 +801,6 @@ export default function GuardianDashboard() {
         >
           <KeyRound className="w-5 h-5" />
           <span className="text-[10px] font-medium">Secrets</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab("security")}
-          className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "security" ? "text-sky-400" : "text-slate-400"
-          }`}
-        >
-          <Shield className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Security</span>
         </button>
       </nav>
     </div>
