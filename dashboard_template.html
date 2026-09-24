@@ -991,30 +991,28 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Refined Profile Card: No Overlapping, Clear Typography */
+    /* GitHub Standard Profile Row (Compact, Clean, GitHub UI style) */
     .user-profile-badge {
       display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 16px;
-      padding: 1rem;
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      align-items: center;
+      gap: 0.65rem;
+      background: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
       flex-shrink: 0;
     }
 
     .user-avatar {
-      width: 48px;
-      height: 48px;
-      min-width: 48px;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      max-width: 32px;
       flex-shrink: 0;
-      border-radius: 12px;
-      border: 2px solid #38BDF8;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       object-fit: cover;
-      background: #0F172A;
+      background: #0D1117;
     }
 
     .user-profile-info {
@@ -1022,51 +1020,42 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.15rem;
     }
 
     .user-profile-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      gap: 0.4rem;
     }
 
     .user-profile-handle {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: #FFFFFF;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #F0F6FC;
       letter-spacing: -0.01em;
-      word-break: break-all;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .user-profile-status-row {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--success);
+      gap: 0.3rem;
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: #8B949E;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .user-repo-pills-row {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin-top: 0.2rem;
-    }
-
-    .user-repo-pill {
+    .status-dot {
+      color: #238636;
       font-size: 0.65rem;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      padding: 0.18rem 0.45rem;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #E2E8F0;
+      line-height: 1;
     }
 
     /* Modal Navigation Tab Switcher */
@@ -1257,7 +1246,7 @@
     </div>
     <div class="header-right">
       <button class="github-header-btn" onclick="openGithubModal()" title="GitHub Integration & Account">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <img src="https://github.com/motherskitchenblr2.png" id="header-avatar" style="width: 18px; height: 18px; min-width: 18px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.25);" alt="avatar">
         <span id="header-user-login">@motherskitchenblr2</span>
       </button>
       <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()">
@@ -1603,22 +1592,19 @@
     </div>
 
     <div class="modal-body">
-      <!-- Active Account Profile Card (Zero Overlap, Clean Hierarchy) -->
+      <!-- Active Account Profile Card (GitHub Standard: 32px circular avatar, clean row) -->
       <div class="user-profile-badge" id="gh-active-profile">
         <img src="https://github.com/motherskitchenblr2.png" class="user-avatar" id="gh-profile-avatar" alt="GitHub Avatar">
         <div class="user-profile-info">
           <div class="user-profile-header-row">
-            <span class="user-profile-handle" id="gh-profile-name">@motherskitchenblr2</span>
-            <span class="card-badge badge-merged" id="gh-scope-badge" style="font-size: 0.62rem;">Active</span>
+            <span class="user-profile-handle" id="gh-profile-name">motherskitchenblr2</span>
+            <span class="card-badge badge-merged" id="gh-scope-badge" style="font-size: 0.62rem; padding: 2px 7px;">Active</span>
           </div>
-          <div class="user-profile-status-row">
-            <span>●</span>
-            <span style="color: #10B981; font-weight: 600;">Authorized via GitHub</span>
-          </div>
-          <div class="user-repo-pills-row" id="gh-profile-status">
-            <span class="user-repo-pill" style="color: #38BDF8;">🌐 228 Public</span>
-            <span class="user-repo-pill" style="color: #C084FC;">🔒 14 Private</span>
-            <span class="user-repo-pill" style="color: #94A3B8;">193 Forks</span>
+          <div class="user-profile-status-row" id="gh-profile-status">
+            <span class="status-dot">●</span>
+            <span style="color: #3fb950; font-weight: 500;">Connected</span>
+            <span style="color: #484f58;">•</span>
+            <span>242 repos (228 public, 14 private)</span>
           </div>
         </div>
       </div>
@@ -2425,19 +2411,22 @@
 
     function updateGithubProfileUI(user, scopes) {
       if (!user) return;
-      document.getElementById('gh-profile-name').innerText = '@' + user.login;
+      document.getElementById('gh-profile-name').innerText = user.login;
       document.getElementById('header-user-login').innerText = '@' + user.login;
       if (user.avatar_url) {
         document.getElementById('gh-profile-avatar').src = user.avatar_url;
+        const hdrAvatar = document.getElementById('header-avatar');
+        if (hdrAvatar) hdrAvatar.src = user.avatar_url;
       }
       const priv = user.total_private_repos || 14;
       const pub = user.public_repos || 228;
       const statusContainer = document.getElementById('gh-profile-status');
       if (statusContainer) {
         statusContainer.innerHTML = `
-          <span class="user-repo-pill" style="color: #38BDF8;">🌐 ${pub} Public</span>
-          <span class="user-repo-pill" style="color: #C084FC;">🔒 ${priv} Private</span>
-          <span class="user-repo-pill" style="color: #94A3B8;">193 Forks</span>
+          <span class="status-dot">●</span>
+          <span style="color: #3fb950; font-weight: 500;">Connected</span>
+          <span style="color: #484f58;">•</span>
+          <span>${pub + priv} repos (${pub} public, ${priv} private)</span>
         `;
       }
       const descEl = document.getElementById('overview-gh-desc');
@@ -2460,7 +2449,7 @@
       localStorage.removeItem('guardian_github_token');
       localStorage.removeItem('guardian_github_user');
       document.getElementById('header-user-login').innerText = 'Connect GitHub';
-      document.getElementById('gh-profile-name').innerText = 'Not Authenticated';
+      document.getElementById('gh-profile-name').innerText = 'Not Connected';
       const badge = document.getElementById('overview-gh-badge');
       if (badge) {
         badge.innerText = 'Disconnected';
@@ -2473,7 +2462,7 @@
       }
       const statusContainer = document.getElementById('gh-profile-status');
       if (statusContainer) {
-        statusContainer.innerHTML = `<span class="user-repo-pill" style="color: #EF4444;">Disconnected</span>`;
+        statusContainer.innerHTML = `<span style="color: #f85149;">● Disconnected</span>`;
       }
       document.getElementById('gh-input-token').value = '';
       showToast('GitHub account disconnected');
