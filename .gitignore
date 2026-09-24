@@ -1,7 +1,37 @@
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-reports/*.json
+*.pyd
+
+# Application & Daemon Logs
+*.log
 reports/*.log
+reports/daemon.log
+reports/dashboard.log
+
+# Reports with sensitive repo telemetry
+reports/*.json
+
+# Security & Secrets Protection
 .env
+.env.*
+*.env
+*.key
+*.pem
+*.token
+*.secret
+secrets.json
+credentials.json
+service-account*.json
+service_account*.json
+id_rsa*
+id_ed25519*
+
+# AI Config & Vaults
+ai_config.json
+reports/ai_config.json
+
+# OS Artifacts
 .DS_Store
+Thumbs.db

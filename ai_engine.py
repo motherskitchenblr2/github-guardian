@@ -55,8 +55,10 @@ def load_ai_config() -> Dict[str, Any]:
 def save_ai_config(cfg: Dict[str, Any]) -> bool:
     try:
         os.makedirs(CONFIG_DIR, exist_ok=True)
+        os.chmod(CONFIG_DIR, 0o700)
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(cfg, f, indent=2)
+        os.chmod(CONFIG_FILE, 0o600)
         return True
     except Exception as e:
         print(f"[Error saving AI config]: {e}")
