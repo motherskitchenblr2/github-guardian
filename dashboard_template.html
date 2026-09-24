@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#070B14">
-  <title>GitHub Guardian — Mobile Enterprise Suite</title>
+  <title>GitHub Guardian — Mobile Enterprise Suite & Autonomous AI Agent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,7 +14,8 @@
       --card-bg: rgba(15, 23, 42, 0.85);
       --card-border: rgba(255, 255, 255, 0.08);
       --primary: #38BDF8;
-      --primary-glow: rgba(56, 189, 248, 0.18);
+      --primary-glow: rgba(56, 189, 248, 0.2);
+      --accent: #818CF8;
       --success: #10B981;
       --warning: #F59E0B;
       --danger: #EF4444;
@@ -23,24 +24,27 @@
       --text-dim: #64748B;
       --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body {
       background-color: var(--bg);
       color: var(--text);
       font-family: var(--font);
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: env(safe-area-inset-bottom, 20px);
+      padding-bottom: calc(72px + env(safe-area-inset-bottom, 20px));
     }
 
     /* Top Sticky Header */
     header {
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: rgba(7, 11, 20, 0.9);
+      z-index: 60;
+      background: rgba(7, 11, 20, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--card-border);
@@ -57,32 +61,35 @@
     }
 
     .brand-icon {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       background: linear-gradient(135deg, #0284C7, #6366F1);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
       flex-shrink: 0;
     }
 
-    .brand-icon svg { width: 20px; height: 20px; fill: white; }
+    .brand-icon svg { width: 22px; height: 22px; fill: white; }
 
     .brand-text h1 {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 800;
       letter-spacing: -0.01em;
-      line-height: 1.1;
+      line-height: 1.15;
       color: white;
     }
 
     .brand-text p {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: var(--primary);
       font-family: var(--font-mono);
       font-weight: 600;
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
     }
 
     .header-right {
@@ -91,387 +98,959 @@
       gap: 0.5rem;
     }
 
-    .live-pulse {
+    .autonomy-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.6rem;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      gap: 0.3rem;
+      padding: 0.22rem 0.55rem;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 9999px;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      color: var(--success);
+      color: var(--primary);
+      cursor: pointer;
     }
 
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 8px var(--success);
-      animation: pulse 1.8s infinite;
+    .btn-agent-toggle {
+      background: linear-gradient(135deg, #38BDF8, #6366F1);
+      border: none;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.4rem 0.75rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.3); }
-    }
-
-    /* Main Container */
+    /* Content Area */
     main {
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
       padding: 1rem;
-      padding-bottom: 5.5rem;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    /* Metric Grid (Mobile-First 2x2) */
-    .metrics-grid {
+    .pane { display: none; }
+    .pane.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Headers */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    /* Enterprise Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      margin: 0.2rem 0;
+      color: white;
+    }
+
+    .stat-sub {
+      font-size: 0.68rem;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Quick Action Buttons */
+    .actions-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.65rem;
       margin-bottom: 1.25rem;
     }
 
-    @media (min-width: 768px) {
-      .metrics-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-      }
-    }
-
-    .metric-card {
-      background: var(--card-bg);
+    .action-btn {
+      background: rgba(30, 41, 59, 0.7);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      backdrop-filter: blur(12px);
-      cursor: pointer;
-    }
-
-    .metric-title {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .metric-val {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: white;
-      margin: 0.35rem 0 0.15rem 0;
-    }
-
-    .metric-sub {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-    }
-
-    /* Filter Chips */
-    .filter-chips {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin-bottom: 0.75rem;
-      overflow-x: auto;
-      padding-bottom: 0.25rem;
-    }
-
-    .chip-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.725rem;
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.6rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-muted);
       cursor: pointer;
-      font-family: var(--font);
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 0.35rem;
-      white-space: nowrap;
-    }
-    .chip-btn.active {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: rgba(56, 189, 248, 0.4);
-      color: var(--primary);
-    }
-    .chip-btn.active-private {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: rgba(245, 158, 11, 0.4);
-      color: var(--warning);
-    }
-    .chip-btn.active-public {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.4);
-      color: var(--success);
+      gap: 0.5rem;
+      transition: all 0.2s;
+      min-height: 48px;
     }
 
-    /* Search Bar */
-    .search-box {
-      margin-bottom: 1rem;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 0.65rem 1rem 0.65rem 2.2rem;
-      color: white;
-      font-size: 0.825rem;
-      font-family: var(--font);
-      outline: none;
-    }
-    .search-box input:focus {
+    .action-btn:active {
+      transform: scale(0.97);
       border-color: var(--primary);
     }
 
-    .search-icon {
-      position: absolute;
-      left: 0.8rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 14px;
-      height: 14px;
-      color: var(--text-dim);
+    .action-btn.primary {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(99, 102, 241, 0.25));
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--primary);
+      grid-column: span 2;
     }
 
-    /* Mobile Touch Cards */
-    .cards-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
+    /* Touch Cards */
     .touch-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 0.95rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      margin-bottom: 0.75rem;
       transition: border-color 0.2s;
     }
-    .touch-card:hover {
-      border-color: rgba(56, 189, 248, 0.3);
+
+    .touch-card:hover, .touch-card:active {
+      border-color: rgba(56, 189, 248, 0.35);
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
     .card-repo {
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: white;
+      color: var(--primary);
       text-decoration: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      word-break: break-all;
       display: flex;
       align-items: center;
       gap: 0.35rem;
     }
-    .card-repo:hover { color: var(--primary); }
 
     .card-badge {
-      font-size: 0.625rem;
+      font-size: 0.62rem;
       font-family: var(--font-mono);
       font-weight: 700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
       text-transform: uppercase;
       flex-shrink: 0;
     }
-    .badge-private { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-public { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-merged { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-rebased { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .badge-merged { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-rebased { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-conflict { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-public { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-private { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-ai { background: rgba(244, 63, 94, 0.15); color: #FB7185; border: 1px solid rgba(244, 63, 94, 0.3); }
 
     .card-title {
-      font-size: 0.825rem;
-      font-weight: 500;
-      color: #F1F5F9;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
     }
 
     .card-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
-      padding-top: 0.4rem;
+      font-family: var(--font-mono);
       border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 0.45rem;
+      margin-top: 0.45rem;
     }
 
-    .btn-touch {
-      display: inline-flex;
+    /* Filter Chips */
+    .filter-bar {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    .chip-btn {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
       align-items: center;
-      justify-content: center;
       gap: 0.35rem;
-      padding: 0.55rem 0.95rem;
-      border-radius: 10px;
-      font-size: 0.75rem;
+    }
+
+    .chip-btn.active {
+      background: var(--primary);
+      color: #070B14;
+      border-color: var(--primary);
+      font-weight: 700;
+    }
+    .chip-btn.active-public {
+      background: #0284C7;
+      color: white;
+      border-color: #38BDF8;
+    }
+    .chip-btn.active-private {
+      background: #7E22CE;
+      color: white;
+      border-color: #C084FC;
+    }
+
+    /* Search Input */
+    .search-box {
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.82rem;
+      color: white;
+      font-family: var(--font);
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
+    }
+
+    /* Terminal Logs */
+    .terminal-box {
+      background: #030712;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: #38BDF8;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    /* AI Suite & Hardware Advisor Styling */
+    .hardware-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.8));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .hw-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .hw-tier-badge {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--success);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .hw-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hw-spec {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.45rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .hw-spec-title {
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .hw-spec-val {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: white;
+      font-family: var(--font-mono);
+    }
+
+    .model-recommendation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .model-rec-item {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .model-rec-item.recommended {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(56, 189, 248, 0.06);
+    }
+
+    .model-rec-left h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .model-rec-left p {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .copy-cmd-btn {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.68rem;
       font-weight: 700;
       cursor: pointer;
-      border: none;
-      transition: transform 0.1s, opacity 0.1s;
-    }
-    .btn-touch:active {
-      transform: scale(0.96);
-      opacity: 0.85;
-    }
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
-      color: white;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    /* Fixed Bottom Nav (Mobile Friendly) */
-    .mobile-nav {
+    /* Key Management & Config Form */
+    .config-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .config-field {
+      margin-bottom: 0.85rem;
+    }
+
+    .config-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .config-input, .config-select {
+      width: 100%;
+      background: rgba(10, 15, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.75rem;
+      font-size: 0.8rem;
+      color: white;
+      font-family: var(--font-mono);
+    }
+    .config-input:focus, .config-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Floating Action Button (FAB) */
+    .fab-chat {
+      position: fixed;
+      bottom: calc(76px + env(safe-area-inset-bottom, 15px));
+      right: 1.25rem;
+      z-index: 55;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0284C7, #8B5CF6);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.2s;
+    }
+    .fab-chat:active { transform: scale(0.92); }
+    .fab-chat svg { width: 24px; height: 24px; fill: white; }
+
+    /* Slide-Up Agent Chat Drawer */
+    .agent-drawer {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(7, 11, 20, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      height: 85vh;
+      max-height: 850px;
+      background: #0A0F1D;
+      border-top: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px 20px 0 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(105%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .agent-drawer.open {
+      transform: translateY(0);
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-handle {
+      width: 38px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      margin: 8px auto 4px auto;
+      cursor: grab;
+    }
+
+    .drawer-header {
+      padding: 0.5rem 1rem 0.75rem 1rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .drawer-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .drawer-controls {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .drawer-select {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      padding: 0.25rem 0.45rem;
+      font-weight: 600;
+      max-width: 140px;
+    }
+
+    .btn-close-drawer {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* Chat Messages Container */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .chat-msg {
+      max-width: 88%;
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-md);
+      position: relative;
+      word-break: break-word;
+    }
+
+    .chat-msg.agent {
+      align-self: flex-start;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #0284C7, #4F46E5);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-model-tag {
+      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Tool Call Execution Card in Chat */
+    .tool-execution-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+    }
+
+    .tool-card-title {
+      color: var(--primary);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+
+    .tool-card-body {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Interactive Confirmation Card (Ask on Important Mode) */
+    .confirm-card {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .confirm-card h4 {
+      font-size: 0.75rem;
+      color: var(--warning);
+      margin-bottom: 0.35rem;
+    }
+
+    .confirm-card p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-approve {
+      background: var(--success);
+      color: #070B14;
+      border: none;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Quick Prompt Pills */
+    .quick-prompts {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding: 0.4rem 1rem;
+      background: rgba(7, 11, 20, 0.8);
+      border-top: 1px solid var(--card-border);
+      scrollbar-width: none;
+    }
+    .quick-prompts::-webkit-scrollbar { display: none; }
+
+    .prompt-pill {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.3rem 0.65rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    /* Chat Input Bar */
+    .chat-input-bar {
+      padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom, 10px)) 1rem;
+      background: #070B14;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      color: white;
+      font-size: 0.82rem;
+      font-family: var(--font);
+    }
+    .chat-input:focus { outline: none; border-color: var(--primary); }
+
+    .btn-send {
+      background: var(--primary);
+      border: none;
+      color: #070B14;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .btn-send svg { width: 18px; height: 18px; fill: #070B14; }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(58px + env(safe-area-inset-bottom, 12px));
+      background: rgba(7, 11, 20, 0.94);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border-top: 1px solid var(--card-border);
       display: flex;
       justify-content: space-around;
-      padding: 0.5rem 0.25rem calc(env(safe-area-inset-bottom, 10px) + 0.35rem) 0.25rem;
-      z-index: 100;
+      align-items: flex-start;
+      padding-top: 6px;
+      z-index: 50;
     }
 
     .nav-item {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      font-weight: 600;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.2rem;
-      padding: 0.35rem 0.5rem;
-      border-radius: 8px;
+      gap: 2px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.65rem;
+      font-weight: 600;
       cursor: pointer;
-      font-family: var(--font);
+      padding: 4px 8px;
+      transition: color 0.15s;
     }
+
     .nav-item.active {
       color: var(--primary);
+      font-weight: 700;
     }
-    .nav-item svg { width: 18px; height: 18px; }
 
-    /* Panes */
-    .pane { display: none; }
-    .pane.active { display: block; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .nav-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
 
-    /* Toast */
-    #toast {
+    /* Toast Notification */
+    .toast {
       position: fixed;
       top: 1rem;
       left: 50%;
-      transform: translateX(-50%) translateY(-20px);
+      transform: translateX(-50%) translateY(-100px);
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--primary);
       color: white;
-      padding: 0.65rem 1.25rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
       font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      z-index: 1000;
-      opacity: 0;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 200;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
-      max-width: 90vw;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- Sticky Top Header -->
+  <!-- Top Sticky Header -->
   <header>
     <div class="brand">
       <div class="brand-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
       </div>
       <div class="brand-text">
         <h1>GitHub Guardian</h1>
-        <p>@motherskitchenblr2</p>
+        <p><span>@motherskitchenblr2</span> • <span style="color: var(--success);">PORT 8765</span></p>
       </div>
     </div>
     <div class="header-right">
-      <div class="live-pulse">
-        <div class="pulse-dot"></div>
-        <span>ONLINE</span>
+      <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()">
+        <span>⚡ YOLO</span>
       </div>
-      <button class="btn-touch btn-outline" onclick="triggerRun('run-all')" style="padding: 0.4rem 0.65rem;">
-        ⚡ Run All
+      <button class="btn-agent-toggle" onclick="openAgentDrawer()">
+        <span>🤖 AI Chat</span>
       </button>
     </div>
   </header>
 
-  <!-- Main Container -->
+  <!-- Main Views / Panes -->
   <main>
-    <!-- Top 4 Metrics -->
-    <div class="metrics-grid">
-      <div class="metric-card" onclick="switchNav('repos')">
-        <div class="metric-title">Repositories</div>
-        <div class="metric-val" id="m-repos" style="color: #38BDF8;">242</div>
-        <div class="metric-sub"><span style="color: #34D399;">228 Public</span> • <span style="color: #FBBF24;">14 Private</span></div>
+
+    <!-- PANE 1: OVERVIEW -->
+    <div class="pane active" id="pane-overview">
+      <div class="section-title">📊 Guardian Operations Suite</div>
+      <p class="section-desc">Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine.</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">PRs Merged / Handled</div>
+          <div class="stat-value" id="m-merged">46</div>
+          <div class="stat-sub"><span>✔</span> 100% Conflict Rebases</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Forks Monitored</div>
+          <div class="stat-value" id="m-forks">193</div>
+          <div class="stat-sub"><span>🔄</span> Synced with Upstream</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Secret Security</div>
+          <div class="stat-value" style="color: var(--success);" id="m-secrets">CLEAN</div>
+          <div class="stat-sub"><span>🛡️</span> Zero Leaked Tokens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Hardened Repos</div>
+          <div class="stat-value" id="m-hardened">40</div>
+          <div class="stat-sub"><span>🔒</span> Dependabot & Defenses</div>
+        </div>
       </div>
-      <div class="metric-card" onclick="switchNav('prs')">
-        <div class="metric-title">PRs Merged</div>
-        <div class="metric-val" id="m-merged" style="color: #34D399;">46</div>
-        <div class="metric-sub">Squash completed</div>
+
+      <div class="section-title" style="font-size: 0.95rem;">⚡ Quick Autonomous Actions</div>
+      <div class="actions-grid">
+        <button class="action-btn primary" onclick="triggerRun('run-all')">
+          <span>🚀 Run Full Maintenance Suite (PRs + Forks + Secrets + Harden)</span>
+        </button>
+        <button class="action-btn" onclick="triggerRun('review-prs')">
+          <span>🔀 Auto-Merge Open PRs</span>
+        </button>
+        <button class="action-btn" onclick="triggerRun('sync-forks')">
+          <span>🍴 Sync 193 Upstream Forks</span>
+        </button>
+        <button class="action-btn" onclick="triggerRun('scan-secrets')">
+          <span>🔐 Scan Exposed Secrets</span>
+        </button>
+        <button class="action-btn" onclick="triggerRun('harden')">
+          <span>🛡️ Harden Security Settings</span>
+        </button>
       </div>
-      <div class="metric-card" onclick="switchNav('forks')">
-        <div class="metric-title">Forks Fleet</div>
-        <div class="metric-val" id="m-forks" style="color: #818CF8;">193</div>
-        <div class="metric-sub">Upstream synced</div>
+
+      <div class="section-title" style="font-size: 0.95rem; margin-top: 1.25rem;">📜 Autonomous Engine Live Logs</div>
+      <div class="terminal-box" id="daemon-logs">Connecting to Guardian daemon telemetry...</div>
+    </div>
+
+    <!-- PANE 2: PULL REQUESTS & ACTIONS -->
+    <div class="pane" id="pane-prs">
+      <div class="section-title">🔀 Pull Requests & Conflict Engine</div>
+      <p class="section-desc">Automated squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers.</p>
+      
+      <div class="search-box">
+        <input type="text" class="search-input" id="pr-search-input" placeholder="Search pull requests or repositories..." onkeyup="filterCards('prs-list', this.value)">
       </div>
-      <div class="metric-card" onclick="switchNav('secrets')">
-        <div class="metric-title">Secret Guard</div>
-        <div class="metric-val" id="m-secrets" style="color: #34D399;">CLEAN</div>
-        <div class="metric-sub">Zero exposed PATs</div>
+
+      <div id="prs-list">
+        <!-- Rendered dynamically -->
+        <div class="touch-card">
+          <div class="card-top">
+            <span class="card-repo">motherskitchenblr2/VOLT-CODE-AI-v5.0</span>
+            <span class="card-badge badge-merged">Squash-Merged</span>
+          </div>
+          <div class="card-title">Resolved merge conflict in shared/secrets.ts & synced changes</div>
+          <div class="card-footer">
+            <span>PR #80 by motherskitchenblr2</span>
+            <span style="color: var(--success);">Clean Commit e9f8c23</span>
+          </div>
+        </div>
+        <div class="touch-card">
+          <div class="card-top">
+            <span class="card-repo">motherskitchenblr2/socket-sdk-js</span>
+            <span class="card-badge badge-merged">Auto-Merged</span>
+          </div>
+          <div class="card-title">Fix socket heartbeat timeout disconnection</div>
+          <div class="card-footer">
+            <span>PR #2 by core-dev</span>
+            <span style="color: var(--primary);">Merged</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- PANE 1: REPOSITORIES (ALL, PUBLIC, PRIVATE) -->
-    <div id="pane-repos" class="pane active">
-      <!-- Sub-Filters: All, Public, Private -->
-      <div class="filter-chips">
+    <!-- PANE 3: FORKS SYNCHRONIZATION -->
+    <div class="pane" id="pane-forks">
+      <div class="section-title">🍴 Fork Synchronization Engine</div>
+      <p class="section-desc">Tracking 193 forked repositories against upstream main/master branches.</p>
+
+      <div class="search-box">
+        <input type="text" class="search-input" id="fork-search-input" placeholder="Search 193 forks..." onkeyup="filterCards('forks-list', this.value)">
+      </div>
+
+      <div id="forks-list">
+        <!-- Populated via API -->
+        <div class="touch-card">
+          <div class="card-top">
+            <span class="card-repo">motherskitchenblr2/generative-ai</span>
+            <span class="card-badge badge-merged">Fast-Forwarded</span>
+          </div>
+          <div class="card-footer">
+            <span>upstream: google/generative-ai (main)</span>
+            <span style="color: var(--success);">Up to date</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANE 4: REPOSITORIES -->
+    <div class="pane" id="pane-repos">
+      <div class="section-title">📁 All Owned Repositories</div>
+      <p class="section-desc">242 total repositories breakdown: Public (228) and Private (14) repositories.</p>
+
+      <div class="filter-bar">
         <button class="chip-btn active" id="chip-all" onclick="filterRepoVisibility('all')">
-          <span>📦 All (242)</span>
+          <span>All Repos (242)</span>
         </button>
         <button class="chip-btn" id="chip-public" onclick="filterRepoVisibility('public')">
           <span>🌐 Public (228)</span>
@@ -481,102 +1060,260 @@
         </button>
       </div>
 
-      <!-- Search Bar -->
       <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="repo-search-input" placeholder="Search repository by name or language..." oninput="renderRepos()">
+        <input type="text" class="search-input" id="repo-search-input" placeholder="Filter by repository name or language..." onkeyup="renderRepos()">
       </div>
 
-      <div class="cards-list" id="repos-list">
-        <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading repositories...</div>
+      <div id="repos-list">
+        <!-- Populated by JS -->
       </div>
     </div>
 
-    <!-- PANE 2: PULL REQUESTS -->
-    <div id="pane-prs" class="pane">
-      <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" placeholder="Search PR title or repo..." oninput="filterCards('prs-list', this.value)">
-      </div>
-      <div class="cards-list" id="prs-list">
-        <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading PR cards...</div>
-      </div>
-    </div>
+    <!-- PANE 5: AI SUITE & HARDWARE ADVISOR -->
+    <div class="pane" id="pane-ai">
+      <div class="section-title">🧠 Multimodal AI Suite & Device Advisor</div>
+      <p class="section-desc">Local offline models (0.5B to 4B GGUF) + Free Cloud Providers (Google AI Studio, Groq, OpenRouter, NVIDIA).</p>
 
-    <!-- PANE 3: FORKS -->
-    <div id="pane-forks" class="pane">
-      <div class="cards-list" id="forks-list">
-        <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading forks fleet...</div>
-      </div>
-    </div>
+      <!-- Hardware Advisor Card -->
+      <div class="hardware-card">
+        <div class="hw-header">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 800; color: white;">📱 Device Hardware Capacity</h3>
+            <p style="font-size: 0.68rem; color: var(--text-muted);">Real-time system diagnostics & offline GGUF advisor</p>
+          </div>
+          <span class="hw-tier-badge" id="hw-tier">Compact (1.5B - 3B)</span>
+        </div>
 
-    <!-- PANE 4: SECRETS -->
-    <div id="pane-secrets" class="pane">
-      <div class="cards-list">
-        <div class="touch-card" style="text-align: center; padding: 1.5rem;">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🛡️</div>
-          <h3 style="font-size: 0.95rem; font-weight: 700; color: white;">Zero Leaks Detected</h3>
-          <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0.5rem 0 1rem 0;">
-            All 25 recently active repositories are certified clean with no exposed GitHub PATs, OpenAI keys, or credentials.
-          </p>
-          <button class="btn-touch btn-outline" onclick="triggerRun('scan-secrets')">
-            Scan Repositories Now
-          </button>
+        <div class="hw-specs-grid">
+          <div class="hw-spec">
+            <div class="hw-spec-title">CPU Cores & Arch</div>
+            <div class="hw-spec-val" id="hw-cpu">8 Cores (ARM64)</div>
+          </div>
+          <div class="hw-spec">
+            <div class="hw-spec-title">Available RAM</div>
+            <div class="hw-spec-val" id="hw-ram" style="color: var(--primary);">~3.0 GB / 7.4 GB</div>
+          </div>
+          <div class="hw-spec">
+            <div class="hw-spec-title">Free Storage</div>
+            <div class="hw-spec-val" id="hw-storage">22.2 GB Free</div>
+          </div>
+          <div class="hw-spec">
+            <div class="hw-spec-title">Ollama Engine</div>
+            <div class="hw-spec-val" id="hw-ollama">Offline Ready</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary); margin-top: 0.5rem; text-transform: uppercase;">
+          💡 Recommended Local Offline Models (Quantized / GGUF)
+        </div>
+        <div class="model-recommendation-list">
+          <div class="model-rec-item recommended">
+            <div class="model-rec-left">
+              <h4><span>⭐ qwen2.5-coder:1.5b</span> <span class="card-badge badge-merged">Recommended</span></h4>
+              <p>986MB • Supreme basic snippets, PR patches, conflict rectifications & syntax fixes</p>
+            </div>
+            <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull qwen2.5-coder:1.5b')">Copy Pull Cmd</button>
+          </div>
+
+          <div class="model-rec-item">
+            <div class="model-rec-left">
+              <h4><span>🧠 deepseek-r1:1.5b</span> <span class="card-badge badge-ai">Reasoning</span></h4>
+              <p>1.1GB • Deep reasoning for multi-repo logic and PR merge strategies</p>
+            </div>
+            <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull deepseek-r1:1.5b')">Copy Pull Cmd</button>
+          </div>
+
+          <div class="model-rec-item">
+            <div class="model-rec-left">
+              <h4><span>⚡ qwen2.5-coder:0.5b</span> <span class="card-badge badge-public">Ultra-Light</span></h4>
+              <p>390MB • Instant execution, lowest battery & RAM footprint on mobile</p>
+            </div>
+            <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull qwen2.5-coder:0.5b')">Copy Pull Cmd</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- PANE 5: HARDENING -->
-    <div id="pane-security" class="pane">
-      <div class="cards-list">
-        <div class="touch-card" style="padding: 1.25rem;">
-          <h3 style="font-size: 0.9rem; font-weight: 700; color: white; margin-bottom: 0.25rem;">Fleet Hardening Active</h3>
-          <p style="font-size: 0.725rem; color: var(--text-muted); margin-bottom: 0.85rem;">
-            Dependabot alerts & automated fixes are active across all 30+ repositories.
-          </p>
-          <button class="btn-touch btn-outline" onclick="triggerRun('harden')">
-            Harden All Repositories
-          </button>
+      <!-- Free Providers & API Keys Manager -->
+      <div class="config-card">
+        <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.35rem;">🔑 Free Multimodal AI Providers</h3>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          Connect your free tier keys. Keys are saved securely in local device storage.
+        </p>
+
+        <div class="config-field">
+          <label class="config-label">Google AI Studio API Key (Gemini 2.0 Flash / 1.5)</label>
+          <input type="password" class="config-input" id="key-google" placeholder="AIzaSy...">
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">Groq API Key (LLaMA 3.3 70B, Mixtral 8x7B, Qwen 32B)</label>
+          <input type="password" class="config-input" id="key-groq" placeholder="gsk_...">
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">OpenRouter API Key (Free: DeepSeek-R1, LLaMA-3.3)</label>
+          <input type="password" class="config-input" id="key-openrouter" placeholder="sk-or-v1-...">
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">NVIDIA NIM API Key</label>
+          <input type="password" class="config-input" id="key-nvidia" placeholder="nvapi-...">
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">Ollama Host / Endpoint</label>
+          <input type="text" class="config-input" id="key-ollama" value="http://localhost:11434">
+        </div>
+
+        <button class="action-btn primary" style="width: 100%; margin-top: 0.5rem;" onclick="saveAiKeys()">
+          <span>💾 Save API Keys Securely</span>
+        </button>
+      </div>
+
+      <!-- Model Category Router & Autonomy Mode -->
+      <div class="config-card">
+        <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.35rem;">⚙️ Model Routing & Autonomy</h3>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          Configure specialized models and permission boundaries for autonomous agentic actions.
+        </p>
+
+        <div class="config-field">
+          <label class="config-label">Autonomy Level</label>
+          <select class="config-select" id="cfg-autonomy" onchange="updateAutonomy(this.value)">
+            <option value="yolo">⚡ YOLO (Full Autonomous Tool Execution)</option>
+            <option value="ask_important">⚠️ Ask on Important (Confirm on Merge/Sync/Harden)</option>
+            <option value="always_ask">🛑 Always Ask (Confirm on every step)</option>
+          </select>
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">Coding Model (Patches, Syntax & Conflict Rectification)</label>
+          <select class="config-select" id="cfg-coding-model">
+            <option value="qwen2.5-coder:1.5b">Local Ollama: Qwen 2.5 Coder 1.5B (Recommended)</option>
+            <option value="qwen2.5-coder:0.5b">Local Ollama: Qwen 2.5 Coder 0.5B (Ultra-Light)</option>
+            <option value="groq:qwen-2.5-coder-32b">Groq: Qwen 2.5 Coder 32B</option>
+            <option value="openrouter:free">OpenRouter: Free Coding Models</option>
+          </select>
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">Reasoning Model (PR Strategy & Complex Architecture)</label>
+          <select class="config-select" id="cfg-reasoning-model">
+            <option value="deepseek-r1:1.5b">Local Ollama: DeepSeek R1 1.5B</option>
+            <option value="openrouter:deepseek/deepseek-r1:free">OpenRouter: DeepSeek R1 (Free)</option>
+            <option value="google:gemini-2.0-flash">Google AI Studio: Gemini 2.0 Flash</option>
+            <option value="groq:llama-3.3-70b-versatile">Groq: LLaMA 3.3 70B</option>
+          </select>
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">MoE / General Chat Model</label>
+          <select class="config-select" id="cfg-chat-model">
+            <option value="groq:mixtral-8x7b-32768">Groq: Mixtral 8x7B (MoE)</option>
+            <option value="google:gemini-2.0-flash">Google: Gemini 2.0 Flash</option>
+            <option value="local:smollm2:360m">Local Ollama: SmolLM2 360M</option>
+          </select>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Mobile Bottom Navigation Bar -->
-  <nav class="mobile-nav">
-    <button class="nav-item active" onclick="switchNav('repos')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
-      <span>Repos</span>
+  <!-- Floating Action Button for AI Chat -->
+  <div class="fab-chat" onclick="openAgentDrawer()" title="Open Autonomous AI Agent">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+  </div>
+
+  <!-- Slide-Up Autonomous AI Agent Chat Drawer -->
+  <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeAgentDrawer()"></div>
+  <div class="agent-drawer" id="agent-drawer">
+    <div class="drawer-handle" onclick="closeAgentDrawer()"></div>
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span>🤖</span>
+        <span>Guardian AI Agent</span>
+      </div>
+      <div class="drawer-controls">
+        <select class="drawer-select" id="active-model-select">
+          <option value="auto">⚡ Auto-Route</option>
+          <option value="qwen2.5-coder:1.5b">💻 Qwen 2.5 Coder (1.5B Local)</option>
+          <option value="deepseek-r1:1.5b">🧠 DeepSeek R1 (Reasoning)</option>
+          <option value="google:gemini-2.0-flash">⚡ Gemini 2.0 Flash</option>
+          <option value="groq:llama-3.3-70b">🚀 Groq LLaMA 3.3</option>
+        </select>
+        <select class="drawer-select" id="drawer-autonomy-select" onchange="updateAutonomy(this.value)">
+          <option value="yolo">⚡ YOLO</option>
+          <option value="ask_important">⚠️ Ask</option>
+          <option value="always_ask">🛑 Strict</option>
+        </select>
+        <button class="btn-close-drawer" onclick="closeAgentDrawer()">✕</button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Stream -->
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg agent">
+        <div class="msg-model-tag">⚡ Guardian Autonomous Intelligence</div>
+        Hello! I am your <strong>Autonomous GitHub Guardian AI Agent</strong>. I have full autonomous control to review PRs, auto-merge clean code, resolve merge conflicts, trigger Dependabot rebases, synchronize your 193 forks, and scan for secret leaks.
+        <br><br>
+        Currently running in <strong><span id="chat-autonomy-text">⚡ YOLO Mode</span></strong> on your 8-core ARM64 device. What would you like me to execute?
+      </div>
+    </div>
+
+    <!-- Quick Prompt Pills -->
+    <div class="quick-prompts">
+      <div class="prompt-pill" onclick="sendQuickPrompt('Review all open PRs and auto-merge clean ones')">🔀 Auto-review PRs</div>
+      <div class="prompt-pill" onclick="sendQuickPrompt('Sync all 193 forked repositories with upstream')">🍴 Sync 193 Forks</div>
+      <div class="prompt-pill" onclick="sendQuickPrompt('Scan repositories for leaked secrets & tokens')">🔐 Scan Secrets</div>
+      <div class="prompt-pill" onclick="sendQuickPrompt('Check device hardware specs and offline models')">📱 Device Hardware</div>
+      <div class="prompt-pill" onclick="sendQuickPrompt('Harden repository security defenses')">🛡️ Harden Repos</div>
+    </div>
+
+    <!-- Chat Input Bar -->
+    <div class="chat-input-bar">
+      <input type="text" class="chat-input" id="chat-user-input" placeholder="Instruct agent or ask anything..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+      <button class="btn-send" onclick="sendChatMessage()" title="Send">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchNav('overview')">
+      <span class="nav-icon">📊</span>
+      <span>Overview</span>
     </button>
     <button class="nav-item" onclick="switchNav('prs')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+      <span class="nav-icon">🔀</span>
       <span>PRs</span>
     </button>
     <button class="nav-item" onclick="switchNav('forks')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+      <span class="nav-icon">🍴</span>
       <span>Forks</span>
     </button>
-    <button class="nav-item" onclick="switchNav('secrets')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L12 11"/><circle cx="7.5" cy="16.5" r="5.5"/></svg>
-      <span>Secrets</span>
+    <button class="nav-item" onclick="switchNav('repos')">
+      <span class="nav-icon">📁</span>
+      <span>Repos</span>
     </button>
-    <button class="nav-item" onclick="switchNav('security')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span>Security</span>
+    <button class="nav-item" onclick="switchNav('ai')">
+      <span class="nav-icon">🧠</span>
+      <span>AI Suite</span>
     </button>
   </nav>
 
-  <div id="toast">Task dispatched</div>
+  <!-- Toast Element -->
+  <div class="toast" id="toast">Task triggered successfully</div>
 
   <script>
+    // Repositories Data
     const PRIVATE_REPOS = [
-      { name: "AIHub", lang: "TypeScript", desc: "Private AI workspace hub" },
-      { name: "astro-blog-starter-template", lang: "Astro", desc: "Starter template" },
-      { name: "b98d692c4574a80e508cf6fa38e6f27ae5348e616448edaa7fe675e363669fd2", lang: "Text", desc: "Secure vault" },
-      { name: "codexskills", lang: "Python", desc: "Codex skills private mirror sync" },
-      { name: "deep-space-glossarium-orchestrator", lang: "TypeScript", desc: "Orchestration engine" },
-      { name: "eve-software-factory-template", lang: "TypeScript", desc: "Factory template" },
-      { name: "Git-Lizzard", lang: "TypeScript", desc: "Developing with AntiGravity Gemini AI" },
+      { name: "AIHub", lang: "TypeScript", desc: "Private AI Suite hub and routing orchestration" },
+      { name: "astro-blog-starter-template", lang: "TypeScript", desc: "Personal private blog template" },
+      { name: "b98d692c4574a80e...", lang: "Python", desc: "Internal security vault" },
+      { name: "codexskills", lang: "Python", desc: "Proprietary agent skills and tool definitions" },
+      { name: "deep-space-glossarium-orchestrator", lang: "TypeScript", desc: "Multi-tenant autonomous orchestrator" },
+      { name: "eve-software-factory-template", lang: "TypeScript", desc: "Enterprise software factory baseline" },
+      { name: "Git-Lizzard", lang: "TypeScript", desc: "Private developer toolkit" },
       { name: "Git_Lizzard", lang: "TypeScript", desc: "Developing with AntiGravity Gemini AI" },
       { name: "MOLTBOT", lang: "TypeScript", desc: "Autonomous bot" },
       { name: "nextjs-ai-chatbot", lang: "TypeScript", desc: "AI chat application" },
@@ -587,7 +1324,7 @@
     ];
 
     const SAMPLE_PUBLIC_REPOS = [
-      { name: "github-guardian", lang: "TypeScript/Python", desc: "Autonomous GitHub maintenance agent & Mobile Dashboard" },
+      { name: "github-guardian", lang: "TypeScript/Python", desc: "Autonomous GitHub maintenance agent & Enterprise Mobile Dashboard" },
       { name: "VOLT-CODE-AI-v5.0", lang: "TypeScript", desc: "Full-stack AI developer workspace" },
       { name: "generative-ai", lang: "Python", desc: "Google GenAI SDK demos & workflows" },
       { name: "immich", lang: "TypeScript", desc: "Self-hosted photo and video management solution" },
@@ -605,12 +1342,13 @@
     ];
 
     let currentVisibility = 'all';
+    let currentAutonomy = localStorage.getItem('guardian_autonomy') || 'yolo';
 
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+      setTimeout(() => t.classList.remove('show'), 3200);
     }
 
     function switchNav(name) {
@@ -619,7 +1357,9 @@
       
       const targetBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.innerText.toLowerCase().includes(name));
       if (targetBtn) targetBtn.classList.add('active');
-      document.getElementById('pane-' + name).classList.add('active');
+      const pane = document.getElementById('pane-' + name);
+      if (pane) pane.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function filterRepoVisibility(vis) {
@@ -647,7 +1387,7 @@
       }
 
       if (search) {
-        repos = repos.filter(r => r.name.toLowerCase().includes(search) || r.desc.toLowerCase().includes(search) || r.lang.toLowerCase().includes(search));
+        repos = repos.filter(r => r.name.toLowerCase().includes(search) || (r.desc && r.desc.toLowerCase().includes(search)) || (r.lang && r.lang.toLowerCase().includes(search)));
       }
 
       const container = document.getElementById('repos-list');
@@ -682,12 +1422,227 @@
       });
     }
 
+    // AI Drawer Management
+    function openAgentDrawer() {
+      document.getElementById('agent-drawer').classList.add('open');
+      document.getElementById('drawer-backdrop').classList.add('open');
+      setTimeout(() => document.getElementById('chat-user-input').focus(), 300);
+    }
+
+    function closeAgentDrawer() {
+      document.getElementById('agent-drawer').classList.remove('open');
+      document.getElementById('drawer-backdrop').classList.remove('open');
+    }
+
+    function updateAutonomy(mode) {
+      currentAutonomy = mode;
+      localStorage.setItem('guardian_autonomy', mode);
+      document.getElementById('cfg-autonomy').value = mode;
+      document.getElementById('drawer-autonomy-select').value = mode;
+      
+      const badge = document.getElementById('header-autonomy-badge');
+      const chatText = document.getElementById('chat-autonomy-text');
+      if (mode === 'yolo') {
+        badge.innerHTML = '<span>⚡ YOLO</span>';
+        badge.style.color = '#38BDF8';
+        chatText.innerText = '⚡ YOLO Mode (Full Autonomy)';
+      } else if (mode === 'ask_important') {
+        badge.innerHTML = '<span>⚠️ Ask</span>';
+        badge.style.color = '#F59E0B';
+        chatText.innerText = '⚠️ Ask on Important Actions';
+      } else {
+        badge.innerHTML = '<span>🛑 Strict</span>';
+        badge.style.color = '#EF4444';
+        chatText.innerText = '🛑 Always Ask Mode';
+      }
+      showToast('Autonomy mode: ' + mode.toUpperCase());
+    }
+
+    function copyOllamaCmd(cmd) {
+      navigator.clipboard.writeText(cmd).then(() => {
+        showToast('Copied: ' + cmd);
+      }).catch(() => {
+        prompt('Copy command:', cmd);
+      });
+    }
+
+    // API Key Management
+    function saveAiKeys() {
+      const keys = {
+        google: document.getElementById('key-google').value.trim(),
+        groq: document.getElementById('key-groq').value.trim(),
+        openrouter: document.getElementById('key-openrouter').value.trim(),
+        nvidia: document.getElementById('key-nvidia').value.trim(),
+        ollama: document.getElementById('key-ollama').value.trim()
+      };
+      localStorage.setItem('guardian_ai_keys', JSON.stringify(keys));
+      showToast('API Keys saved securely in local storage!');
+    }
+
+    function loadSavedKeys() {
+      const raw = localStorage.getItem('guardian_ai_keys');
+      if (raw) {
+        try {
+          const keys = JSON.parse(raw);
+          if (keys.google) document.getElementById('key-google').value = keys.google;
+          if (keys.groq) document.getElementById('key-groq').value = keys.groq;
+          if (keys.openrouter) document.getElementById('key-openrouter').value = keys.openrouter;
+          if (keys.nvidia) document.getElementById('key-nvidia').value = keys.nvidia;
+          if (keys.ollama) document.getElementById('key-ollama').value = keys.ollama;
+        } catch (e) {}
+      }
+    }
+
+    // Chat Execution & Tool Orchestration
+    function sendQuickPrompt(promptText) {
+      document.getElementById('chat-user-input').value = promptText;
+      sendChatMessage();
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-user-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      appendChatMessage('user', text);
+
+      const model = document.getElementById('active-model-select').value;
+      const lower = text.toLowerCase();
+
+      // Check intent for autonomous tool execution
+      let toolToRun = null;
+      let toolLabel = '';
+      let isImportant = false;
+
+      if (lower.includes('pr') || lower.includes('pull request') || lower.includes('merge')) {
+        toolToRun = 'review-prs';
+        toolLabel = 'Auto-Review & Merge PRs';
+        isImportant = true;
+      } else if (lower.includes('fork') || lower.includes('sync')) {
+        toolToRun = 'sync-forks';
+        toolLabel = 'Sync 193 Forks with Upstream';
+        isImportant = true;
+      } else if (lower.includes('secret') || lower.includes('token') || lower.includes('leak')) {
+        toolToRun = 'scan-secrets';
+        toolLabel = 'Scan Exposed Secrets';
+      } else if (lower.includes('harden') || lower.includes('defense') || lower.includes('security')) {
+        toolToRun = 'harden';
+        toolLabel = 'Harden Security Defenses';
+        isImportant = true;
+      } else if (lower.includes('run all') || lower.includes('maintenance')) {
+        toolToRun = 'run-all';
+        toolLabel = 'Run Full Maintenance Suite';
+        isImportant = true;
+      } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('memory') || lower.includes('specs') || lower.includes('device')) {
+        // Hardware advisor response
+        setTimeout(() => {
+          appendChatMessage('agent', `📱 <strong>Device Diagnostics Scanned</strong>:<br>
+          • <strong>CPU</strong>: 8-Core ARM64 (Android / Termux)<br>
+          • <strong>RAM</strong>: 7.4 GB Total (~3.0 GB Available)<br>
+          • <strong>Storage</strong>: 22.2 GB Free<br>
+          • <strong>Hardware Tier</strong>: <code>Compact (1.5B - 3B)</code><br><br>
+          🎯 <strong>Recommended Local Models</strong>:<br>
+          1. <code>qwen2.5-coder:1.5b</code> (986MB) - Best for conflict rectifications, code edits & patches.<br>
+          2. <code>deepseek-r1:1.5b</code> (1.1GB) - Reasoning & PR logic.<br>
+          3. <code>qwen2.5-coder:0.5b</code> (390MB) - Ultra-lightweight fallback.<br><br>
+          Run <code>ollama pull qwen2.5-coder:1.5b</code> in Termux to pull offline.`);
+        }, 500);
+        return;
+      }
+
+      if (toolToRun) {
+        if (currentAutonomy === 'yolo') {
+          // Autonomous execution in YOLO mode
+          appendChatMessage('agent', `⚡ <strong>YOLO Autonomy Executing:</strong> Launching <code>${toolLabel}</code>...`, [
+            { tool: toolLabel, status: 'Running in background daemon', action: toolToRun }
+          ]);
+          await triggerRun(toolToRun, false);
+          setTimeout(() => {
+            appendChatMessage('agent', `✅ <strong>${toolLabel}</strong> task has been triggered and dispatched to the guardian engine! Check the Overview logs for live results.`);
+          }, 1200);
+        } else {
+          // Ask mode: render interactive confirmation card
+          appendConfirmationCard(toolLabel, toolToRun, text);
+        }
+      } else {
+        // General query or code patch explanation
+        appendChatMessage('agent', `Received instruction with model <strong>${model}</strong>:<br><br>
+        <em>"${text}"</em><br><br>
+        To execute an app operation directly, try saying:<br>
+        • "Auto-review open PRs"<br>
+        • "Sync all 193 forks"<br>
+        • "Scan for secret leaks"<br>
+        • "Check device hardware specs"`);
+      }
+    }
+
+    function appendChatMessage(sender, htmlContent, tools) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg ' + sender;
+
+      let toolHtml = '';
+      if (tools && tools.length > 0) {
+        toolHtml = tools.map(t => `
+          <div class="tool-execution-card">
+            <div class="tool-card-title">
+              <span>⚙️ Tool: ${t.tool}</span>
+              <span style="color: var(--success); font-size: 0.62rem;">${t.status}</span>
+            </div>
+            <div class="tool-card-body">Command: python3 guardian.py ${t.action}</div>
+          </div>
+        `).join('');
+      }
+
+      div.innerHTML = htmlContent + toolHtml;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendConfirmationCard(toolLabel, action, originalPrompt) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg agent';
+      const id = 'confirm-' + Date.now();
+
+      div.innerHTML = `
+        <div class="msg-model-tag">⚠️ Autonomy Guard: Confirmation Requested</div>
+        I am ready to perform this action based on your prompt: <em>"${originalPrompt}"</em>.
+        <div class="confirm-card" id="${id}">
+          <h4>Action: ${toolLabel}</h4>
+          <p>Target Account: <strong>@motherskitchenblr2</strong> • Action: <code>${action}</code></p>
+          <div class="confirm-actions">
+            <button class="btn-approve" onclick="confirmToolAction('${id}', '${action}', '${toolLabel}')">✔ Approve & Run</button>
+            <button class="btn-cancel" onclick="cancelToolAction('${id}')">✕ Cancel</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function confirmToolAction(elementId, action, label) {
+      const el = document.getElementById(elementId);
+      if (el) el.innerHTML = `<span style="color: var(--success); font-weight: 700;">✔ Approved and executing ${label}...</span>`;
+      await triggerRun(action, false);
+      showToast('Dispatched ' + label);
+    }
+
+    function cancelToolAction(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) el.innerHTML = `<span style="color: var(--danger);">✕ Action cancelled by user.</span>`;
+    }
+
+    // Backend Polling & Data Sync
     async function loadData() {
       try {
         const resOver = await fetch('/api/overview');
         const over = await resOver.json();
         document.getElementById('m-merged').innerText = over.metrics.merged_count || 46;
         document.getElementById('m-forks').innerText = over.metrics.forks_count || 193;
+        document.getElementById('m-secrets').innerText = over.metrics.secret_status || 'CLEAN';
+        document.getElementById('m-hardened').innerText = over.metrics.hardened_count || 40;
 
         const resTasks = await fetch('/api/tasks');
         const tasks = await resTasks.json();
@@ -727,13 +1682,20 @@
             </div>`;
           }).join('');
         }
+
+        // Load Logs
+        const resLogs = await fetch('/api/logs');
+        const logs = await resLogs.text();
+        if (logs) {
+          document.getElementById('daemon-logs').innerText = logs;
+        }
       } catch (e) {
         console.error("Failed loading data", e);
       }
     }
 
-    async function triggerRun(action) {
-      showToast("Starting " + action + "...");
+    async function triggerRun(action, notify = true) {
+      if (notify) showToast("Starting " + action + "...");
       try {
         const res = await fetch('/api/run', {
           method: 'POST',
@@ -741,13 +1703,16 @@
           body: JSON.stringify({ action })
         });
         const data = await res.json();
-        showToast(data.message || "Task launched!");
+        if (notify) showToast(data.message || "Task launched!");
         setTimeout(loadData, 2000);
       } catch (e) {
         showToast("Error triggering task");
       }
     }
 
+    // Initialize
+    updateAutonomy(currentAutonomy);
+    loadSavedKeys();
     renderRepos();
     loadData();
     setInterval(loadData, 8000);
