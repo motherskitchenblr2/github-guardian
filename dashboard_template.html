@@ -144,20 +144,170 @@
 
     /* Section Headers */
     .section-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.3rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      color: #FFFFFF;
     }
 
     .section-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.76rem;
+      color: var(--text-dim);
       margin-bottom: 1rem;
-      line-height: 1.4;
+      line-height: 1.45;
+    }
+
+    /* Overview Header & Telemetry Badge */
+    .overview-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .telemetry-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.28rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--success);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .telemetry-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+      animation: pulseGlow 1.8s infinite ease-in-out;
+    }
+
+    /* GitHub Enterprise Hero Banner */
+    .gh-hero-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gh-hero-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .gh-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .gh-hero-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      min-width: 0;
+    }
+
+    .gh-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0284C7, #4F46E5);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .gh-hero-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .gh-hero-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gh-hero-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .gh-hero-chips {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .scope-chip {
+      background: rgba(10, 15, 26, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      font-size: 0.66rem;
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+
+    .btn-auth-settings {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.42rem 0.85rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-auth-settings:active {
+      transform: scale(0.97);
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
     }
 
     /* Enterprise Stats Grid */
@@ -172,46 +322,271 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-md);
-      padding: 0.85rem;
+      padding: 0.9rem;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 110px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
     }
 
     .stat-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--primary), transparent);
+      top: 0; left: 0; right: 0; height: 2.5px;
+    }
+
+    .stat-card.cyan::before { background: linear-gradient(90deg, #38BDF8, transparent); }
+    .stat-card.indigo::before { background: linear-gradient(90deg, #818CF8, transparent); }
+    .stat-card.emerald::before { background: linear-gradient(90deg, #10B981, transparent); }
+    .stat-card.amber::before { background: linear-gradient(90deg, #F59E0B, transparent); }
+
+    .stat-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.35rem;
     }
 
     .stat-label {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
 
+    .stat-icon-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon-badge.cyan { background: rgba(56, 189, 248, 0.12); color: #38BDF8; }
+    .stat-icon-badge.indigo { background: rgba(129, 140, 248, 0.12); color: #818CF8; }
+    .stat-icon-badge.emerald { background: rgba(16, 185, 129, 0.12); color: #10B981; }
+    .stat-icon-badge.amber { background: rgba(245, 158, 11, 0.12); color: #F59E0B; }
+
     .stat-value {
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       font-weight: 800;
       font-family: var(--font-mono);
-      margin: 0.2rem 0;
+      margin: 0.15rem 0;
       color: white;
+      letter-spacing: -0.02em;
     }
 
     .stat-sub {
-      font-size: 0.68rem;
-      color: var(--success);
+      font-size: 0.66rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.3rem;
     }
 
-    /* Quick Action Buttons */
+    /* Hero Primary Action Button */
+    .btn-hero-action {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(99, 102, 241, 0.3));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.65rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-hero-action:active {
+      transform: scale(0.985);
+      filter: brightness(1.1);
+      border-color: var(--primary);
+    }
+
+    .btn-hero-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .btn-hero-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0284C7, #6366F1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-hero-text {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+
+    .btn-hero-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-hero-sub {
+      font-size: 0.67rem;
+      color: var(--primary);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-hero-arrow {
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* 2x2 Sub-Action Cards Matrix */
+    .actions-grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .action-card-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      transition: all 0.2s;
+      min-height: 56px;
+      text-align: left;
+    }
+    .action-card-btn:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(30, 41, 59, 0.75);
+    }
+    .action-card-btn:active {
+      transform: scale(0.97);
+    }
+
+    .action-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .action-card-icon.cyan { background: rgba(56, 189, 248, 0.12); color: #38BDF8; }
+    .action-card-icon.indigo { background: rgba(129, 140, 248, 0.12); color: #818CF8; }
+    .action-card-icon.emerald { background: rgba(16, 185, 129, 0.12); color: #10B981; }
+    .action-card-icon.amber { background: rgba(245, 158, 11, 0.12); color: #F59E0B; }
+
+    .action-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      min-width: 0;
+    }
+
+    .action-card-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .action-card-desc {
+      font-size: 0.64rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Terminal Console Window */
+    .terminal-window {
+      background: #030712;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      margin-top: 0.5rem;
+    }
+
+    .terminal-titlebar {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.55rem 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .terminal-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .t-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .t-red { background: #EF4444; }
+    .t-yellow { background: #F59E0B; }
+    .t-green { background: #10B981; }
+
+    .terminal-filename {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-left: 6px;
+      font-weight: 500;
+    }
+
+    .terminal-status-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--success);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* Quick Action Buttons (Legacy & Standard) */
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -864,15 +1239,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       background: none;
       border: none;
       color: var(--text-dim);
       font-size: 0.65rem;
       font-weight: 600;
       cursor: pointer;
-      padding: 4px 8px;
-      transition: color 0.15s;
+      padding: 4px 10px;
+      transition: all 0.2s;
+      border-radius: 8px;
+    }
+
+    .nav-item:hover {
+      color: var(--text-muted);
     }
 
     .nav-item.active {
@@ -880,9 +1260,13 @@
       font-weight: 700;
     }
 
-    .nav-icon {
-      font-size: 1.15rem;
-      line-height: 1;
+    .nav-item.active .nav-svg {
+      stroke: var(--primary);
+      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+    }
+
+    .nav-svg {
+      transition: all 0.2s;
     }
 
     /* Toast Notification */
@@ -900,8 +1284,16 @@
       font-weight: 600;
       z-index: 200;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
       pointer-events: none;
+      opacity: 0;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     /* GitHub Integration Modal */
     .modal-backdrop {
       position: fixed;
@@ -1312,10 +1704,12 @@
         <span id="header-user-login">@motherskitchenblr2</span>
       </button>
       <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()">
-        <span>⚡ YOLO</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>YOLO</span>
       </div>
       <button class="btn-agent-toggle" onclick="openAgentDrawer()">
-        <span>🤖 AI Chat</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
+        <span>AI Agent</span>
       </button>
     </div>
   </header>
@@ -1325,73 +1719,195 @@
 
     <!-- PANE 1: OVERVIEW -->
     <div class="pane active" id="pane-overview">
-      <div class="section-title">📊 Guardian Operations Suite</div>
-      <p class="section-desc">Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine.</p>
+      <div class="overview-header-row">
+        <div>
+          <div class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            <span>Guardian Operations Suite</span>
+          </div>
+          <p class="section-desc">Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine.</p>
+        </div>
+        <div class="telemetry-pill">
+          <span class="telemetry-pulse"></span>
+          <span>LIVE · 8765</span>
+        </div>
+      </div>
 
-      <!-- GitHub Integration Status Card -->
-      <div class="touch-card" style="margin-bottom: 1.25rem; border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));">
-        <div class="card-top">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#38BDF8"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span style="font-size: 0.88rem; font-weight: 800; color: white;">GitHub Enterprise Integration</span>
+      <!-- GitHub Enterprise Hero Banner -->
+      <div class="gh-hero-card" id="overview-gh-card">
+        <div class="gh-hero-top">
+          <div class="gh-hero-title-group">
+            <div class="gh-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+            <div>
+              <div class="gh-hero-title">GitHub Enterprise Integration</div>
+              <div class="gh-hero-subtitle" id="overview-gh-desc">
+                Authenticated as <strong style="color: white;">@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
+              </div>
+            </div>
           </div>
           <span class="card-badge badge-merged" id="overview-gh-badge">Connected</span>
         </div>
-        <div style="font-size: 0.74rem; color: var(--text-muted); margin: 0.35rem 0 0.65rem 0;" id="overview-gh-desc">
-          Authenticated as <strong>@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="action-btn" style="flex: 1; padding: 0.45rem 0.75rem; font-size: 0.72rem; justify-content: center;" onclick="openGithubModal()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="#38BDF8"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            <span>Account Authorization Settings (Token / Login)</span>
+
+        <div class="gh-hero-meta-row">
+          <div class="gh-hero-chips">
+            <span class="scope-chip"><code>repo</code></span>
+            <span class="scope-chip"><code>workflow</code></span>
+            <span class="scope-chip"><code>security_events</code></span>
+            <span class="scope-chip" style="color: var(--success); border-color: rgba(16,185,129,0.3);">AES-GCM-256</span>
+          </div>
+          <button class="btn-auth-settings" onclick="openGithubModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-2 2m-1.5 1.5L4 10l-1.5-1.5L1 10l-1.5-1.5L-2 10a5.5 5.5 0 1 0 7.5 7.5l7.5-7.5V2h-2z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
+            <span>Manage Auth</span>
           </button>
         </div>
       </div>
 
+      <!-- Enterprise Stats Matrix -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">PRs Merged / Handled</div>
+        <div class="stat-card cyan">
+          <div class="stat-top-row">
+            <div class="stat-label">PRs Merged / Handled</div>
+            <div class="stat-icon-badge cyan">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/><path d="M18 9a9 9 0 0 0-9 9"/></svg>
+            </div>
+          </div>
           <div class="stat-value" id="m-merged">46</div>
-          <div class="stat-sub"><span>✔</span> 100% Conflict Rebases</div>
+          <div class="stat-sub">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>100% Conflict Rebases</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Forks Monitored</div>
+
+        <div class="stat-card indigo">
+          <div class="stat-top-row">
+            <div class="stat-label">Forks Monitored</div>
+            <div class="stat-icon-badge indigo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+            </div>
+          </div>
           <div class="stat-value" id="m-forks">193</div>
-          <div class="stat-sub"><span>🔄</span> Synced with Upstream</div>
+          <div class="stat-sub">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Synced with Upstream</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Secret Security</div>
+
+        <div class="stat-card emerald">
+          <div class="stat-top-row">
+            <div class="stat-label">Secret Security</div>
+            <div class="stat-icon-badge emerald">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+          </div>
           <div class="stat-value" style="color: var(--success);" id="m-secrets">CLEAN</div>
-          <div class="stat-sub"><span>🛡️</span> Zero Leaked Tokens</div>
+          <div class="stat-sub">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>Zero Leaked Tokens</span>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Hardened Repos</div>
+
+        <div class="stat-card amber">
+          <div class="stat-top-row">
+            <div class="stat-label">Hardened Repos</div>
+            <div class="stat-icon-badge amber">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+          </div>
           <div class="stat-value" id="m-hardened">40</div>
-          <div class="stat-sub"><span>🔒</span> Dependabot & Defenses</div>
+          <div class="stat-sub">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Dependabot & Defenses</span>
+          </div>
         </div>
       </div>
 
-      <div class="section-title" style="font-size: 0.95rem;">⚡ Quick Autonomous Actions</div>
-      <div class="actions-grid">
-        <button class="action-btn primary" onclick="triggerRun('run-all')">
-          <span>🚀 Run Full Maintenance Suite (PRs + Forks + Secrets + Harden)</span>
+      <!-- Autonomous Action Suite -->
+      <div class="section-title" style="font-size: 0.95rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Autonomous Execution Suite</span>
+      </div>
+
+      <!-- Hero Run Full Suite Action -->
+      <button class="btn-hero-action" onclick="triggerRun('run-all')">
+        <div class="btn-hero-left">
+          <div class="btn-hero-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="btn-hero-text">
+            <span class="btn-hero-title">Run Full Maintenance Suite</span>
+            <span class="btn-hero-sub">Autonomous PRs · Forks Sync · Secrets Audit · Hardening</span>
+          </div>
+        </div>
+        <span class="btn-hero-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </button>
+
+      <!-- 2x2 Sub-Action Cards -->
+      <div class="actions-grid-2x2">
+        <button class="action-card-btn" onclick="triggerRun('review-prs')">
+          <div class="action-card-icon cyan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9a9 9 0 0 0 9 9"/><polyline points="18 12 18 18 12 18"/></svg>
+          </div>
+          <div class="action-card-content">
+            <div class="action-card-title">Auto-Merge PRs</div>
+            <div class="action-card-desc">Review & squash open PRs</div>
+          </div>
         </button>
-        <button class="action-btn" onclick="triggerRun('review-prs')">
-          <span>🔀 Auto-Merge Open PRs</span>
+
+        <button class="action-card-btn" onclick="triggerRun('sync-forks')">
+          <div class="action-card-icon indigo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+          </div>
+          <div class="action-card-content">
+            <div class="action-card-title">Sync 193 Forks</div>
+            <div class="action-card-desc">Fast-forward upstreams</div>
+          </div>
         </button>
-        <button class="action-btn" onclick="triggerRun('sync-forks')">
-          <span>🍴 Sync 193 Upstream Forks</span>
+
+        <button class="action-card-btn" onclick="triggerRun('scan-secrets')">
+          <div class="action-card-icon emerald">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="2"/></svg>
+          </div>
+          <div class="action-card-content">
+            <div class="action-card-title">Scan Secrets</div>
+            <div class="action-card-desc">Audit exposed credentials</div>
+          </div>
         </button>
-        <button class="action-btn" onclick="triggerRun('scan-secrets')">
-          <span>🔐 Scan Exposed Secrets</span>
-        </button>
-        <button class="action-btn" onclick="triggerRun('harden')">
-          <span>🛡️ Harden Security Settings</span>
+
+        <button class="action-card-btn" onclick="triggerRun('harden')">
+          <div class="action-card-icon amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="action-card-content">
+            <div class="action-card-title">Harden Security</div>
+            <div class="action-card-desc">Enforce branch defenses</div>
+          </div>
         </button>
       </div>
 
-      <div class="section-title" style="font-size: 0.95rem; margin-top: 1.25rem;">📜 Autonomous Engine Live Logs</div>
-      <div class="terminal-box" id="daemon-logs">Connecting to Guardian daemon telemetry...</div>
+      <!-- Autonomous Engine Live Telemetry Console Window -->
+      <div class="section-title" style="font-size: 0.95rem; margin-top: 1.25rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <span>Autonomous Engine Telemetry</span>
+      </div>
+      <div class="terminal-window">
+        <div class="terminal-titlebar">
+          <div class="terminal-dots">
+            <span class="t-dot t-red"></span>
+            <span class="t-dot t-yellow"></span>
+            <span class="t-dot t-green"></span>
+            <span class="terminal-filename">guardian-daemon.telemetry</span>
+          </div>
+          <div class="terminal-status-strip">
+            <span class="telemetry-pulse"></span>
+            <span>STREAMING</span>
+          </div>
+        </div>
+        <div class="terminal-box" id="daemon-logs">Connecting to Guardian daemon telemetry...</div>
+      </div>
     </div>
 
     <!-- PANE 2: PULL REQUESTS & ACTIONS -->
@@ -1881,23 +2397,23 @@
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchNav('overview')">
-      <span class="nav-icon">📊</span>
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
       <span>Overview</span>
     </button>
     <button class="nav-item" onclick="switchNav('prs')">
-      <span class="nav-icon">🔀</span>
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/><path d="M18 9a9 9 0 0 0-9 9"/></svg>
       <span>PRs</span>
     </button>
     <button class="nav-item" onclick="switchNav('forks')">
-      <span class="nav-icon">🍴</span>
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
       <span>Forks</span>
     </button>
     <button class="nav-item" onclick="switchNav('repos')">
-      <span class="nav-icon">📁</span>
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       <span>Repos</span>
     </button>
     <button class="nav-item" onclick="switchNav('ai')">
-      <span class="nav-icon">🧠</span>
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
       <span>AI Suite</span>
     </button>
   </nav>
