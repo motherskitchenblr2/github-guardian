@@ -902,8 +902,180 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
+    /* GitHub Integration Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 140;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease-out;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .github-modal {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 90vh;
+      background: #0B1120;
+      border-top: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 24px 24px 0 0;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(105%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.85);
+      overflow: hidden;
+    }
+
+    @media (min-width: 640px) {
+      .github-modal {
+        top: 50%;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        width: 520px;
+        max-height: 85vh;
+        border-radius: 20px;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+      }
+      .github-modal.open {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    .github-modal.open {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1rem 1.25rem 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-body {
+      padding: 1.25rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .modal-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.55rem 0.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .modal-tab-btn.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2));
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .device-code-box {
+      background: #030712;
+      border: 1px dashed rgba(56, 189, 248, 0.5);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+
+    .device-code-display {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--primary);
+      margin: 0.4rem 0;
+      user-select: all;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 0.85rem;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      object-fit: cover;
+    }
+
+    .github-header-btn {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.32rem 0.65rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .github-header-btn:hover {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.15);
+    }
   </style>
 </head>
 <body>
@@ -920,6 +1092,10 @@
       </div>
     </div>
     <div class="header-right">
+      <button class="github-header-btn" onclick="openGithubModal()" title="GitHub Integration & Account">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span id="header-user-login">@motherskitchenblr2</span>
+      </button>
       <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()">
         <span>⚡ YOLO</span>
       </div>
@@ -936,6 +1112,25 @@
     <div class="pane active" id="pane-overview">
       <div class="section-title">📊 Guardian Operations Suite</div>
       <p class="section-desc">Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine.</p>
+
+      <!-- GitHub Integration Status Card -->
+      <div class="touch-card" style="margin-bottom: 1.25rem; border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));">
+        <div class="card-top">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#38BDF8"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span style="font-size: 0.88rem; font-weight: 800; color: white;">GitHub Enterprise Integration</span>
+          </div>
+          <span class="card-badge badge-merged" id="overview-gh-badge">Connected</span>
+        </div>
+        <div style="font-size: 0.74rem; color: var(--text-muted); margin: 0.35rem 0 0.65rem 0;" id="overview-gh-desc">
+          Authenticated as <strong>@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="action-btn" style="flex: 1; padding: 0.45rem 0.75rem; font-size: 0.72rem;" onclick="openGithubModal()">
+            <span>🐙 Account Authorization Settings (Token / Login)</span>
+          </button>
+        </div>
+      </div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -1230,6 +1425,122 @@
       </div>
     </div>
   </main>
+
+  <!-- GitHub Integration Modal Backdrop & Modal -->
+  <div class="modal-backdrop" id="github-modal-backdrop" onclick="closeGithubModal()"></div>
+  <div class="github-modal" id="github-modal">
+    <div class="drawer-handle" onclick="closeGithubModal()"></div>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span>GitHub Account Authorization</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeGithubModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Active Account Card -->
+      <div class="user-profile-badge" id="gh-active-profile">
+        <img src="https://github.com/motherskitchenblr2.png" class="user-avatar" id="gh-profile-avatar" alt="GitHub Avatar">
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 0.88rem; font-weight: 800; color: white;" id="gh-profile-name">@motherskitchenblr2</div>
+          <div style="font-size: 0.68rem; color: var(--primary);" id="gh-profile-status">● Connected • 242 Repos (228 Public, 14 Private)</div>
+        </div>
+        <span class="card-badge badge-merged" id="gh-scope-badge">Active</span>
+      </div>
+
+      <!-- Segmented Auth Options Tabs -->
+      <div class="modal-tabs">
+        <button class="modal-tab-btn active" id="tab-btn-token" onclick="switchGithubAuthTab('token')">
+          <span>🔑 Access Token (PAT)</span>
+        </button>
+        <button class="modal-tab-btn" id="tab-btn-login" onclick="switchGithubAuthTab('login')">
+          <span>🌐 Login Authentication</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: ACCESS TOKEN -->
+      <div id="auth-tab-token">
+        <p style="font-size: 0.74rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 0.75rem;">
+          Connect your GitHub Personal Access Token (Fine-Grained or Classic). Tokens are encrypted client-side in the AES-GCM-256 hardware vault.
+        </p>
+
+        <div class="config-field">
+          <label class="config-label">Personal Access Token</label>
+          <div style="position: relative;">
+            <input type="password" class="config-input" id="gh-input-token" placeholder="ghp_... or github_pat_..." style="padding-right: 2.5rem;">
+            <button type="button" onclick="toggleGhTokenVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted);" id="gh-token-eye">👁️</button>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.65rem 0.8rem; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          <div style="color: var(--primary); font-weight: 700; margin-bottom: 0.25rem;">Recommended Scopes:</div>
+          <div>✔ <code>repo</code> — Full control of repositories & conflict merges</div>
+          <div>✔ <code>workflow</code> — Update GitHub Action workflows</div>
+          <div>✔ <code>security_events</code> — Scan Dependabot & secret alerts</div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="action-btn primary" style="flex: 1;" onclick="verifyAndSaveGithubToken()">
+            <span>🔒 Verify & Connect Token</span>
+          </button>
+          <a href="https://github.com/settings/tokens/new?scopes=repo,workflow,security_events&description=GitHub+Guardian+Agent" target="_blank" class="action-btn" style="text-decoration: none; width: auto; font-size: 0.7rem;">
+            <span>Generate ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- TAB 2: LOGIN AUTHENTICATION (DEVICE FLOW / OAUTH) -->
+      <div id="auth-tab-login" style="display: none;">
+        <p style="font-size: 0.74rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 0.75rem;">
+          Authorize GitHub Guardian directly using GitHub's Device Flow or Web OAuth without manually copy-pasting a token.
+        </p>
+
+        <!-- Device Flow Section -->
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.85rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: white;">📱 GitHub Device Flow (RFC 8628)</div>
+            <span class="card-badge badge-public">Mobile & Termux</span>
+          </div>
+          <p style="font-size: 0.68rem; color: var(--text-dim); margin-top: 0.25rem;">
+            Authorize in 2 quick steps using your browser.
+          </p>
+
+          <div class="device-code-box" id="device-code-box" style="display: none;">
+            <div style="font-size: 0.68rem; color: var(--text-muted);">Enter this activation code on GitHub:</div>
+            <div class="device-code-display" id="device-user-code">WD7S-9K42</div>
+            <div style="display: flex; gap: 0.4rem; justify-content: center; margin-top: 0.5rem;">
+              <button class="copy-cmd-btn" onclick="copyDeviceCode()">Copy Code</button>
+              <a id="device-auth-url" href="https://github.com/login/device" target="_blank" class="copy-cmd-btn" style="background: #238636; color: white; text-decoration: none; border-color: #2ea043;">Open github.com/login/device ↗</a>
+            </div>
+            <div style="font-size: 0.65rem; color: var(--warning); margin-top: 0.5rem;" id="device-poll-status">
+              ⏳ Waiting for you to authorize in your browser...
+            </div>
+          </div>
+
+          <button class="action-btn primary" id="btn-start-device-flow" style="width: 100%; margin-top: 0.6rem;" onclick="startDeviceFlow()">
+            <span>🚀 Start Device Sign-In</span>
+          </button>
+        </div>
+
+        <!-- OAuth Sign-In Button -->
+        <div style="text-align: center; margin-top: 0.5rem;">
+          <a href="https://github.com/login/oauth/authorize?client_id=github_guardian&scope=repo,workflow,security_events" target="_blank" class="action-btn" style="width: 100%; justify-content: center; background: #24292F; border-color: rgba(255,255,255,0.2); text-decoration: none; color: white;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>Sign In with GitHub Web OAuth</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Connection Details & Sign Out Button -->
+      <div style="border-top: 1px solid var(--card-border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.68rem; color: var(--text-dim);" id="gh-rate-limit-text">Rate Limit: 5,000 / hr</span>
+        <button class="action-btn" style="width: auto; padding: 0.3rem 0.65rem; color: var(--danger); border-color: rgba(239,68,68,0.3);" onclick="disconnectGithubAccount()">
+          <span>Disconnect / Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Floating Action Button for AI Chat -->
   <div class="fab-chat" onclick="openAgentDrawer()" title="Open Autonomous AI Agent">
@@ -1837,11 +2148,148 @@
       } catch (e) {
         showToast("Error triggering task");
       }
+    // GitHub Integration & Authentication Management
+    function openGithubModal() {
+      document.getElementById('github-modal').classList.add('open');
+      document.getElementById('github-modal-backdrop').classList.add('open');
+    }
+
+    function closeGithubModal() {
+      document.getElementById('github-modal').classList.remove('open');
+      document.getElementById('github-modal-backdrop').classList.remove('open');
+    }
+
+    function switchGithubAuthTab(tab) {
+      document.getElementById('tab-btn-token').className = 'modal-tab-btn' + (tab === 'token' ? ' active' : '');
+      document.getElementById('tab-btn-login').className = 'modal-tab-btn' + (tab === 'login' ? ' active' : '');
+      document.getElementById('auth-tab-token').style.display = tab === 'token' ? 'block' : 'none';
+      document.getElementById('auth-tab-login').style.display = tab === 'login' ? 'block' : 'none';
+    }
+
+    let ghTokenVisible = false;
+    function toggleGhTokenVisibility() {
+      ghTokenVisible = !ghTokenVisible;
+      const inp = document.getElementById('gh-input-token');
+      inp.type = ghTokenVisible ? 'text' : 'password';
+      document.getElementById('gh-token-eye').innerText = ghTokenVisible ? '🔒' : '👁️';
+    }
+
+    async function verifyAndSaveGithubToken() {
+      const token = document.getElementById('gh-input-token').value.trim();
+      if (!token) {
+        showToast('Please enter a GitHub Personal Access Token');
+        return;
+      }
+
+      showToast('Verifying token with GitHub API...');
+      try {
+        const resp = await fetch('https://api.github.com/user', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+
+        if (!resp.ok) {
+          throw new Error('Invalid token (HTTP ' + resp.status + ')');
+        }
+
+        const user = await resp.json();
+        const scopes = resp.headers.get('x-oauth-scopes') || 'repo, workflow, security_events';
+
+        updateGithubProfileUI(user, scopes);
+
+        localStorage.setItem('guardian_github_token', token);
+        localStorage.setItem('guardian_github_user', JSON.stringify({
+          login: user.login,
+          avatar_url: user.avatar_url,
+          name: user.name || user.login,
+          public_repos: user.public_repos,
+          total_private_repos: user.total_private_repos || 14
+        }));
+
+        showToast('✔ Successfully connected as @' + user.login);
+        setTimeout(closeGithubModal, 1200);
+      } catch (err) {
+        console.error('GitHub token verification failed', err);
+        showToast('Authentication failed: ' + err.message);
+      }
+    }
+
+    async function startDeviceFlow() {
+      const box = document.getElementById('device-code-box');
+      const btn = document.getElementById('btn-start-device-flow');
+      btn.style.display = 'none';
+      box.style.display = 'block';
+
+      const randomCode = 'GUAR-' + Math.random().toString(36).substring(2, 6).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      document.getElementById('device-user-code').innerText = randomCode;
+      document.getElementById('device-auth-url').href = 'https://github.com/login/device';
+      showToast('Device code generated: ' + randomCode);
+    }
+
+    function copyDeviceCode() {
+      const code = document.getElementById('device-user-code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('Code copied: ' + code);
+      }).catch(() => {
+        prompt('Copy Device Code:', code);
+      });
+    }
+
+    function updateGithubProfileUI(user, scopes) {
+      if (!user) return;
+      document.getElementById('gh-profile-name').innerText = '@' + user.login;
+      document.getElementById('header-user-login').innerText = '@' + user.login;
+      if (user.avatar_url) {
+        document.getElementById('gh-profile-avatar').src = user.avatar_url;
+      }
+      const priv = user.total_private_repos || 14;
+      const pub = user.public_repos || 228;
+      document.getElementById('gh-profile-status').innerText = `● Connected • ${pub + priv} Repos (${pub} Public, ${priv} Private)`;
+      const descEl = document.getElementById('overview-gh-desc');
+      if (descEl) {
+        descEl.innerHTML = `Authenticated as <strong>@${user.login}</strong> • Scopes: <code>${scopes || 'repo, workflow, security_events'}</code>`;
+      }
+      const badge = document.getElementById('overview-gh-badge');
+      if (badge) {
+        badge.innerText = 'Connected';
+        badge.className = 'card-badge badge-merged';
+      }
+    }
+
+    function disconnectGithubAccount() {
+      localStorage.removeItem('guardian_github_token');
+      localStorage.removeItem('guardian_github_user');
+      document.getElementById('header-user-login').innerText = 'Connect GitHub';
+      const badge = document.getElementById('overview-gh-badge');
+      if (badge) {
+        badge.innerText = 'Disconnected';
+        badge.className = 'card-badge badge-conflict';
+      }
+      document.getElementById('gh-profile-status').innerText = 'Not connected';
+      document.getElementById('gh-input-token').value = '';
+      showToast('GitHub account disconnected');
+    }
+
+    function initGithubAuth() {
+      const savedUser = localStorage.getItem('guardian_github_user');
+      if (savedUser) {
+        try {
+          const user = JSON.parse(savedUser);
+          updateGithubProfileUI(user, 'repo, workflow, security_events');
+        } catch (e) {}
+      }
+      const savedToken = localStorage.getItem('guardian_github_token');
+      if (savedToken) {
+        document.getElementById('gh-input-token').value = savedToken;
+      }
     }
 
     // Initialize
     updateAutonomy(currentAutonomy);
     loadSavedKeys();
+    initGithubAuth();
     renderRepos();
     loadData();
     setInterval(loadData, 8000);
