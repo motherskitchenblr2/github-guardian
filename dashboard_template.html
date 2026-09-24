@@ -94,37 +94,107 @@
 
     .header-right {
       display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .github-header-btn {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #F8FAFC;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 0.22rem 0.6rem;
+      border-radius: 9999px;
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.35rem;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .github-header-btn:hover {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.18);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    }
+
+    .header-avatar-img {
+      width: 17px;
+      height: 17px;
+      min-width: 17px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(56, 189, 248, 0.6);
+    }
+
+    .header-pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .header-sub-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.35rem;
     }
 
     .autonomy-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 0.22rem 0.55rem;
+      gap: 0.25rem;
+      padding: 0.18rem 0.5rem;
       background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.35);
       border-radius: 9999px;
-      font-size: 0.65rem;
-      font-weight: 700;
+      font-size: 0.62rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
       color: var(--primary);
       cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: all 0.2s ease;
+    }
+
+    .autonomy-badge:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
     }
 
     .btn-agent-toggle {
-      background: linear-gradient(135deg, #38BDF8, #6366F1);
-      border: none;
+      background: linear-gradient(135deg, #0284C7, #6366F1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: white;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 0.4rem 0.75rem;
+      padding: 0.22rem 0.55rem;
       border-radius: 9999px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.3rem;
       cursor: pointer;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-agent-toggle:hover {
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+      transform: translateY(-1px);
     }
 
     /* Content Area */
@@ -197,12 +267,12 @@
 
     /* GitHub Enterprise Hero Banner */
     .gh-hero-card {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.88));
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: var(--radius-md);
-      padding: 1rem;
+      padding: 1.1rem 1.15rem;
       margin-bottom: 1.25rem;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
       position: relative;
       overflow: hidden;
     }
@@ -220,21 +290,23 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
     }
 
-    .gh-hero-title-group {
+    .gh-hero-header-left {
       display: flex;
       align-items: center;
       gap: 0.65rem;
       min-width: 0;
+      flex: 1;
     }
 
     .gh-icon-box {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
       background: linear-gradient(135deg, #0284C7, #4F46E5);
       border: 1px solid rgba(56, 189, 248, 0.4);
       display: flex;
@@ -245,69 +317,115 @@
     }
 
     .gh-hero-title {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: #FFFFFF;
       letter-spacing: -0.01em;
       line-height: 1.2;
     }
 
-    .gh-hero-subtitle {
-      font-size: 0.7rem;
+    .gh-hero-caption {
+      font-size: 0.68rem;
+      font-weight: 500;
       color: var(--text-dim);
+      margin-top: 0.1rem;
+      line-height: 1.2;
+    }
+
+    .gh-hero-auth-detail {
+      font-size: 0.76rem;
+      font-weight: 400;
+      color: #CBD5E1;
       font-family: var(--font-mono);
-      margin-top: 0.15rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.55;
+      padding: 0.4rem 0;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .gh-hero-auth-detail strong {
+      color: #38BDF8;
+      font-weight: 700;
+    }
+
+    .gh-hero-auth-detail code {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #E2E8F0;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
     }
 
     .gh-hero-meta-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.65rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding-top: 0.75rem;
+      margin-top: 0.4rem;
       flex-wrap: wrap;
     }
 
     .gh-hero-chips {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
     }
 
     .scope-chip {
-      background: rgba(10, 15, 26, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 4px;
-      padding: 0.15rem 0.45rem;
-      font-size: 0.66rem;
-      color: var(--primary);
+      background: rgba(10, 15, 26, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      padding: 0.18rem 0.45rem;
+      font-size: 0.67rem;
+      color: #94A3B8;
       font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .scope-chip.security-chip {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+      font-weight: 600;
+    }
+
+    .scope-chip.repo-count-chip {
+      color: var(--primary);
+      border-color: rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.08);
+      font-weight: 600;
     }
 
     .btn-auth-settings {
       background: rgba(30, 41, 59, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #FFFFFF;
+      color: #F8FAFC;
       font-size: 0.72rem;
       font-weight: 700;
-      padding: 0.42rem 0.85rem;
-      border-radius: var(--radius-sm);
+      padding: 0.38rem 0.75rem;
+      border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
     }
+
+    .btn-auth-settings:hover {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.18);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
     .btn-auth-settings:active {
       transform: scale(0.97);
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--primary);
     }
 
     /* Enterprise Stats Grid */
@@ -1400,7 +1518,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
+      gap: 0.65rem;
     }
 
     .gh-profile-user {
@@ -1408,45 +1526,51 @@
       align-items: center;
       gap: 0.65rem;
       min-width: 0;
+      flex: 1;
     }
 
     .user-avatar {
-      width: 34px;
-      height: 34px;
-      min-width: 34px;
-      max-width: 34px;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      max-width: 28px;
       flex-shrink: 0;
       border-radius: 50%;
       border: 1.5px solid rgba(56, 189, 248, 0.5);
       object-fit: cover;
       background: #0D1117;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
     }
 
     .gh-profile-titles {
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
+      justify-content: center;
+      gap: 0.12rem;
+      flex: 1;
     }
 
     .gh-profile-handle {
-      font-size: 0.88rem;
-      font-weight: 800;
-      color: #FFFFFF;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #F8FAFC;
       letter-spacing: -0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.2;
       display: flex;
       align-items: center;
       gap: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .gh-profile-subtitle {
-      font-size: 0.68rem;
-      color: var(--text-dim);
+      font-size: 0.66rem;
+      font-weight: 500;
+      color: #94A3B8;
       font-family: var(--font-mono);
+      line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1457,7 +1581,7 @@
       align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       padding-top: 0.55rem;
     }
 
@@ -1465,8 +1589,8 @@
       background: rgba(10, 15, 26, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 6px;
-      padding: 0.25rem 0.6rem;
-      font-size: 0.68rem;
+      padding: 0.22rem 0.55rem;
+      font-size: 0.67rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
       display: inline-flex;
@@ -1521,6 +1645,7 @@
       padding: 4px;
       gap: 6px;
       flex-shrink: 0;
+      margin: 0.35rem 0 0.65rem 0;
     }
 
     .modal-tab-btn {
@@ -1551,27 +1676,33 @@
 
     /* Authentication Guide Banner (Themed Cyber Info Callout) */
     .auth-guide-banner {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.22);
       border-radius: var(--radius-sm);
-      padding: 0.75rem 0.85rem;
-      margin-bottom: 0.85rem;
+      padding: 0.85rem 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
     }
 
     .auth-guide-title {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--primary);
       display: flex;
       align-items: center;
       gap: 0.45rem;
-      margin-bottom: 0.25rem;
+      line-height: 1.3;
     }
 
     .auth-guide-text {
       font-size: 0.72rem;
-      color: var(--text-dim);
-      line-height: 1.45;
+      font-weight: 400;
+      color: #94A3B8;
+      line-height: 1.55;
+      word-break: normal;
     }
 
     /* Auth Scopes Specs Box */
@@ -1665,24 +1796,6 @@
       text-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
     }
 
-    .github-header-btn {
-      background: rgba(30, 41, 59, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.32rem 0.65rem;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .github-header-btn:hover {
-      border-color: var(--primary);
-      background: rgba(56, 189, 248, 0.15);
-    }
   </style>
 </head>
 <body>
@@ -1699,18 +1812,21 @@
       </div>
     </div>
     <div class="header-right">
-      <button class="github-header-btn" onclick="openGithubModal()" title="GitHub Integration & Account">
-        <img src="https://github.com/motherskitchenblr2.png" id="header-avatar" style="width: 18px; height: 18px; min-width: 18px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.25);" alt="avatar">
+      <button class="github-header-btn" onclick="openGithubModal()" title="GitHub Account & Authorization" id="btn-header-profile">
+        <img src="https://github.com/motherskitchenblr2.png" id="header-avatar" class="header-avatar-img" alt="avatar">
         <span id="header-user-login">@motherskitchenblr2</span>
+        <span class="header-pulse-dot" title="Active Connection"></span>
       </button>
-      <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <span>YOLO</span>
+      <div class="header-sub-row">
+        <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()" title="Autonomy Level: Full Autonomous (YOLO)">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>YOLO</span>
+        </div>
+        <button class="btn-agent-toggle" onclick="openAgentDrawer()" title="AI Agent Command Center">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
+          <span>AI Agent</span>
+        </button>
       </div>
-      <button class="btn-agent-toggle" onclick="openAgentDrawer()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
-        <span>AI Agent</span>
-      </button>
     </div>
   </header>
 
@@ -1733,21 +1849,26 @@
         </div>
       </div>
 
-      <!-- GitHub Enterprise Hero Banner -->
+      <!-- GitHub Enterprise Hero Card -->
       <div class="gh-hero-card" id="overview-gh-card">
         <div class="gh-hero-top">
-          <div class="gh-hero-title-group">
+          <div class="gh-hero-header-left">
             <div class="gh-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             </div>
             <div>
               <div class="gh-hero-title">GitHub Enterprise Integration</div>
-              <div class="gh-hero-subtitle" id="overview-gh-desc">
-                Authenticated as <strong style="color: white;">@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
-              </div>
+              <div class="gh-hero-caption">Autonomous PR Auto-Merge & Sync Engine</div>
             </div>
           </div>
-          <span class="card-badge badge-merged" id="overview-gh-badge">Connected</span>
+          <span class="card-badge badge-merged" id="overview-gh-badge">
+            <span class="pulse-dot"></span>
+            <span>Connected</span>
+          </span>
+        </div>
+
+        <div class="gh-hero-auth-detail" id="overview-gh-desc">
+          Authenticated as <strong>@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
         </div>
 
         <div class="gh-hero-meta-row">
@@ -1755,11 +1876,17 @@
             <span class="scope-chip"><code>repo</code></span>
             <span class="scope-chip"><code>workflow</code></span>
             <span class="scope-chip"><code>security_events</code></span>
-            <span class="scope-chip" style="color: var(--success); border-color: rgba(16,185,129,0.3);">AES-GCM-256</span>
+            <span class="scope-chip security-chip">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>AES-GCM-256 Vault</span>
+            </span>
+            <span class="scope-chip repo-count-chip">
+              <span id="overview-repo-pill-count">242 Repos</span>
+            </span>
           </div>
           <button class="btn-auth-settings" onclick="openGithubModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l-2 2m-1.5 1.5L4 10l-1.5-1.5L1 10l-1.5-1.5L-2 10a5.5 5.5 0 1 0 7.5 7.5l7.5-7.5V2h-2z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
-            <span>Manage Auth</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9a5.5 5.5 0 1 0 7.5 7.5l7.5-7.5V2h-2z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
+            <span>Manage Authorization</span>
           </button>
         </div>
       </div>
@@ -2871,59 +2998,80 @@
     async function loadData() {
       try {
         const resOver = await fetch('/api/overview');
-        const over = await resOver.json();
-        document.getElementById('m-merged').innerText = over.metrics.merged_count || 46;
-        document.getElementById('m-forks').innerText = over.metrics.forks_count || 193;
-        document.getElementById('m-secrets').innerText = over.metrics.secret_status || 'CLEAN';
-        document.getElementById('m-hardened').innerText = over.metrics.hardened_count || 40;
-
-        const resTasks = await fetch('/api/tasks');
-        const tasks = await resTasks.json();
-
-        // Render PRs
-        const prContainer = document.getElementById('prs-list');
-        if (tasks.prs && tasks.prs.length > 0) {
-          prContainer.innerHTML = tasks.prs.map(p => {
-            const badgeClass = p.action.includes('merged') ? 'badge-merged' : (p.action.includes('rebase') ? 'badge-rebased' : 'badge-merged');
-            return `<div class="touch-card">
-              <div class="card-top">
-                <a class="card-repo" href="${p.url || '#'}" target="_blank">${p.repo}</a>
-                <span class="card-badge ${badgeClass}">${p.action.replace('_', ' ')}</span>
-              </div>
-              <div class="card-title">${p.title}</div>
-              <div class="card-footer">
-                <span>#${p.number} by ${p.author}</span>
-                <span style="color: var(--primary); font-size: 0.65rem;">${p.reason || 'Completed'}</span>
-              </div>
-            </div>`;
-          }).join('');
-        }
-
-        // Render Forks
-        const forkContainer = document.getElementById('forks-list');
-        if (tasks.forks && tasks.forks.length > 0) {
-          forkContainer.innerHTML = tasks.forks.map(f => {
-            return `<div class="touch-card">
-              <div class="card-top">
-                <span class="card-repo">${f.repo}</span>
-                <span class="card-badge badge-merged">${f.result}</span>
-              </div>
-              <div class="card-footer">
-                <span>branch: ${f.branch}</span>
-                <span>${f.message}</span>
-              </div>
-            </div>`;
-          }).join('');
-        }
-
-        // Load Logs
-        const resLogs = await fetch('/api/logs');
-        const logs = await resLogs.text();
-        if (logs) {
-          document.getElementById('daemon-logs').innerText = logs;
+        if (resOver.ok) {
+          const over = await resOver.json();
+          if (over && over.metrics) {
+            const mMerged = document.getElementById('m-merged');
+            if (mMerged) mMerged.innerText = over.metrics.merged_count ?? 46;
+            const mForks = document.getElementById('m-forks');
+            if (mForks) mForks.innerText = over.metrics.forks_count ?? 193;
+            const mSec = document.getElementById('m-secrets');
+            if (mSec) mSec.innerText = over.metrics.secret_status || 'CLEAN';
+            const mHard = document.getElementById('m-hardened');
+            if (mHard) mHard.innerText = over.metrics.hardened_count ?? 40;
+          }
         }
       } catch (e) {
-        console.error("Failed loading data", e);
+        console.warn("Notice: /api/overview poll skipped", e);
+      }
+
+      try {
+        const resTasks = await fetch('/api/tasks');
+        if (resTasks.ok) {
+          const tasks = await resTasks.json();
+
+          // Render PRs
+          const prContainer = document.getElementById('prs-list');
+          if (prContainer && tasks && tasks.prs && tasks.prs.length > 0) {
+            prContainer.innerHTML = tasks.prs.map(p => {
+              const badgeClass = (p.action || '').includes('merged') ? 'badge-merged' : ((p.action || '').includes('rebase') ? 'badge-rebased' : 'badge-merged');
+              return `<div class="touch-card">
+                <div class="card-top">
+                  <a class="card-repo" href="${p.url || '#'}" target="_blank">${p.repo}</a>
+                  <span class="card-badge ${badgeClass}">${(p.action || '').replace('_', ' ')}</span>
+                </div>
+                <div class="card-title">${p.title || ''}</div>
+                <div class="card-footer">
+                  <span>#${p.number} by ${p.author || 'unknown'}</span>
+                  <span style="color: var(--primary); font-size: 0.65rem;">${p.reason || 'Completed'}</span>
+                </div>
+              </div>`;
+            }).join('');
+          }
+
+          // Render Forks
+          const forkContainer = document.getElementById('forks-list');
+          if (forkContainer && tasks && tasks.forks && tasks.forks.length > 0) {
+            forkContainer.innerHTML = tasks.forks.map(f => {
+              return `<div class="touch-card">
+                <div class="card-top">
+                  <span class="card-repo">${f.repo}</span>
+                  <span class="card-badge badge-merged">${f.result}</span>
+                </div>
+                <div class="card-footer">
+                  <span>branch: ${f.branch}</span>
+                  <span>${f.message}</span>
+                </div>
+              </div>`;
+            }).join('');
+          }
+        }
+      } catch (e) {
+        console.warn("Notice: /api/tasks poll skipped", e);
+      }
+
+      try {
+        // Load Logs
+        const resLogs = await fetch('/api/logs');
+        if (resLogs.ok) {
+          const logs = await resLogs.text();
+          const logEl = document.getElementById('daemon-logs');
+          if (logEl && logs) {
+            logEl.innerText = logs;
+          }
+        }
+      } catch (e) {
+        console.warn("Notice: /api/logs poll skipped", e);
       }
     }
 
@@ -2941,6 +3089,8 @@
       } catch (e) {
         showToast("Error triggering task");
       }
+    }
+
     // GitHub Integration & Authentication Management
     function openGithubModal() {
       document.getElementById('github-modal').classList.add('open');
@@ -3067,7 +3217,7 @@
       }
       const badge = document.getElementById('overview-gh-badge');
       if (badge) {
-        badge.innerText = 'Connected';
+        badge.innerHTML = `<span class="pulse-dot"></span><span>Connected</span>`;
         badge.className = 'card-badge badge-merged';
       }
       const scopeBadge = document.getElementById('gh-scope-badge');
@@ -3075,6 +3225,10 @@
         scopeBadge.innerText = 'Active';
         scopeBadge.className = 'card-badge badge-merged';
       }
+      const repoPill = document.getElementById('overview-repo-pill-count');
+      if (repoPill) repoPill.innerText = `${pub + priv} Repos`;
+      const hdrPulse = document.querySelector('.header-pulse-dot');
+      if (hdrPulse) hdrPulse.style.background = 'var(--success)';
     }
 
     function disconnectGithubAccount() {
@@ -3084,9 +3238,13 @@
       if (hdrLogin) hdrLogin.innerText = 'Connect GitHub';
       const nameEl = document.getElementById('gh-profile-name');
       if (nameEl) nameEl.innerText = 'Not Connected';
+      const descEl = document.getElementById('overview-gh-desc');
+      if (descEl) {
+        descEl.innerHTML = `No active token configured • Connect GitHub to enable autonomous PR reviews and fork sync.`;
+      }
       const badge = document.getElementById('overview-gh-badge');
       if (badge) {
-        badge.innerText = 'Disconnected';
+        badge.innerHTML = `<span class="offline-dot"></span><span>Disconnected</span>`;
         badge.className = 'card-badge badge-conflict';
       }
       const scopeBadge = document.getElementById('gh-scope-badge');
@@ -3106,6 +3264,10 @@
           </span>
         `;
       }
+      const repoPill = document.getElementById('overview-repo-pill-count');
+      if (repoPill) repoPill.innerText = '0 Repos';
+      const hdrPulse = document.querySelector('.header-pulse-dot');
+      if (hdrPulse) hdrPulse.style.background = 'var(--danger)';
       const inp = document.getElementById('gh-input-token');
       if (inp) inp.value = '';
       showToast('GitHub account disconnected');
