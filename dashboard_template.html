@@ -151,6 +151,7 @@
       flex-direction: column;
       justify-content: space-between;
       backdrop-filter: blur(12px);
+      cursor: pointer;
     }
 
     .metric-title {
@@ -173,7 +174,48 @@
       color: var(--text-dim);
     }
 
-    /* Filter & Search Bar */
+    /* Filter Chips */
+    .filter-chips {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: var(--font);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+    .chip-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--primary);
+    }
+    .chip-btn.active-private {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--warning);
+    }
+    .chip-btn.active-public {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--success);
+    }
+
+    /* Search Bar */
     .search-box {
       margin-bottom: 1rem;
       position: relative;
@@ -233,18 +275,21 @@
     }
 
     .card-repo {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      color: var(--primary);
+      color: white;
       text-decoration: none;
-      truncate;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
     }
+    .card-repo:hover { color: var(--primary); }
 
     .card-badge {
-      font-size: 0.65rem;
+      font-size: 0.625rem;
       font-family: var(--font-mono);
       font-weight: 700;
       padding: 0.2rem 0.5rem;
@@ -252,9 +297,10 @@
       text-transform: uppercase;
       flex-shrink: 0;
     }
+    .badge-private { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-public { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-merged { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-rebased { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-open { background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3); }
 
     .card-title {
       font-size: 0.825rem;
@@ -294,10 +340,6 @@
       transform: scale(0.96);
       opacity: 0.85;
     }
-    .btn-emerald {
-      background: linear-gradient(135deg, #059669, #0D9488);
-      color: white;
-    }
     .btn-outline {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--card-border);
@@ -316,7 +358,7 @@
       border-top: 1px solid var(--card-border);
       display: flex;
       justify-content: space-around;
-      padding: 0.5rem 0.5rem calc(env(safe-area-inset-bottom, 10px) + 0.35rem) 0.5rem;
+      padding: 0.5rem 0.25rem calc(env(safe-area-inset-bottom, 10px) + 0.35rem) 0.25rem;
       z-index: 100;
     }
 
@@ -330,7 +372,7 @@
       flex-direction: column;
       align-items: center;
       gap: 0.2rem;
-      padding: 0.35rem 0.65rem;
+      padding: 0.35rem 0.5rem;
       border-radius: 8px;
       cursor: pointer;
       font-family: var(--font);
@@ -402,49 +444,73 @@
   <main>
     <!-- Top 4 Metrics -->
     <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-title">Merged</div>
+      <div class="metric-card" onclick="switchNav('repos')">
+        <div class="metric-title">Repositories</div>
+        <div class="metric-val" id="m-repos" style="color: #38BDF8;">242</div>
+        <div class="metric-sub"><span style="color: #34D399;">228 Public</span> • <span style="color: #FBBF24;">14 Private</span></div>
+      </div>
+      <div class="metric-card" onclick="switchNav('prs')">
+        <div class="metric-title">PRs Merged</div>
         <div class="metric-val" id="m-merged" style="color: #34D399;">46</div>
         <div class="metric-sub">Squash completed</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-title">Rebased</div>
-        <div class="metric-val" id="m-rebased" style="color: #FBBF24;">4</div>
-        <div class="metric-sub">Lockfile resolved</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-title">Forks</div>
-        <div class="metric-val" id="m-forks" style="color: #38BDF8;">193</div>
+      <div class="metric-card" onclick="switchNav('forks')">
+        <div class="metric-title">Forks Fleet</div>
+        <div class="metric-val" id="m-forks" style="color: #818CF8;">193</div>
         <div class="metric-sub">Upstream synced</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-title">Secrets</div>
+      <div class="metric-card" onclick="switchNav('secrets')">
+        <div class="metric-title">Secret Guard</div>
         <div class="metric-val" id="m-secrets" style="color: #34D399;">CLEAN</div>
-        <div class="metric-sub">No exposed PATs</div>
+        <div class="metric-sub">Zero exposed PATs</div>
       </div>
     </div>
 
-    <!-- Search Bar -->
-    <div class="search-box">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="filter-input" placeholder="Search pull requests or repos..." oninput="filterCards(this.value)">
+    <!-- PANE 1: REPOSITORIES (ALL, PUBLIC, PRIVATE) -->
+    <div id="pane-repos" class="pane active">
+      <!-- Sub-Filters: All, Public, Private -->
+      <div class="filter-chips">
+        <button class="chip-btn active" id="chip-all" onclick="filterRepoVisibility('all')">
+          <span>📦 All (242)</span>
+        </button>
+        <button class="chip-btn" id="chip-public" onclick="filterRepoVisibility('public')">
+          <span>🌐 Public (228)</span>
+        </button>
+        <button class="chip-btn" id="chip-private" onclick="filterRepoVisibility('private')">
+          <span>🔒 Private (14)</span>
+        </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="repo-search-input" placeholder="Search repository by name or language..." oninput="renderRepos()">
+      </div>
+
+      <div class="cards-list" id="repos-list">
+        <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading repositories...</div>
+      </div>
     </div>
 
-    <!-- PANE 1: PRs -->
-    <div id="pane-prs" class="pane active">
+    <!-- PANE 2: PULL REQUESTS -->
+    <div id="pane-prs" class="pane">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search PR title or repo..." oninput="filterCards('prs-list', this.value)">
+      </div>
       <div class="cards-list" id="prs-list">
         <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading PR cards...</div>
       </div>
     </div>
 
-    <!-- PANE 2: FORKS -->
+    <!-- PANE 3: FORKS -->
     <div id="pane-forks" class="pane">
       <div class="cards-list" id="forks-list">
         <div style="text-align: center; color: var(--text-dim); padding: 2rem;">Loading forks fleet...</div>
       </div>
     </div>
 
-    <!-- PANE 3: SECRETS -->
+    <!-- PANE 4: SECRETS -->
     <div id="pane-secrets" class="pane">
       <div class="cards-list">
         <div class="touch-card" style="text-align: center; padding: 1.5rem;">
@@ -460,7 +526,7 @@
       </div>
     </div>
 
-    <!-- PANE 4: HARDENING -->
+    <!-- PANE 5: HARDENING -->
     <div id="pane-security" class="pane">
       <div class="cards-list">
         <div class="touch-card" style="padding: 1.25rem;">
@@ -468,7 +534,7 @@
           <p style="font-size: 0.725rem; color: var(--text-muted); margin-bottom: 0.85rem;">
             Dependabot alerts & automated fixes are active across all 30+ repositories.
           </p>
-          <button class="btn-touch btn-emerald" onclick="triggerRun('harden')">
+          <button class="btn-touch btn-outline" onclick="triggerRun('harden')">
             Harden All Repositories
           </button>
         </div>
@@ -478,7 +544,11 @@
 
   <!-- Mobile Bottom Navigation Bar -->
   <nav class="mobile-nav">
-    <button class="nav-item active" onclick="switchNav('prs')">
+    <button class="nav-item active" onclick="switchNav('repos')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+      <span>Repos</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('prs')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
       <span>PRs</span>
     </button>
@@ -499,6 +569,43 @@
   <div id="toast">Task dispatched</div>
 
   <script>
+    const PRIVATE_REPOS = [
+      { name: "AIHub", lang: "TypeScript", desc: "Private AI workspace hub" },
+      { name: "astro-blog-starter-template", lang: "Astro", desc: "Starter template" },
+      { name: "b98d692c4574a80e508cf6fa38e6f27ae5348e616448edaa7fe675e363669fd2", lang: "Text", desc: "Secure vault" },
+      { name: "codexskills", lang: "Python", desc: "Codex skills private mirror sync" },
+      { name: "deep-space-glossarium-orchestrator", lang: "TypeScript", desc: "Orchestration engine" },
+      { name: "eve-software-factory-template", lang: "TypeScript", desc: "Factory template" },
+      { name: "Git-Lizzard", lang: "TypeScript", desc: "Developing with AntiGravity Gemini AI" },
+      { name: "Git_Lizzard", lang: "TypeScript", desc: "Developing with AntiGravity Gemini AI" },
+      { name: "MOLTBOT", lang: "TypeScript", desc: "Autonomous bot" },
+      { name: "nextjs-ai-chatbot", lang: "TypeScript", desc: "AI chat application" },
+      { name: "Quik_heal_2.0", lang: "Text", desc: "Antivirus_Mobile_Security" },
+      { name: "studio", lang: "TypeScript", desc: "Studio workspace" },
+      { name: "text-to-image-template", lang: "TypeScript", desc: "Image generation template" },
+      { name: "text-to-image-templates", lang: "TypeScript", desc: "Image generation templates" }
+    ];
+
+    const SAMPLE_PUBLIC_REPOS = [
+      { name: "github-guardian", lang: "TypeScript/Python", desc: "Autonomous GitHub maintenance agent & Mobile Dashboard" },
+      { name: "VOLT-CODE-AI-v5.0", lang: "TypeScript", desc: "Full-stack AI developer workspace" },
+      { name: "generative-ai", lang: "Python", desc: "Google GenAI SDK demos & workflows" },
+      { name: "immich", lang: "TypeScript", desc: "Self-hosted photo and video management solution" },
+      { name: "hermes-agent_0118", lang: "Python", desc: "Autonomous multi-agent system" },
+      { name: "LibreChat", lang: "TypeScript", desc: "Enhanced ChatGPT Clone" },
+      { name: "onyx", lang: "Python", desc: "Enterprise conversational search" },
+      { name: "agent-browser", lang: "TypeScript", desc: "Autonomous browser agent by Vercel Labs" },
+      { name: "agency-agents", lang: "TypeScript", desc: "Autonomous agency workforce" },
+      { name: "GoatCitadel", lang: "Rust", desc: "High performance mission control" },
+      { name: "OmniVoice-Studio", lang: "Python", desc: "Voice AI processing parlor" },
+      { name: "bifrost", lang: "Go", desc: "Telemetry bridge" },
+      { name: "MobileAgent", lang: "Python", desc: "Autonomous mobile and desktop interaction agent" },
+      { name: "freecut", lang: "TypeScript", desc: "Free video editing suite" },
+      { name: "page-agent", lang: "TypeScript", desc: "Interactive web page companion" }
+    ];
+
+    let currentVisibility = 'all';
+
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg;
@@ -509,27 +616,79 @@
     function switchNav(name) {
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      
+      const targetBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.innerText.toLowerCase().includes(name));
+      if (targetBtn) targetBtn.classList.add('active');
       document.getElementById('pane-' + name).classList.add('active');
     }
 
-    function filterCards(query) {
+    function filterRepoVisibility(vis) {
+      currentVisibility = vis;
+      document.querySelectorAll('.chip-btn').forEach(c => c.className = 'chip-btn');
+      if (vis === 'all') document.getElementById('chip-all').className = 'chip-btn active';
+      else if (vis === 'public') document.getElementById('chip-public').className = 'chip-btn active-public';
+      else if (vis === 'private') document.getElementById('chip-private').className = 'chip-btn active-private';
+      renderRepos();
+    }
+
+    function renderRepos() {
+      const search = (document.getElementById('repo-search-input').value || '').toLowerCase();
+      let repos = [];
+
+      if (currentVisibility === 'all') {
+        repos = [
+          ...PRIVATE_REPOS.map(r => ({ ...r, private: true })),
+          ...SAMPLE_PUBLIC_REPOS.map(r => ({ ...r, private: false }))
+        ];
+      } else if (currentVisibility === 'private') {
+        repos = PRIVATE_REPOS.map(r => ({ ...r, private: true }));
+      } else {
+        repos = SAMPLE_PUBLIC_REPOS.map(r => ({ ...r, private: false }));
+      }
+
+      if (search) {
+        repos = repos.filter(r => r.name.toLowerCase().includes(search) || r.desc.toLowerCase().includes(search) || r.lang.toLowerCase().includes(search));
+      }
+
+      const container = document.getElementById('repos-list');
+      if (repos.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 2rem;">No repositories matching criteria.</div>`;
+        return;
+      }
+
+      container.innerHTML = repos.map(r => {
+        const badge = r.private ? '<span class="card-badge badge-private">🔒 Private</span>' : '<span class="card-badge badge-public">🌐 Public</span>';
+        const icon = r.private ? '🔒' : '🌐';
+        return `<div class="touch-card">
+          <div class="card-top">
+            <a class="card-repo" href="https://github.com/motherskitchenblr2/${r.name}" target="_blank">
+              <span>${icon} ${r.name}</span>
+            </a>
+            ${badge}
+          </div>
+          <div class="card-title">${r.desc || 'Source repository'}</div>
+          <div class="card-footer">
+            <span><code>${r.lang}</code></span>
+            <a href="https://github.com/motherskitchenblr2/${r.name}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">View on GitHub ↗</a>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function filterCards(containerId, query) {
       query = query.toLowerCase();
-      document.querySelectorAll('.touch-card').forEach(c => {
+      document.querySelectorAll('#' + containerId + ' .touch-card').forEach(c => {
         c.style.display = c.innerText.toLowerCase().includes(query) ? '' : 'none';
       });
     }
 
     async function loadData() {
       try {
-        // Overview
         const resOver = await fetch('/api/overview');
         const over = await resOver.json();
         document.getElementById('m-merged').innerText = over.metrics.merged_count || 46;
-        document.getElementById('m-rebased').innerText = over.metrics.rebased_count || 4;
         document.getElementById('m-forks').innerText = over.metrics.forks_count || 193;
 
-        // Tasks
         const resTasks = await fetch('/api/tasks');
         const tasks = await resTasks.json();
 
@@ -537,7 +696,7 @@
         const prContainer = document.getElementById('prs-list');
         if (tasks.prs && tasks.prs.length > 0) {
           prContainer.innerHTML = tasks.prs.map(p => {
-            const badgeClass = p.action.includes('merged') ? 'badge-merged' : (p.action.includes('rebase') ? 'badge-rebased' : 'badge-open');
+            const badgeClass = p.action.includes('merged') ? 'badge-merged' : (p.action.includes('rebase') ? 'badge-rebased' : 'badge-merged');
             return `<div class="touch-card">
               <div class="card-top">
                 <a class="card-repo" href="${p.url || '#'}" target="_blank">${p.repo}</a>
@@ -589,6 +748,7 @@
       }
     }
 
+    renderRepos();
     loadData();
     setInterval(loadData, 8000);
   </script>

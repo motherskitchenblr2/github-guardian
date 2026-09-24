@@ -7,14 +7,16 @@ import {
   GitFork,
   KeyRound,
   Lock,
+  Globe,
   RefreshCw,
   ExternalLink,
   CheckCircle2,
   AlertTriangle,
-  Flame,
+  FolderGit2,
   Search,
   Zap,
-  SlidersHorizontal,
+  Star,
+  Layers,
 } from "lucide-react";
 
 interface PullRequest {
@@ -37,8 +39,26 @@ interface Fork {
   updated_at: string;
 }
 
+interface RepositoryItem {
+  id: number;
+  name: string;
+  full_name: string;
+  private: boolean;
+  visibility: "public" | "private";
+  fork: boolean;
+  description: string;
+  html_url: string;
+  language: string;
+  stars: number;
+  forks: number;
+  open_issues: number;
+  updated_at: string;
+}
+
 export default function GuardianDashboard() {
-  const [activeTab, setActiveTab] = useState<"prs" | "forks" | "secrets" | "security">("prs");
+  const [activeTab, setActiveTab] = useState<"prs" | "repos" | "forks" | "secrets" | "security">("repos");
+  const [repoVisibilityFilter, setRepoVisibilityFilter] = useState<"all" | "public" | "private">("all");
+
   const [stats, setStats] = useState<any>({
     account: "motherskitchenblr2",
     open_prs: 924,
@@ -47,10 +67,14 @@ export default function GuardianDashboard() {
     prs_rebased: 4,
     secret_status: "CLEAN",
     hardened_count: 30,
+    total_owned: 242,
+    public_count: 228,
+    private_count: 14,
   });
 
   const [prs, setPrs] = useState<PullRequest[]>([]);
   const [forks, setForks] = useState<Fork[]>([]);
+  const [allRepos, setAllRepos] = useState<RepositoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterQuery, setFilterQuery] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -71,14 +95,27 @@ export default function GuardianDashboard() {
         setStats((prev: any) => ({ ...prev, ...statsData }));
       }
 
-      // 2. Fetch PRs
+      // 2. Fetch Repositories (Public & Private)
+      const reposRes = await fetch("/api/repos?visibility=all").catch(() => null);
+      if (reposRes?.ok) {
+        const reposData = await reposRes.json();
+        setAllRepos(reposData.repos || []);
+        setStats((prev: any) => ({
+          ...prev,
+          total_owned: reposData.total_count || 242,
+          public_count: reposData.public_count || 228,
+          private_count: reposData.private_count || 14,
+        }));
+      }
+
+      // 3. Fetch PRs
       const prsRes = await fetch("/api/prs?limit=40").catch(() => null);
       if (prsRes?.ok) {
         const prsData = await prsRes.json();
         setPrs(prsData.prs || []);
       }
 
-      // 3. Fetch Forks
+      // 4. Fetch Forks
       const forksRes = await fetch("/api/forks?limit=30").catch(() => null);
       if (forksRes?.ok) {
         const forksData = await forksRes.json();
@@ -167,11 +204,26 @@ export default function GuardianDashboard() {
     }
   };
 
+  // Filtered PRs
   const filteredPrs = prs.filter(
     (p) =>
       p.repo.toLowerCase().includes(filterQuery.toLowerCase()) ||
       p.title.toLowerCase().includes(filterQuery.toLowerCase())
   );
+
+  // Filtered Repositories (Public vs Private)
+  const filteredRepos = allRepos
+    .filter((r) => {
+      if (repoVisibilityFilter === "public") return !r.private;
+      if (repoVisibilityFilter === "private") return r.private;
+      return true;
+    })
+    .filter(
+      (r) =>
+        r.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
+        r.description.toLowerCase().includes(filterQuery.toLowerCase()) ||
+        r.language.toLowerCase().includes(filterQuery.toLowerCase())
+    );
 
   return (
     <div className="flex flex-col min-h-screen pb-24 md:pb-8">
@@ -219,8 +271,28 @@ export default function GuardianDashboard() {
       <main className="max-w-7xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1">
         {/* Metric Cards Carousel / Grid */}
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mb-6">
-          {/* Card 1 */}
-          <div className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between">
+          {/* Card 1: Total Repos & Split */}
+          <div
+            onClick={() => setActiveTab("repos")}
+            className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-sky-500/30 transition-all touch-press"
+          >
+            <div className="flex items-center justify-between text-slate-400 mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wider">All Repos</span>
+              <FolderGit2 className="w-4 h-4 text-sky-400" />
+            </div>
+            <div className="text-xl sm:text-2xl font-extrabold text-white">{stats.total_owned}</div>
+            <div className="text-[10px] sm:text-xs text-slate-300 mt-1 flex items-center gap-2">
+              <span className="text-emerald-400 font-medium">{stats.public_count} Public</span>
+              <span>•</span>
+              <span className="text-amber-400 font-medium">{stats.private_count} Private</span>
+            </div>
+          </div>
+
+          {/* Card 2: PRs Merged */}
+          <div
+            onClick={() => setActiveTab("prs")}
+            className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-emerald-500/30 transition-all touch-press"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-2">
               <span className="text-[11px] font-semibold uppercase tracking-wider">PRs Merged</span>
               <GitPullRequest className="w-4 h-4 text-emerald-400" />
@@ -231,11 +303,14 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between">
+          {/* Card 3: Forks */}
+          <div
+            onClick={() => setActiveTab("forks")}
+            className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-indigo-500/30 transition-all touch-press"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider">Forks Synced</span>
-              <GitFork className="w-4 h-4 text-sky-400" />
+              <span className="text-[11px] font-semibold uppercase tracking-wider">Forks Fleet</span>
+              <GitFork className="w-4 h-4 text-indigo-400" />
             </div>
             <div className="text-xl sm:text-2xl font-extrabold text-white">{stats.forks_count}</div>
             <div className="text-[10px] sm:text-xs text-sky-400/90 mt-1 flex items-center gap-1">
@@ -243,34 +318,40 @@ export default function GuardianDashboard() {
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between">
+          {/* Card 4: Secret Guard */}
+          <div
+            onClick={() => setActiveTab("secrets")}
+            className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-pink-500/30 transition-all touch-press"
+          >
             <div className="flex items-center justify-between text-slate-400 mb-2">
               <span className="text-[11px] font-semibold uppercase tracking-wider">Secret Guard</span>
-              <KeyRound className="w-4 h-4 text-indigo-400" />
+              <KeyRound className="w-4 h-4 text-pink-400" />
             </div>
             <div className="text-xl sm:text-2xl font-extrabold text-emerald-400">CLEAN</div>
             <div className="text-[10px] sm:text-xs text-slate-400 mt-1 flex items-center gap-1">
-              <Lock className="w-3 h-3" /> No exposed PATs
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between">
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider">Hardened</span>
-              <Shield className="w-4 h-4 text-pink-400" />
-            </div>
-            <div className="text-xl sm:text-2xl font-extrabold text-white">30+ Repos</div>
-            <div className="text-[10px] sm:text-xs text-pink-400/90 mt-1 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" /> Dependabot active
+              <Lock className="w-3 h-3" /> Zero exposed PATs
             </div>
           </div>
         </section>
 
-        {/* Tab Selection (Desktop & Mobile Tabs) */}
+        {/* Tab Selection Bar */}
         <div className="flex items-center justify-between gap-2 mb-4 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/5">
+            <button
+              onClick={() => setActiveTab("repos")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                activeTab === "repos"
+                  ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <FolderGit2 className="w-3.5 h-3.5" />
+              <span>Repositories</span>
+              <span className="ml-1 px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">
+                {stats.total_owned}
+              </span>
+            </button>
+
             <button
               onClick={() => setActiveTab("prs")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
@@ -281,9 +362,6 @@ export default function GuardianDashboard() {
             >
               <GitPullRequest className="w-3.5 h-3.5" />
               <span>Pull Requests</span>
-              <span className="ml-1 px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">
-                {filteredPrs.length}
-              </span>
             </button>
 
             <button
@@ -296,7 +374,6 @@ export default function GuardianDashboard() {
             >
               <GitFork className="w-3.5 h-3.5" />
               <span>Fork Sync</span>
-              <span className="ml-1 px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">193</span>
             </button>
 
             <button
@@ -325,95 +402,240 @@ export default function GuardianDashboard() {
           </div>
         </div>
 
-        {/* Search Bar for PRs & Forks */}
-        <div className="relative mb-4">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={filterQuery}
-            onChange={(e) => setFilterQuery(e.target.value)}
-            placeholder="Search repository or update title..."
-            className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
-          />
-        </div>
+        {/* TAB: REPOSITORIES (ALL, PUBLIC, PRIVATE) */}
+        {activeTab === "repos" && (
+          <div className="space-y-4">
+            {/* Sub-Filters: All, Public, Private */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-slate-900/50 p-1 rounded-xl border border-white/10">
+                <button
+                  onClick={() => setRepoVisibilityFilter("all")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    repoVisibilityFilter === "all"
+                      ? "bg-white/15 text-white"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <Layers className="w-3 h-3" />
+                  <span>All ({stats.total_owned})</span>
+                </button>
 
-        {/* TAB 1: PULL REQUESTS (Mobile-First Touch Cards) */}
-        {activeTab === "prs" && (
-          <div className="space-y-3">
-            {filteredPrs.length === 0 ? (
-              <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
-                {loading ? "Loading pull requests..." : "No open pull requests matching your search."}
+                <button
+                  onClick={() => setRepoVisibilityFilter("public")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    repoVisibilityFilter === "public"
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      : "text-slate-400 hover:text-emerald-300"
+                  }`}
+                >
+                  <Globe className="w-3 h-3 text-emerald-400" />
+                  <span>Public ({stats.public_count})</span>
+                </button>
+
+                <button
+                  onClick={() => setRepoVisibilityFilter("private")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    repoVisibilityFilter === "private"
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Lock className="w-3 h-3 text-amber-400" />
+                  <span>Private ({stats.private_count})</span>
+                </button>
               </div>
-            ) : (
-              filteredPrs.map((pr) => {
-                const isProcessingMerge = processingId === `merge-${pr.repo}-${pr.number}`;
-                const isProcessingRebase = processingId === `rebase-${pr.repo}-${pr.number}`;
 
-                return (
+              <div className="text-[11px] text-slate-400 font-mono">
+                Showing {filteredRepos.length} repos
+              </div>
+            </div>
+
+            {/* Search Box */}
+            <div className="relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+                placeholder="Search repository by name, description, or language..."
+                className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+              />
+            </div>
+
+            {/* Repositories Touch Cards List */}
+            <div className="space-y-3">
+              {filteredRepos.length === 0 ? (
+                <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
+                  {loading ? "Loading repository fleet..." : "No repositories matching current filters."}
+                </div>
+              ) : (
+                filteredRepos.map((repo) => (
                   <div
-                    key={`${pr.repo}-${pr.number}`}
-                    className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-3"
+                    key={repo.id}
+                    className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-2.5"
                   >
-                    {/* Top Row: Repo & PR # */}
-                    <div className="flex items-center justify-between gap-2">
-                      <a
-                        href={pr.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs sm:text-sm font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 truncate"
-                      >
-                        <span className="truncate">{pr.repo}</span>
-                        <ExternalLink className="w-3 h-3 shrink-0 opacity-70" />
-                      </a>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300 shrink-0">
-                        #{pr.number}
-                      </span>
-                    </div>
-
-                    {/* PR Title */}
-                    <h3 className="text-xs sm:text-sm font-medium text-slate-100 line-clamp-2 leading-relaxed">
-                      {pr.title}
-                    </h3>
-
-                    {/* Meta Row: Author & Labels */}
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-                        <span>{pr.author}</span>
+                    {/* Header Row: Title & Badges */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        {repo.private ? (
+                          <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+                        ) : (
+                          <Globe className="w-4 h-4 text-sky-400 shrink-0" />
+                        )}
+                        <a
+                          href={repo.html_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-bold text-xs sm:text-sm text-white hover:text-sky-300 truncate flex items-center gap-1"
+                        >
+                          <span className="truncate">{repo.name}</span>
+                          <ExternalLink className="w-3 h-3 shrink-0 opacity-60" />
+                        </a>
                       </div>
-                      <span className="text-slate-500">
-                        {new Date(pr.created_at).toLocaleDateString()}
-                      </span>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {repo.private ? (
+                          <span className="px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-bold font-mono uppercase">
+                            Private
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold font-mono uppercase">
+                            Public
+                          </span>
+                        )}
+
+                        {repo.fork && (
+                          <span className="px-2 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-[10px] font-bold font-mono uppercase">
+                            Fork
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    {/* Action Buttons (Large Touch Targets for Mobile) */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <button
-                        onClick={() => handleMergePr(pr.repo, pr.number, pr.title)}
-                        disabled={isProcessingMerge}
-                        className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-900/30 touch-press disabled:opacity-50"
-                      >
-                        <Zap className="w-3.5 h-3.5" />
-                        <span>{isProcessingMerge ? "Merging..." : "Squash Merge"}</span>
-                      </button>
+                    {/* Description */}
+                    <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                      {repo.description}
+                    </p>
 
-                      <button
-                        onClick={() => handleRebasePr(pr.repo, pr.number)}
-                        disabled={isProcessingRebase}
-                        className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 touch-press disabled:opacity-50"
-                      >
-                        <RefreshCw className={`w-3.5 h-3.5 ${isProcessingRebase ? "animate-spin" : ""}`} />
-                        <span>{isProcessingRebase ? "Rebasing..." : "Rebase Conflict"}</span>
-                      </button>
+                    {/* Footer Row: Language, Stats, and Date */}
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-white/5 flex-wrap gap-2">
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1 text-slate-300 font-medium">
+                          <span className="w-2 h-2 rounded-full bg-sky-400"></span>
+                          {repo.language}
+                        </span>
+
+                        {repo.stars > 0 && (
+                          <span className="flex items-center gap-1 text-amber-300">
+                            <Star className="w-3 h-3" /> {repo.stars}
+                          </span>
+                        )}
+
+                        {repo.forks > 0 && (
+                          <span className="flex items-center gap-1 text-indigo-300">
+                            <GitFork className="w-3 h-3" /> {repo.forks}
+                          </span>
+                        )}
+                      </div>
+
+                      <span className="text-[10px] text-slate-500">
+                        Updated {new Date(repo.updated_at).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
-                );
-              })
-            )}
+                ))
+              )}
+            </div>
           </div>
         )}
 
-        {/* TAB 2: FORK SYNCHRONIZER (Touch Cards) */}
+        {/* TAB 2: PULL REQUESTS */}
+        {activeTab === "prs" && (
+          <div className="space-y-4">
+            {/* Search Box */}
+            <div className="relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+                placeholder="Search PR title or repo name..."
+                className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+              />
+            </div>
+
+            <div className="space-y-3">
+              {filteredPrs.length === 0 ? (
+                <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
+                  {loading ? "Loading pull requests..." : "No open pull requests matching your search."}
+                </div>
+              ) : (
+                filteredPrs.map((pr) => {
+                  const isProcessingMerge = processingId === `merge-${pr.repo}-${pr.number}`;
+                  const isProcessingRebase = processingId === `rebase-${pr.repo}-${pr.number}`;
+
+                  return (
+                    <div
+                      key={`${pr.repo}-${pr.number}`}
+                      className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <a
+                          href={pr.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs sm:text-sm font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 truncate"
+                        >
+                          <span className="truncate">{pr.repo}</span>
+                          <ExternalLink className="w-3 h-3 shrink-0 opacity-70" />
+                        </a>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300 shrink-0">
+                          #{pr.number}
+                        </span>
+                      </div>
+
+                      <h3 className="text-xs sm:text-sm font-medium text-slate-100 line-clamp-2 leading-relaxed">
+                        {pr.title}
+                      </h3>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-sky-400"></span>
+                          <span>{pr.author}</span>
+                        </div>
+                        <span className="text-slate-500">
+                          {new Date(pr.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <button
+                          onClick={() => handleMergePr(pr.repo, pr.number, pr.title)}
+                          disabled={isProcessingMerge}
+                          className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-900/30 touch-press disabled:opacity-50"
+                        >
+                          <Zap className="w-3.5 h-3.5" />
+                          <span>{isProcessingMerge ? "Merging..." : "Squash Merge"}</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleRebasePr(pr.repo, pr.number)}
+                          disabled={isProcessingRebase}
+                          className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 touch-press disabled:opacity-50"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${isProcessingRebase ? "animate-spin" : ""}`} />
+                          <span>{isProcessingRebase ? "Rebasing..." : "Rebase Conflict"}</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: FORK SYNCHRONIZER */}
         {activeTab === "forks" && (
           <div className="space-y-3">
             <div className="p-3.5 bg-sky-950/30 border border-sky-500/20 rounded-2xl flex items-center justify-between gap-3 mb-2">
@@ -457,7 +679,7 @@ export default function GuardianDashboard() {
           </div>
         )}
 
-        {/* TAB 3: SECRET LEAK DEFENSE */}
+        {/* TAB 4: SECRET LEAK DEFENSE */}
         {activeTab === "secrets" && (
           <div className="space-y-4">
             <div className="glass-panel p-5 rounded-2xl text-center flex flex-col items-center">
@@ -477,7 +699,7 @@ export default function GuardianDashboard() {
           </div>
         )}
 
-        {/* TAB 4: SECURITY HARDENING */}
+        {/* TAB 5: SECURITY HARDENING */}
         {activeTab === "security" && (
           <div className="space-y-3">
             <div className="p-4 glass-panel rounded-2xl">
@@ -512,8 +734,18 @@ export default function GuardianDashboard() {
         )}
       </main>
 
-      {/* Floating Bottom Navigation Bar (Standard Mobile UX for One-Hand Use) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-2xl border-t border-white/10 px-3 py-2 flex items-center justify-around md:hidden">
+      {/* Floating Bottom Navigation Bar (Optimized for One-Hand Thumb Reach) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-2xl border-t border-white/10 px-2 py-2 flex items-center justify-around md:hidden">
+        <button
+          onClick={() => setActiveTab("repos")}
+          className={`flex flex-col items-center gap-1 touch-press ${
+            activeTab === "repos" ? "text-sky-400" : "text-slate-400"
+          }`}
+        >
+          <FolderGit2 className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Repos</span>
+        </button>
+
         <button
           onClick={() => setActiveTab("prs")}
           className={`flex flex-col items-center gap-1 touch-press ${
