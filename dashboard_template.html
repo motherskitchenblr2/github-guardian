@@ -1719,6 +1719,525 @@
       font-size: 0.9rem;
     }
 
+    /* Subbar: Live Status, Token Meter & Quick Actions */
+    .drawer-subbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      min-width: 0;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .drawer-subbar::-webkit-scrollbar { display: none; }
+
+    .subbar-left, .subbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    /* Live Agent Status Animation Pill */
+    .agent-live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .agent-live-status-pill.idle {
+      border-color: rgba(57, 255, 20, 0.4);
+      color: #39FF14;
+    }
+    .agent-live-status-pill.thinking {
+      border-color: rgba(0, 243, 255, 0.7);
+      color: #00F3FF;
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.35);
+      animation: neonPulse 1.4s infinite ease-in-out;
+    }
+    .agent-live-status-pill.working {
+      border-color: rgba(189, 0, 255, 0.7);
+      color: #BD00FF;
+      box-shadow: 0 0 10px rgba(189, 0, 255, 0.35);
+    }
+    .agent-live-status-pill.responding {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #38BDF8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+      animation: neonPulse 1s infinite alternate;
+    }
+    .agent-live-status-pill.reading, .agent-live-status-pill.writing {
+      border-color: rgba(255, 0, 85, 0.7);
+      color: #FF0055;
+      box-shadow: 0 0 10px rgba(255, 0, 85, 0.35);
+    }
+
+    .status-anim-icon {
+      font-size: 0.65rem;
+      display: inline-block;
+    }
+    .agent-live-status-pill.working .status-anim-icon {
+      animation: spinGear 2s linear infinite;
+    }
+    .agent-live-status-pill.thinking .status-anim-icon {
+      animation: brainBounce 1s infinite alternate;
+    }
+
+    @keyframes spinGear {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes brainBounce {
+      0% { transform: scale(0.9); }
+      100% { transform: scale(1.15); filter: drop-shadow(0 0 4px #00F3FF); }
+    }
+    @keyframes neonPulse {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+
+    /* Session Token Meter */
+    .token-meter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.60rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.15rem 0.4rem;
+      border-radius: 9999px;
+      user-select: none;
+    }
+
+    /* Subbar Action Buttons */
+    .subbar-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      font-size: 0.60rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 0.18rem 0.4rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .subbar-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      color: #FFF;
+      border-color: var(--primary);
+    }
+    .subbar-btn.active {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(189, 0, 255, 0.3));
+      border-color: #38BDF8;
+      color: #38BDF8;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    }
+    .subbar-badge {
+      background: var(--primary);
+      color: #000;
+      font-size: 0.55rem;
+      font-weight: 800;
+      padding: 0 4px;
+      border-radius: 9999px;
+      min-width: 12px;
+      text-align: center;
+    }
+    .subbar-btn.incognito-active {
+      background: rgba(255, 0, 85, 0.2);
+      border-color: #FF0055;
+      color: #FF0055;
+      box-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
+    }
+
+    /* Tiny Collapsible TODO Pane */
+    .chat-todo-pane {
+      background: #0D1427;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.45rem 0.75rem;
+      font-size: 0.70rem;
+      max-height: 180px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      animation: slideDownPane 0.2s ease-out;
+    }
+    @keyframes slideDownPane {
+      from { max-height: 0; opacity: 0; }
+      to { max-height: 180px; opacity: 1; }
+    }
+    .todo-pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      color: #E2E8F0;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+    .todo-input-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0.4rem;
+    }
+    .todo-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #FFF;
+      font-size: 0.68rem;
+      padding: 0.22rem 0.5rem;
+      border-radius: 4px;
+      outline: none;
+    }
+    .todo-input:focus {
+      border-color: var(--primary);
+    }
+    .btn-add-todo {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0 0.55rem;
+      cursor: pointer;
+    }
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.22rem 0.4rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      font-size: 0.68rem;
+    }
+    .todo-item.done span.todo-text {
+      text-decoration: line-through;
+      color: var(--text-dim);
+    }
+    .todo-item input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: #39FF14;
+    }
+    .todo-text {
+      flex: 1;
+      color: #E2E8F0;
+      word-break: break-word;
+    }
+    .todo-delete-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 0 2px;
+    }
+    .todo-delete-btn:hover { color: var(--danger); }
+
+    /* 100MB File Sharing & Workspace Sandbox Pane */
+    .chat-workspace-pane {
+      background: #0B1224;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.6rem 0.75rem;
+      font-size: 0.70rem;
+      max-height: 260px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      animation: slideDownPane 0.2s ease-out;
+    }
+    .workspace-meter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+    .workspace-progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .workspace-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00F3FF, #39FF14);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .workspace-drop-zone {
+      border: 1.5px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 6px;
+      padding: 0.6rem;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.5rem;
+    }
+    .workspace-drop-zone:hover, .workspace-drop-zone.dragover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--primary);
+    }
+    .workspace-files-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 6px;
+      margin-bottom: 0.5rem;
+    }
+    .workspace-file-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 6px;
+      padding: 0.4rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.65rem;
+    }
+    .file-card-top {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+      color: #FFF;
+      overflow: hidden;
+    }
+    .file-card-top .fname {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+    .file-card-meta {
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+    }
+    .file-card-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: 3px;
+    }
+    .file-action-btn {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--primary);
+      border-radius: 3px;
+      font-size: 0.58rem;
+      font-weight: 600;
+      padding: 0.15rem 0.35rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .file-action-btn:hover {
+      background: var(--primary);
+      color: #000;
+    }
+
+    /* Message Bubble Token Telemetry Chip */
+    .msg-telemetry-chip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+      margin-top: 0.45rem;
+      padding-top: 0.35rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-family: var(--font-mono);
+      font-size: 0.60rem;
+      user-select: none;
+    }
+    .tok-tag {
+      padding: 0.12rem 0.35rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .tok-tag.reading {
+      background: rgba(0, 243, 255, 0.12);
+      color: #00F3FF;
+      border: 1px solid rgba(0, 243, 255, 0.3);
+    }
+    .tok-tag.writing {
+      background: rgba(57, 255, 20, 0.12);
+      color: #39FF14;
+      border: 1px solid rgba(57, 255, 20, 0.3);
+    }
+    .tok-tag.total {
+      background: rgba(189, 0, 255, 0.15);
+      color: #BD00FF;
+      border: 1px solid rgba(189, 0, 255, 0.35);
+    }
+    .tok-tag.speed {
+      background: rgba(255, 230, 0, 0.12);
+      color: #FFE600;
+      border: 1px solid rgba(255, 230, 0, 0.3);
+    }
+    .tok-tag.time {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-dim);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* File Attachment in Chat Bubbles */
+    .file-bubble-attachment {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 6px;
+      padding: 0.35rem 0.55rem;
+      margin-bottom: 0.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.70rem;
+    }
+    .bubble-img-preview {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0.35rem 0;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      transition: transform 0.2s;
+    }
+    .bubble-img-preview:hover { transform: scale(1.02); }
+
+    /* Attachment Preview Bar above Textarea */
+    .chat-attach-preview-bar {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 0.25rem 0;
+      margin-bottom: 0.2rem;
+    }
+    .attached-file-pill {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38BDF8;
+      border-radius: 9999px;
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      padding: 0.15rem 0.45rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .attached-file-pill .remove-attach {
+      cursor: pointer;
+      color: var(--danger);
+      font-weight: 800;
+    }
+
+    .btn-attach {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .btn-attach:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #FFF;
+      border-color: var(--primary);
+    }
+
+    /* Modal for Sessions & File Previews */
+    .guardian-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      backdrop-filter: blur(4px);
+    }
+    .guardian-modal-box {
+      background: #0B1224;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.2);
+      overflow: hidden;
+    }
+    .guardian-modal-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #FFF;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .guardian-modal-body {
+      padding: 1rem;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 0.78rem;
+    }
+    .history-session-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .history-session-card:hover {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .history-session-card.active {
+      border-color: #39FF14;
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.25);
+    }
+
     /* Chat Messages Container */
     .chat-messages {
       flex: 1;
@@ -4085,6 +4604,43 @@
         </div>
         <button class="btn-close-drawer" onclick="closeAgentDrawer()">✕</button>
       </div>
+
+      <!-- Subbar: Live Status, Token Meter & Quick Actions -->
+      <div class="drawer-subbar">
+        <div class="subbar-left">
+          <div class="agent-live-status-pill idle" id="agent-live-status" title="Live AI Agent Telemetry">
+            <span class="status-anim-icon" id="agent-status-icon">🟢</span>
+            <span class="status-anim-label" id="agent-status-label">Ready</span>
+          </div>
+          <div class="token-meter-chip" id="token-meter-chip" title="Live Session Tokens: Read (Prompt) / Write (Thinking & Response)">
+            <span>⚡</span>
+            <span id="session-tokens-display">0 tok</span>
+          </div>
+        </div>
+        <div class="subbar-right">
+          <button class="subbar-btn" id="btn-toggle-todo" onclick="toggleTodoPane()" title="Toggle Tiny TODO Checklist">
+            <span>📋 TODO</span>
+            <span class="subbar-badge" id="todo-count-badge">0</span>
+          </button>
+          <button class="subbar-btn" id="btn-toggle-workspace" onclick="toggleWorkspacePane()" title="100MB File Sharing & Workspace Sandbox">
+            <span>📂 Files</span>
+            <span class="subbar-badge" id="workspace-files-badge">0</span>
+          </button>
+          <button class="subbar-btn" onclick="ChatSessionManager.startNew()" title="Start New Chat Session">
+            <span>➕ New</span>
+          </button>
+          <button class="subbar-btn" onclick="openChatHistoryModal()" title="View Chat History & Saved Sessions">
+            <span>📜 History</span>
+          </button>
+          <button class="subbar-btn" onclick="exportChatMarkdown()" title="Export Chat Transcript as Markdown (.md)">
+            <span>📥 .md</span>
+          </button>
+          <button class="subbar-btn" id="btn-incognito" onclick="toggleIncognitoMode()" title="Toggle Incognito Mode (No History Saved)">
+            <span id="incognito-label">🕵️ Off</span>
+          </button>
+        </div>
+      </div>
+
       <div class="drawer-controls-bar">
         <button class="drawer-nav-arrow left" type="button" onclick="slideDrawerControls('left')" title="Slide left">‹</button>
         <div class="drawer-controls" id="drawer-controls-scroll">
@@ -4120,6 +4676,55 @@
           </select>
         </div>
         <button class="drawer-nav-arrow right" type="button" onclick="slideDrawerControls('right')" title="Slide right">›</button>
+      </div>
+    </div>
+
+    <!-- Tiny Collapsible TODO Pane -->
+    <div class="chat-todo-pane" id="chat-todo-pane" style="display: none;">
+      <div class="todo-pane-header">
+        <span>📋 Agent Persistent TODOs</span>
+        <button class="file-action-btn" onclick="GuardianTodo.clearDone()">Clear Done</button>
+      </div>
+      <div class="todo-input-row">
+        <input type="text" class="todo-input" id="todo-new-text" placeholder="Add actionable task or audit item..." onkeydown="if(event.key==='Enter')addTodoItem()">
+        <button class="btn-add-todo" onclick="addTodoItem()">+ Add</button>
+      </div>
+      <div class="todo-list" id="chat-todo-list"></div>
+    </div>
+
+    <!-- 100MB File Sharing & Workspace Sandbox Pane -->
+    <div class="chat-workspace-pane" id="chat-workspace-pane" style="display: none;">
+      <div class="workspace-meter-bar">
+        <span><strong>📂 Guardian Workspace Sandbox (100MB Max)</strong></span>
+        <span id="workspace-usage-text">0.0 MB / 100 MB (0 files)</span>
+      </div>
+      <div class="workspace-progress-track">
+        <div class="workspace-progress-fill" id="workspace-progress-fill" style="width: 0%;"></div>
+      </div>
+
+      <!-- Drop Zone & File Selector -->
+      <div class="workspace-drop-zone" id="workspace-drop-zone" onclick="document.getElementById('workspace-file-input').click()">
+        <div>📁 <strong>Drag & Drop Files Here</strong> or <span style="color: var(--primary); text-decoration: underline;">Browse</span></div>
+        <div style="font-size: 0.58rem; color: var(--text-dim); margin-top: 2px;">
+          Media (.jpg, .png, .svg), Code (.py, .js, .ts, .html), Docs (.csv, .xlsx, .pdf), Archives (.zip, .rar, .7z, .tar.gz)
+        </div>
+      </div>
+      <input type="file" id="workspace-file-input" multiple style="display: none;" onchange="GuardianWorkspace.handleFileInput(this.files)">
+
+      <!-- Workspace Files Grid -->
+      <div class="workspace-files-grid" id="workspace-files-grid">
+        <div style="color: var(--text-dim); text-align: center; grid-column: 1/-1; padding: 0.6rem;">
+          No files in workspace yet. Attach code, media, docs, or archives above!
+        </div>
+      </div>
+
+      <!-- Workspace Batch Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem;">
+        <div style="display: flex; gap: 4px;">
+          <button class="file-action-btn" onclick="GuardianWorkspace.compressAllToZip()">📦 Compress All to .ZIP</button>
+          <button class="file-action-btn" onclick="viewChatDataMdModal()">📄 View Chat Data.md</button>
+        </div>
+        <button class="file-action-btn" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.4);" onclick="GuardianWorkspace.clearAll()">🧹 Clear All</button>
       </div>
     </div>
 
@@ -4166,7 +4771,16 @@
         <span id="queue-indicator-text">1 message waiting in queue...</span>
       </div>
 
+      <!-- Attachment preview bar -->
+      <div class="chat-attach-preview-bar" id="chat-attach-preview-bar" style="display: none;"></div>
+
       <div class="chat-input-row">
+        <!-- Attachment button -->
+        <button class="btn-attach" type="button" onclick="document.getElementById('chat-msg-file-picker').click()" title="Attach file (Images, Code, Docs, Archives up to 100MB)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input type="file" id="chat-msg-file-picker" multiple style="display: none;" onchange="handleChatMsgAttachment(this.files)">
+
         <textarea class="chat-input" id="chat-user-input" rows="1" placeholder="Instruct Guardian & Q&A or ask anything..." oninput="autoGrowInput(this)" onkeydown="handleChatInputKeydown(event)"></textarea>
         <button class="btn-send" onclick="sendChatMessage()" title="Send Message">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
@@ -4181,6 +4795,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Guardian Modals Container (History, Previews, Chat Data.md) -->
+  <div id="guardian-modal-container" style="display: none;"></div>
 
   <!-- Long-Press Mobile Selection Toolbar -->
   <div class="chat-selection-toolbar" id="chat-selection-toolbar"></div>
@@ -5809,6 +6426,956 @@
     let isAgentBusy = false;
     let editingMessageId = null;
 
+    // Token telemetry counters
+    let sessionTokensTotal = 0;
+    let sessionTokensRead = 0;
+    let sessionTokensWrite = 0;
+
+    // Attached files pending send
+    let pendingMsgAttachments = [];
+
+    // Live Agent Animation Status
+    function setAgentStatus(state, customLabel = null) {
+      const pill = document.getElementById('agent-live-status');
+      const icon = document.getElementById('agent-status-icon');
+      const label = document.getElementById('agent-status-label');
+      if (!pill || !icon || !label) return;
+
+      pill.className = 'agent-live-status-pill ' + state;
+
+      const states = {
+        idle: { icon: '🟢', label: 'Ready' },
+        thinking: { icon: '🧠', label: 'Thinking...' },
+        working: { icon: '⚙️', label: 'Working...' },
+        responding: { icon: '💬', label: 'Responding...' },
+        reading: { icon: '📖', label: 'Reading...' },
+        writing: { icon: '✍️', label: 'Writing...' }
+      };
+
+      const info = states[state] || states.idle;
+      icon.innerText = info.icon;
+      label.innerText = customLabel || info.label;
+    }
+
+    function updateSessionTokenMeter() {
+      const el = document.getElementById('session-tokens-display');
+      if (el) {
+        el.innerText = `${sessionTokensTotal.toLocaleString()} tok`;
+        el.title = `Session Total: ${sessionTokensTotal} tokens (${sessionTokensRead} read · ${sessionTokensWrite} write)`;
+      }
+    }
+
+    // Toggle Panes
+    function toggleTodoPane() {
+      const pane = document.getElementById('chat-todo-pane');
+      const btn = document.getElementById('btn-toggle-todo');
+      if (!pane) return;
+      const isVisible = pane.style.display !== 'none';
+      pane.style.display = isVisible ? 'none' : 'block';
+      if (btn) btn.classList.toggle('active', !isVisible);
+      if (!isVisible) GuardianTodo.render();
+    }
+
+    function addTodoItem() {
+      const inp = document.getElementById('todo-new-text');
+      if (!inp || !inp.value.trim()) return;
+      GuardianTodo.add(inp.value.trim());
+      inp.value = '';
+    }
+
+    function toggleWorkspacePane() {
+      const pane = document.getElementById('chat-workspace-pane');
+      const btn = document.getElementById('btn-toggle-workspace');
+      if (!pane) return;
+      const isVisible = pane.style.display !== 'none';
+      pane.style.display = isVisible ? 'none' : 'block';
+      if (btn) btn.classList.toggle('active', !isVisible);
+      if (!isVisible) GuardianWorkspace.render();
+    }
+
+    function toggleIncognitoMode() {
+      ChatSessionManager.isIncognito = !ChatSessionManager.isIncognito;
+      const isInc = ChatSessionManager.isIncognito;
+      const btn = document.getElementById('btn-incognito');
+      const label = document.getElementById('incognito-label');
+      if (btn) btn.classList.toggle('incognito-active', isInc);
+      if (label) label.innerText = isInc ? '🕵️ Incognito ON' : '🕵️ Off';
+      
+      if (isInc) {
+        showToast('🕵️ Incognito Mode ON — No chat history or cache saved');
+      } else {
+        showToast('Persistent Chat Memory restored');
+      }
+    }
+
+    // Zero-Dependency Pure JavaScript PKZIP Builder & Reader
+    const ZipBuilder = {
+      crcTable: (function() {
+        let c, table = [];
+        for (let n = 0; n < 256; n++) {
+          c = n;
+          for (let k = 0; k < 8; k++) {
+            c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+          }
+          table[n] = c;
+        }
+        return table;
+      })(),
+
+      crc32: function(bytes) {
+        let crc = 0 ^ (-1);
+        for (let i = 0; i < bytes.length; i++) {
+          crc = (crc >>> 8) ^ this.crcTable[(crc ^ bytes[i]) & 0xFF];
+        }
+        return (crc ^ (-1)) >>> 0;
+      },
+
+      build: function(files) {
+        const localHeaders = [];
+        const centralHeaders = [];
+        let offset = 0;
+
+        for (const file of files) {
+          let dataBytes;
+          if (typeof file.data === 'string') {
+            dataBytes = new TextEncoder().encode(file.data);
+          } else if (file.data instanceof Uint8Array) {
+            dataBytes = file.data;
+          } else {
+            dataBytes = new Uint8Array(file.data);
+          }
+
+          const nameBytes = new TextEncoder().encode(file.name);
+          const crc = this.crc32(dataBytes);
+          const size = dataBytes.length;
+
+          // Local Header (30 bytes + name + data)
+          const local = new Uint8Array(30 + nameBytes.length + size);
+          const view = new DataView(local.buffer);
+          view.setUint32(0, 0x04034b50, true);
+          view.setUint16(4, 20, true);
+          view.setUint16(6, 0, true);
+          view.setUint16(8, 0, true); // Stored
+          view.setUint16(10, 0, true);
+          view.setUint16(12, 0, true);
+          view.setUint32(14, crc, true);
+          view.setUint32(18, size, true);
+          view.setUint32(22, size, true);
+          view.setUint16(26, nameBytes.length, true);
+          view.setUint16(28, 0, true);
+          local.set(nameBytes, 30);
+          local.set(dataBytes, 30 + nameBytes.length);
+          localHeaders.push(local);
+
+          // Central Directory Header (46 bytes + name)
+          const central = new Uint8Array(46 + nameBytes.length);
+          const cView = new DataView(central.buffer);
+          cView.setUint32(0, 0x02014b50, true);
+          cView.setUint16(4, 20, true);
+          cView.setUint16(6, 20, true);
+          cView.setUint16(8, 0, true);
+          cView.setUint16(10, 0, true);
+          cView.setUint16(12, 0, true);
+          cView.setUint16(14, 0, true);
+          cView.setUint32(16, crc, true);
+          cView.setUint32(20, size, true);
+          cView.setUint32(24, size, true);
+          cView.setUint16(28, nameBytes.length, true);
+          cView.setUint16(30, 0, true);
+          cView.setUint16(32, 0, true);
+          cView.setUint16(34, 0, true);
+          cView.setUint16(36, 0, true);
+          cView.setUint32(38, 0, true);
+          cView.setUint32(42, offset, true);
+          central.set(nameBytes, 46);
+          centralHeaders.push(central);
+
+          offset += local.length;
+        }
+
+        const centralStart = offset;
+        let centralSize = 0;
+        for (const c of centralHeaders) centralSize += c.length;
+
+        // End of Central Directory (22 bytes)
+        const eocd = new Uint8Array(22);
+        const eView = new DataView(eocd.buffer);
+        eView.setUint32(0, 0x06054b50, true);
+        eView.setUint16(4, 0, true);
+        eView.setUint16(6, 0, true);
+        eView.setUint16(8, files.length, true);
+        eView.setUint16(10, files.length, true);
+        eView.setUint32(12, centralSize, true);
+        eView.setUint32(16, centralStart, true);
+        eView.setUint16(20, 0, true);
+
+        const totalLength = offset + centralSize + 22;
+        const zipBytes = new Uint8Array(totalLength);
+        let pos = 0;
+        for (const l of localHeaders) {
+          zipBytes.set(l, pos);
+          pos += l.length;
+        }
+        for (const c of centralHeaders) {
+          zipBytes.set(c, pos);
+          pos += c.length;
+        }
+        zipBytes.set(eocd, pos);
+        return zipBytes;
+      },
+
+      inspect: function(arrayBuffer) {
+        const view = new DataView(arrayBuffer);
+        const entries = [];
+        let pos = 0;
+        while (pos < view.byteLength - 4) {
+          const sig = view.getUint32(pos, true);
+          if (sig === 0x04034b50) {
+            const compMethod = view.getUint16(pos + 8, true);
+            const compSize = view.getUint32(pos + 18, true);
+            const uncompSize = view.getUint32(pos + 22, true);
+            const nameLen = view.getUint16(pos + 26, true);
+            const extraLen = view.getUint16(pos + 28, true);
+            const nameBytes = new Uint8Array(arrayBuffer, pos + 30, nameLen);
+            const filename = new TextDecoder().decode(nameBytes);
+            entries.push({
+              name: filename,
+              compressedSize: compSize,
+              uncompressedSize: uncompSize,
+              method: compMethod === 0 ? 'Stored' : 'Deflated'
+            });
+            pos += 30 + nameLen + extraLen + compSize;
+          } else {
+            pos++;
+          }
+        }
+        return entries;
+      }
+    };
+
+    // Agent Persistent TODO Manager
+    const GuardianTodo = {
+      get: function() {
+        try {
+          const raw = localStorage.getItem('guardian_agent_todos');
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return [
+          { id: 1, text: 'Run pre-merge AST syntax audit on open PRs', done: false, date: 'Live' },
+          { id: 2, text: 'Verify Dependabot CVE patches without breaking code', done: true, date: 'Live' },
+          { id: 3, text: 'Re-sync 193 active forks against upstream repositories', done: false, date: 'Live' }
+        ];
+      },
+      save: function(items) {
+        localStorage.setItem('guardian_agent_todos', JSON.stringify(items));
+        this.render();
+      },
+      add: function(text) {
+        if (!text || !text.trim()) return;
+        const items = this.get();
+        items.unshift({ id: Date.now(), text: text.trim(), done: false, date: new Date().toLocaleTimeString() });
+        this.save(items);
+        showToast('TODO item added');
+      },
+      toggle: function(id) {
+        const items = this.get().map(item => item.id === id ? { ...item, done: !item.done } : item);
+        this.save(items);
+      },
+      remove: function(id) {
+        const items = this.get().filter(item => item.id !== id);
+        this.save(items);
+      },
+      clearDone: function() {
+        const items = this.get().filter(item => !item.done);
+        this.save(items);
+        showToast('Completed TODOs cleared');
+      },
+      render: function() {
+        const list = document.getElementById('chat-todo-list');
+        const badge = document.getElementById('todo-count-badge');
+        const items = this.get();
+        const pending = items.filter(i => !i.done).length;
+        if (badge) badge.innerText = pending;
+        if (!list) return;
+        if (items.length === 0) {
+          list.innerHTML = '<div style="color: var(--text-dim); text-align: center; padding: 0.5rem;">No active TODOs. Add one above!</div>';
+          return;
+        }
+        list.innerHTML = items.map(item => `
+          <div class="todo-item ${item.done ? 'done' : ''}">
+            <input type="checkbox" ${item.done ? 'checked' : ''} onchange="GuardianTodo.toggle(${item.id})">
+            <span class="todo-text">${item.text}</span>
+            <button class="todo-delete-btn" onclick="GuardianTodo.remove(${item.id})" title="Delete">✕</button>
+          </div>
+        `).join('');
+      }
+    };
+
+    // 100MB Guardian Workspace Sandbox & File Sharing Hub
+    const GuardianWorkspace = {
+      MAX_BYTES: 100 * 1024 * 1024, // 100 MB
+      files: [],
+
+      init: function() {
+        const dropZone = document.getElementById('workspace-drop-zone');
+        if (dropZone) {
+          dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+          });
+          dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+          dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer && e.dataTransfer.files) {
+              this.handleFileInput(e.dataTransfer.files);
+            }
+          });
+        }
+        this.render();
+      },
+
+      getTotalBytes: function() {
+        return this.files.reduce((acc, f) => acc + (f.size || 0), 0);
+      },
+
+      handleFileInput: function(fileList) {
+        this.addFiles(fileList, false);
+      },
+
+      addFiles: async function(fileList, attachToChat = false) {
+        if (!fileList || fileList.length === 0) return;
+        setAgentStatus('reading', 'Loading files...');
+
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          if (this.getTotalBytes() + file.size > this.MAX_BYTES) {
+            showToast(`Error: ${file.name} exceeds 100MB workspace limit!`);
+            continue;
+          }
+
+          const fileObj = {
+            id: 'file-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+            name: file.name,
+            size: file.size,
+            type: file.type || 'application/octet-stream',
+            lastModified: file.lastModified,
+            dataUrl: null,
+            textContent: null,
+            arrayBuffer: null,
+            archiveEntries: []
+          };
+
+          const isImg = file.type.startsWith('image/') || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
+          const isText = file.type.startsWith('text/') || /\.(py|js|ts|tsx|html|css|json|yaml|yml|md|txt|sh|sql|csv)$/i.test(file.name);
+          const isZip = /\.zip$/i.test(file.name);
+
+          try {
+            if (isImg) {
+              fileObj.dataUrl = await new Promise(r => {
+                const reader = new FileReader();
+                reader.onload = () => r(reader.result);
+                reader.readAsDataURL(file);
+              });
+            } else if (isText) {
+              fileObj.textContent = await new Promise(r => {
+                const reader = new FileReader();
+                reader.onload = () => r(reader.result);
+                reader.readAsText(file);
+              });
+            } else if (isZip) {
+              const buf = await new Promise(r => {
+                const reader = new FileReader();
+                reader.onload = () => r(reader.result);
+                reader.readAsArrayBuffer(file);
+              });
+              fileObj.arrayBuffer = buf;
+              fileObj.archiveEntries = ZipBuilder.inspect(buf);
+            }
+          } catch(e) {
+            console.error('Error reading file:', e);
+          }
+
+          this.files.push(fileObj);
+          if (attachToChat) {
+            pendingMsgAttachments.push(fileObj);
+            renderAttachedPreview();
+          }
+        }
+
+        setAgentStatus('idle');
+        this.render();
+        const badge = document.getElementById('workspace-files-badge');
+        if (badge) badge.innerText = this.files.length;
+        showToast(`Workspace: ${this.files.length} files (${(this.getTotalBytes() / (1024*1024)).toFixed(1)} MB / 100 MB)`);
+      },
+
+      removeFile: function(id) {
+        this.files = this.files.filter(f => f.id !== id);
+        this.render();
+        const badge = document.getElementById('workspace-files-badge');
+        if (badge) badge.innerText = this.files.length;
+        showToast('File removed from workspace');
+      },
+
+      clearAll: function() {
+        if (!confirm('Clear all files from Guardian Workspace Sandbox?')) return;
+        this.files = [];
+        this.render();
+        const badge = document.getElementById('workspace-files-badge');
+        if (badge) badge.innerText = 0;
+        showToast('Workspace cleared');
+      },
+
+      previewFile: function(id) {
+        const file = this.files.find(f => f.id === id);
+        if (!file) return;
+        if (file.dataUrl) {
+          openFilePreviewModal(file.name, file.dataUrl, 'image');
+        } else if (file.archiveEntries && file.archiveEntries.length > 0) {
+          openFilePreviewModal(file.name, file.archiveEntries, 'zip');
+        } else if (file.textContent) {
+          openFilePreviewModal(file.name, file.textContent, 'text');
+        } else {
+          openFilePreviewModal(file.name, `Binary file: ${file.name}\nSize: ${(file.size/1024).toFixed(1)} KB\nType: ${file.type}\nClick Download to export.`, 'binary');
+        }
+      },
+
+      askFile: function(id) {
+        const file = this.files.find(f => f.id === id);
+        if (!file) return;
+        const input = document.getElementById('chat-user-input');
+        if (input) {
+          input.value = `Audit and review ${file.name}: `;
+          input.focus();
+          autoGrowInput(input);
+        }
+        pendingMsgAttachments.push(file);
+        renderAttachedPreview();
+        toggleWorkspacePane();
+      },
+
+      downloadFile: function(id) {
+        const file = this.files.find(f => f.id === id);
+        if (!file) return;
+        let blob;
+        if (file.dataUrl) {
+          const arr = file.dataUrl.split(',');
+          const mime = arr[0].match(/:(.*?);/)[1];
+          const bstr = atob(arr[1]);
+          let n = bstr.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) u8arr[n] = bstr.charCodeAt(n);
+          blob = new Blob([u8arr], { type: mime });
+        } else if (file.arrayBuffer) {
+          blob = new Blob([file.arrayBuffer], { type: file.type });
+        } else if (file.textContent) {
+          blob = new Blob([file.textContent], { type: file.type || 'text/plain' });
+        } else {
+          showToast('Cannot download binary preview directly');
+          return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Downloaded: ${file.name}`);
+      },
+
+      downloadFileByName: function(name) {
+        const file = this.files.find(f => f.name === name);
+        if (file) this.downloadFile(file.id);
+        else showToast(`File ${name} not found in workspace`);
+      },
+
+      compressAllToZip: function() {
+        if (this.files.length === 0) {
+          showToast('Workspace is empty. Add files first to compress.');
+          return;
+        }
+        setAgentStatus('working', 'Compressing to ZIP...');
+
+        const zipFiles = [];
+        for (const f of this.files) {
+          if (f.textContent) {
+            zipFiles.push({ name: f.name, data: f.textContent });
+          } else if (f.arrayBuffer) {
+            zipFiles.push({ name: f.name, data: new Uint8Array(f.arrayBuffer) });
+          } else if (f.dataUrl) {
+            const arr = f.dataUrl.split(',');
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8 = new Uint8Array(n);
+            while (n--) u8[n] = bstr.charCodeAt(n);
+            zipFiles.push({ name: f.name, data: u8 });
+          }
+        }
+
+        if (zipFiles.length === 0) {
+          setAgentStatus('idle');
+          showToast('No readable file bytes to compress.');
+          return;
+        }
+
+        const zipBytes = ZipBuilder.build(zipFiles);
+        const blob = new Blob([zipBytes], { type: 'application/zip' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const now = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+        a.href = url;
+        a.download = `guardian_workspace_${now}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        setAgentStatus('idle');
+        showToast(`Compressed & downloaded ${zipFiles.length} files as .ZIP!`);
+      },
+
+      render: function() {
+        const grid = document.getElementById('workspace-files-grid');
+        const usageText = document.getElementById('workspace-usage-text');
+        const fill = document.getElementById('workspace-progress-fill');
+        const badge = document.getElementById('workspace-files-badge');
+
+        const totalBytes = this.getTotalBytes();
+        const mbUsed = (totalBytes / (1024 * 1024)).toFixed(1);
+        const pct = Math.min(100, (totalBytes / this.MAX_BYTES) * 100);
+
+        if (usageText) usageText.innerText = `${mbUsed} MB / 100 MB (${this.files.length} file${this.files.length === 1 ? '' : 's'})`;
+        if (fill) {
+          fill.style.width = pct + '%';
+          fill.style.background = pct > 85 ? 'var(--danger)' : pct > 50 ? 'var(--warning)' : 'linear-gradient(90deg, #00F3FF, #39FF14)';
+        }
+        if (badge) badge.innerText = this.files.length;
+        if (!grid) return;
+
+        if (this.files.length === 0) {
+          grid.innerHTML = '<div style="color: var(--text-dim); text-align: center; grid-column: 1/-1; padding: 0.6rem;">No files in workspace yet. Attach code, media, docs, or archives above!</div>';
+          return;
+        }
+
+        grid.innerHTML = this.files.map(f => {
+          let icon = '📄';
+          if (f.type.startsWith('image/')) icon = '🖼️';
+          else if (f.name.endsWith('.zip') || f.name.endsWith('.rar') || f.name.endsWith('.7z')) icon = '📦';
+          else if (f.name.endsWith('.py') || f.name.endsWith('.js') || f.name.endsWith('.ts')) icon = '💻';
+          else if (f.name.endsWith('.csv') || f.name.endsWith('.xlsx')) icon = '📊';
+          else if (f.name.endsWith('.pdf')) icon = '📑';
+
+          return `
+            <div class="workspace-file-card">
+              <div class="file-card-top">
+                <span>${icon}</span>
+                <span class="fname" title="${f.name}">${f.name}</span>
+              </div>
+              <div class="file-card-meta">
+                <span>${(f.size/1024).toFixed(1)} KB</span>
+                <span>${new Date(f.lastModified || Date.now()).toLocaleDateString()}</span>
+              </div>
+              <div class="file-card-actions">
+                <button class="file-action-btn" onclick="GuardianWorkspace.previewFile('${f.id}')" title="Preview / Inspect">👁️</button>
+                <button class="file-action-btn" onclick="GuardianWorkspace.askFile('${f.id}')" title="Audit with Guardian">💬</button>
+                <button class="file-action-btn" onclick="GuardianWorkspace.downloadFile('${f.id}')" title="Download">💾</button>
+                <button class="file-action-btn" style="color: var(--danger);" onclick="GuardianWorkspace.removeFile('${f.id}')" title="Delete">✕</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    };
+
+    // Chat Session & History Manager
+    const ChatSessionManager = {
+      currentSessionId: null,
+      isIncognito: false,
+
+      init: function() {
+        const saved = localStorage.getItem('guardian_chat_active_session');
+        const sessions = this.getSessions();
+        if (saved && sessions.find(s => s.id === saved)) {
+          this.loadSession(saved, true);
+        } else {
+          this.startNew(true);
+        }
+      },
+
+      getSessions: function() {
+        try {
+          const raw = localStorage.getItem('guardian_chat_sessions');
+          return raw ? JSON.parse(raw) : [];
+        } catch(e) { return []; }
+      },
+
+      saveSessions: function(sessions) {
+        if (this.isIncognito) return;
+        try {
+          localStorage.setItem('guardian_chat_sessions', JSON.stringify(sessions));
+        } catch(e) {}
+      },
+
+      getActiveSession: function() {
+        const sessions = this.getSessions();
+        return sessions.find(s => s.id === this.currentSessionId) || null;
+      },
+
+      startNew: function(quiet = false) {
+        this.currentSessionId = 'session-' + Date.now();
+        localStorage.setItem('guardian_chat_active_session', this.currentSessionId);
+
+        const container = document.getElementById('chat-messages');
+        if (container) {
+          container.innerHTML = `
+            <div class="chat-msg agent" id="msg-init-welcome">
+              <div class="msg-model-tag neon-teal">🛡️ GUARDIAN & 🔍 Q&A COOPERATIVE INTELLIGENCE</div>
+              Hello! I am <strong>Agent Guardian</strong> (Approving Authority), working in coordination with <strong>Agent Q&A</strong> (Deep Technical Auditor).
+              <br><br>
+              • <strong>Agent Q&A</strong> investigates code syntax, enforces the <em>"Never Break the Code"</em> directive, and flags major security risks.<br>
+              • <strong>Agent Guardian</strong> reviews audits and always provides explicit <strong>(Recommended)</strong> options for PR decisions (Complete PR, Squash, or Rebase).<br>
+              • Offline models auto-rotate on ARM64: <code>deepseek-r1:1.5b</code> (Reasoning), <code>qwen2.5-coder:1.5b</code> (Coding), <code>smollm2:360m</code> (Discussion).
+              <br><br>
+              Persistent <strong>Agent Memory</strong> is active and tracks all past decisions and audits. What would you like us to audit or execute?
+              <div class="chat-msg-actions">
+                <button class="msg-action-btn" onclick="copyChatMessage(this)">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        sessionTokensTotal = 0;
+        sessionTokensRead = 0;
+        sessionTokensWrite = 0;
+        updateSessionTokenMeter();
+
+        if (!this.isIncognito) {
+          const newSession = {
+            id: this.currentSessionId,
+            title: 'Session ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            messages: [],
+            tokenStats: { read: 0, write: 0, total: 0 }
+          };
+          const sessions = this.getSessions();
+          sessions.unshift(newSession);
+          this.saveSessions(sessions.slice(0, 30));
+        }
+
+        if (!quiet) showToast('New chat session started');
+      },
+
+      recordMessage: function(sender, htmlContent, tools, telemetry, attachedFiles) {
+        if (this.isIncognito) return;
+        const sessions = this.getSessions();
+        const session = sessions.find(s => s.id === this.currentSessionId);
+        if (!session) return;
+
+        if (session.messages.length === 0 && sender === 'user') {
+          const plainText = htmlContent.replace(/<[^>]+>/g, '').trim();
+          session.title = plainText.substring(0, 32) + (plainText.length > 32 ? '...' : '');
+        }
+
+        session.messages.push({
+          sender,
+          htmlContent,
+          tools: tools || null,
+          telemetry: telemetry || null,
+          attachedFiles: attachedFiles ? attachedFiles.map(f => ({ name: f.name, size: f.size, type: f.type, dataUrl: f.dataUrl })) : null,
+          timestamp: new Date().toLocaleTimeString()
+        });
+        session.updatedAt = Date.now();
+        if (telemetry) {
+          session.tokenStats.read += (telemetry.promptTokens || 0);
+          session.tokenStats.write += (telemetry.responseTokens || 0);
+          session.tokenStats.total += (telemetry.totalTokens || 0);
+        }
+        this.saveSessions(sessions);
+        this.syncChatDataMd();
+      },
+
+      loadSession: function(sessionId, quiet = false) {
+        const sessions = this.getSessions();
+        const session = sessions.find(s => s.id === sessionId);
+        if (!session) return;
+        this.currentSessionId = sessionId;
+        localStorage.setItem('guardian_chat_active_session', sessionId);
+
+        const container = document.getElementById('chat-messages');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'chat-msg agent';
+        welcomeDiv.innerHTML = `
+          <div class="msg-model-tag neon-teal">🛡️ GUARDIAN SESSION RESTORED: ${session.title}</div>
+          Restored saved conversation from <em>${new Date(session.createdAt).toLocaleString()}</em>.<br>
+          Total Tokens: <strong>${session.tokenStats?.total || 0}</strong> • Messages: <strong>${session.messages.length}</strong>
+        `;
+        container.appendChild(welcomeDiv);
+
+        sessionTokensTotal = session.tokenStats?.total || 0;
+        sessionTokensRead = session.tokenStats?.read || 0;
+        sessionTokensWrite = session.tokenStats?.write || 0;
+        updateSessionTokenMeter();
+
+        for (const msg of session.messages) {
+          appendChatMessage(msg.sender, msg.htmlContent, msg.tools, null, false, msg.telemetry, msg.attachedFiles, false);
+        }
+        container.scrollTop = container.scrollHeight;
+
+        closeModals();
+        if (!quiet) showToast(`Loaded: ${session.title}`);
+      },
+
+      deleteSession: function(sessionId) {
+        let sessions = this.getSessions();
+        sessions = sessions.filter(s => s.id !== sessionId);
+        this.saveSessions(sessions);
+        if (this.currentSessionId === sessionId) {
+          if (sessions.length > 0) this.loadSession(sessions[0].id);
+          else this.startNew();
+        } else {
+          openChatHistoryModal();
+        }
+        showToast('Session deleted');
+      },
+
+      clearAll: function() {
+        if (!confirm('Clear all saved chat sessions and history?')) return;
+        localStorage.removeItem('guardian_chat_sessions');
+        localStorage.removeItem('guardian_chat_active_session');
+        this.startNew();
+        closeModals();
+        showToast('All chat history cleared');
+      },
+
+      syncChatDataMd: function() {
+        const session = this.getActiveSession();
+        if (!session) return;
+        let md = `# GitHub Guardian AI Chat Data\n\n`;
+        md += `- **Session ID:** \`${session.id}\`\n`;
+        md += `- **Title:** ${session.title}\n`;
+        md += `- **Created:** ${new Date(session.createdAt).toISOString()}\n`;
+        md += `- **Tokens:** ${session.tokenStats?.total || 0} (Read: ${session.tokenStats?.read || 0} · Write: ${session.tokenStats?.write || 0})\n\n`;
+        md += `---\n\n`;
+
+        for (const m of session.messages) {
+          const role = m.sender === 'user' ? '### 👤 User' : '### 🛡️ Agent Guardian & 🔍 Q&A';
+          const clean = m.htmlContent.replace(/<br\s*[\/]?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+          md += `${role} *(${m.timestamp})*\n\n${clean}\n\n`;
+          if (m.telemetry) {
+            md += `> *Telemetry: ${m.telemetry.totalTokens} tokens (${m.telemetry.promptTokens} read, ${m.telemetry.responseTokens} write) @ ${m.telemetry.speed} tok/s in ${m.telemetry.durationSec}s*\n\n`;
+          }
+          md += `---\n\n`;
+        }
+        localStorage.setItem('guardian_chat_data_md', md);
+      }
+    };
+
+    function handleChatMsgAttachment(fileList) {
+      if (!fileList || fileList.length === 0) return;
+      GuardianWorkspace.addFiles(fileList, true);
+    }
+
+    function renderAttachedPreview() {
+      const bar = document.getElementById('chat-attach-preview-bar');
+      if (!bar) return;
+      if (pendingMsgAttachments.length === 0) {
+        bar.style.display = 'none';
+        bar.innerHTML = '';
+        return;
+      }
+      bar.style.display = 'flex';
+      bar.innerHTML = pendingMsgAttachments.map((f, idx) => `
+        <span class="attached-file-pill">
+          <span>📎</span>
+          <span>${f.name}</span>
+          <span style="font-size: 0.55rem; color: var(--text-dim);">(${(f.size/1024).toFixed(0)}KB)</span>
+          <span class="remove-attach" onclick="removePendingAttachment(${idx})" title="Remove attachment">✕</span>
+        </span>
+      `).join('');
+    }
+
+    function removePendingAttachment(idx) {
+      pendingMsgAttachments.splice(idx, 1);
+      renderAttachedPreview();
+    }
+
+    function openChatHistoryModal() {
+      const container = document.getElementById('guardian-modal-container');
+      if (!container) return;
+      const sessions = ChatSessionManager.getSessions();
+
+      container.innerHTML = `
+        <div class="guardian-modal-overlay" onclick="if(event.target===this)closeModals()">
+          <div class="guardian-modal-box">
+            <div class="guardian-modal-header">
+              <span>📜 Guardian Chat History (${sessions.length} sessions)</span>
+              <button class="btn-close-drawer" onclick="closeModals()">✕</button>
+            </div>
+            <div class="guardian-modal-body">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                <button class="file-action-btn" onclick="ChatSessionManager.startNew(); closeModals();">➕ New Chat</button>
+                <button class="file-action-btn" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.4);" onclick="ChatSessionManager.clearAll()">🗑️ Clear All History</button>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                ${sessions.length === 0 ? '<div style="color: var(--text-dim); text-align: center; padding: 1.5rem;">No saved sessions yet.</div>' : ''}
+                ${sessions.map(s => `
+                  <div class="history-session-card ${s.id === ChatSessionManager.currentSessionId ? 'active' : ''}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                      <strong style="color: #FFF; font-size: 0.76rem;" onclick="ChatSessionManager.loadSession('${s.id}')">${s.title}</strong>
+                      <span style="font-size: 0.60rem; color: var(--text-dim); font-family: var(--font-mono);">${new Date(s.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.64rem; color: var(--text-muted);">
+                      <span>${s.messages.length} messages • ⚡ ${s.tokenStats?.total || 0} tok</span>
+                      <div style="display: flex; gap: 4px;">
+                        <button class="file-action-btn" onclick="ChatSessionManager.loadSession('${s.id}')">Open</button>
+                        <button class="file-action-btn" onclick="ChatSessionManager.deleteSession('${s.id}')" style="color: var(--danger);">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      container.style.display = 'block';
+    }
+
+    function viewChatDataMdModal() {
+      const container = document.getElementById('guardian-modal-container');
+      if (!container) return;
+      ChatSessionManager.syncChatDataMd();
+      const md = localStorage.getItem('guardian_chat_data_md') || '# No chat data recorded yet.';
+
+      container.innerHTML = `
+        <div class="guardian-modal-overlay" onclick="if(event.target===this)closeModals()">
+          <div class="guardian-modal-box" style="max-width: 620px;">
+            <div class="guardian-modal-header">
+              <span>📄 System Chat Data.md Preview</span>
+              <button class="btn-close-drawer" onclick="closeModals()">✕</button>
+            </div>
+            <div class="guardian-modal-body">
+              <div style="display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 0.5rem;">
+                <button class="file-action-btn" onclick="navigator.clipboard.writeText(document.getElementById('chat-data-pre').innerText); showToast('Copied Chat Data.md to clipboard');">📋 Copy Markdown</button>
+                <button class="file-action-btn" onclick="exportChatMarkdown()">📥 Download .md</button>
+              </div>
+              <pre id="chat-data-pre" style="background: rgba(0,0,0,0.5); padding: 0.75rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.68rem; color: #38BDF8; white-space: pre-wrap; max-height: 50vh; overflow-y: auto;">${md.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+            </div>
+          </div>
+        </div>
+      `;
+      container.style.display = 'block';
+    }
+
+    function openFilePreviewModal(name, content, type) {
+      const container = document.getElementById('guardian-modal-container');
+      if (!container) return;
+
+      let bodyHtml = '';
+      if (type === 'image') {
+        bodyHtml = `<div style="text-align: center;"><img src="${content}" style="max-width: 100%; max-height: 60vh; border-radius: 8px; border: 1px solid rgba(56,189,248,0.3);"></div>`;
+      } else if (type === 'zip' && Array.isArray(content)) {
+        bodyHtml = `
+          <div style="margin-bottom: 0.5rem; font-weight: 700; color: #38BDF8;">Archive Contents (${content.length} files detected):</div>
+          <div style="display: flex; flex-direction: column; gap: 4px; max-height: 50vh; overflow-y: auto;">
+            ${content.map(e => `
+              <div style="display: flex; justify-content: space-between; padding: 4px 6px; background: rgba(0,0,0,0.3); border-radius: 4px; font-family: var(--font-mono); font-size: 0.68rem;">
+                <span>📄 ${e.name}</span>
+                <span style="color: var(--text-dim);">${(e.uncompressedSize/1024).toFixed(1)} KB (${e.method})</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        bodyHtml = `
+          <pre style="background: rgba(0,0,0,0.5); padding: 0.75rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.68rem; color: #E2E8F0; white-space: pre-wrap; max-height: 55vh; overflow-y: auto;">${String(content).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="guardian-modal-overlay" onclick="if(event.target===this)closeModals()">
+          <div class="guardian-modal-box" style="max-width: 600px;">
+            <div class="guardian-modal-header">
+              <span>👁️ Preview: ${name}</span>
+              <button class="btn-close-drawer" onclick="closeModals()">✕</button>
+            </div>
+            <div class="guardian-modal-body">
+              ${bodyHtml}
+            </div>
+          </div>
+        </div>
+      `;
+      container.style.display = 'block';
+    }
+
+    function closeModals() {
+      const container = document.getElementById('guardian-modal-container');
+      if (container) {
+        container.style.display = 'none';
+        container.innerHTML = '';
+      }
+    }
+
+    function exportChatMarkdown() {
+      const session = ChatSessionManager.getActiveSession();
+      let md = '';
+      const now = new Date();
+      const dateStr = now.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+      const fileDate = now.toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+
+      if (session && session.messages.length > 0) {
+        md += `# GitHub Guardian AI Security & PR Audit Transcript\n\n`;
+        md += `**Generated:** ${dateStr} UTC\n`;
+        md += `**Repository Account:** @motherskitchenblr2\n`;
+        md += `**Session:** ${session.title}\n`;
+        md += `**Total Evaluated Tokens:** ${session.tokenStats?.total || sessionTokensTotal} tokens\n`;
+        md += `**Autonomy Policy:** "Never Break The Code"\n\n`;
+        md += `---\n\n`;
+
+        for (const m of session.messages) {
+          const senderTitle = m.sender === 'user' ? '## 👤 User' : '## 🛡️ Agent Guardian (Approving Authority) & 🔍 Q&A';
+          const clean = m.htmlContent
+            .replace(/<div class="thinking-accordion"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+            .replace(/<div class="msg-model-tag[^"]*">([\s\S]*?)<\/div>/gi, '**[$1]**\n')
+            .replace(/<br\s*[\/]?>/gi, '\n')
+            .replace(/<strong[^>]*>([\s\S]*?)<\/strong>/gi, '**$1**')
+            .replace(/<em[^>]*>([\s\S]*?)<\/em>/gi, '*$1*')
+            .replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, '`$1`')
+            .replace(/<[^>]+>/g, '')
+            .trim();
+
+          md += `${senderTitle} *(${m.timestamp})*\n\n${clean}\n\n`;
+          if (m.telemetry) {
+            md += `> ⚡ **Telemetry:** ${m.telemetry.totalTokens} tokens (${m.telemetry.promptTokens} read · ${m.telemetry.responseTokens} write) · ${m.telemetry.speed} tok/s · ${m.telemetry.durationSec}s\n\n`;
+          }
+          md += `---\n\n`;
+        }
+      } else {
+        md += `# GitHub Guardian AI Chat Export\n**Date:** ${dateStr}\n\nNo recorded messages in current session.\n`;
+      }
+
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `guardian_chat_${fileDate}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Chat exported to .md successfully');
+    }
+
     function updateThinkingLevel(level, quiet = false) {
       currentThinkingLevel = level;
       localStorage.setItem('guardian_thinking_level', level);
@@ -5846,13 +7413,11 @@
     function handleChatInputKeydown(e) {
       if (e.key === 'Enter') {
         if (currentEnterMode === 'newline') {
-          // Default: Enter jumps to next line in textarea
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             sendChatMessage();
           }
         } else {
-          // Send mode: Enter sends, Shift+Enter jumps to next line
           if (!e.shiftKey) {
             e.preventDefault();
             sendChatMessage();
@@ -5903,7 +7468,7 @@
     function copyChatMessageFromEl(bubble, btn) {
       if (!bubble) return;
       const clone = bubble.cloneNode(true);
-      clone.querySelectorAll('.chat-msg-actions, .thinking-header, .msg-model-tag, .msg-queue-badge').forEach(n => n.remove());
+      clone.querySelectorAll('.chat-msg-actions, .thinking-header, .msg-model-tag, .msg-queue-badge, .msg-telemetry-chip').forEach(n => n.remove());
       const text = clone.innerText.trim();
       navigator.clipboard.writeText(text).then(() => {
         if (btn) {
@@ -5932,7 +7497,7 @@
     function editChatMessageFromEl(bubble) {
       if (!bubble) return;
       const clone = bubble.cloneNode(true);
-      clone.querySelectorAll('.chat-msg-actions, .msg-model-tag, .msg-queue-badge').forEach(n => n.remove());
+      clone.querySelectorAll('.chat-msg-actions, .msg-model-tag, .msg-queue-badge, .msg-telemetry-chip').forEach(n => n.remove());
       const text = clone.innerText.trim();
 
       const input = document.getElementById('chat-user-input');
@@ -5997,7 +7562,6 @@
         if (longPressTimer) clearTimeout(longPressTimer);
       }, { passive: true });
 
-      // Dismiss selection toolbar on outside click
       document.addEventListener('click', (e) => {
         const tb = document.getElementById('chat-selection-toolbar');
         if (tb && !tb.contains(e.target) && !e.target.closest('.chat-msg')) {
@@ -6047,10 +7611,14 @@
     async function sendChatMessage() {
       const input = document.getElementById('chat-user-input');
       const text = input.value.trim();
-      if (!text) return;
+      const filesToSend = [...pendingMsgAttachments];
+
+      if (!text && filesToSend.length === 0) return;
 
       input.value = '';
       autoGrowInput(input);
+      pendingMsgAttachments = [];
+      renderAttachedPreview();
 
       // Handle Edit Mode
       if (editingMessageId) {
@@ -6074,8 +7642,8 @@
       // Check if agent is currently busy responding
       if (isAgentBusy) {
         const queueId = 'queue-' + Date.now();
-        appendChatMessage('user', text, null, queueId, true);
-        messageQueue.push({ id: queueId, text, model, agentMode: currentAgentMode, thinkingLevel: thinking });
+        appendChatMessage('user', text, null, queueId, true, null, filesToSend);
+        messageQueue.push({ id: queueId, text, model, agentMode: currentAgentMode, thinkingLevel: thinking, files: filesToSend });
         updateQueueUI();
         showToast(`Message queued (#${messageQueue.length} in line)`);
         return;
@@ -6083,13 +7651,33 @@
 
       // If not busy, execute immediately
       const userMsgId = 'user-msg-' + Date.now();
-      appendChatMessage('user', text, null, userMsgId, false);
-      executeChatMessage(text, model, currentAgentMode, thinking, userMsgId);
+      appendChatMessage('user', text, null, userMsgId, false, null, filesToSend);
+      executeChatMessage(text, model, currentAgentMode, thinking, userMsgId, filesToSend);
     }
 
-    async function executeChatMessage(text, model, agentMode, thinkingLevel, userMsgId) {
+    async function executeChatMessage(text, model, agentMode, thinkingLevel, userMsgId, attachedFiles = []) {
       isAgentBusy = true;
       updateQueueUI();
+      const startTime = Date.now();
+      setAgentStatus('thinking', 'Thinking (' + thinkingLevel.toUpperCase() + ')');
+
+      // Prepend attached file content to prompt context for Guardian review
+      let promptContext = text;
+      if (attachedFiles && attachedFiles.length > 0) {
+        setAgentStatus('reading', 'Reading ' + attachedFiles.length + ' file(s)...');
+        let fileTextBlock = '\n\n[USER ATTACHED FILES FOR AUDIT/REVIEW]:\n';
+        for (const f of attachedFiles) {
+          fileTextBlock += `--- File: ${f.name} (${(f.size/1024).toFixed(1)} KB, Type: ${f.type}) ---\n`;
+          if (f.textContent) {
+            fileTextBlock += f.textContent.substring(0, 8000) + (f.textContent.length > 8000 ? '\n...[truncated]' : '') + '\n';
+          } else if (f.archiveEntries && f.archiveEntries.length > 0) {
+            fileTextBlock += `Archive entries: ${f.archiveEntries.map(e => e.name + ' (' + (e.uncompressedSize/1024).toFixed(1) + ' KB)').join(', ')}\n`;
+          } else {
+            fileTextBlock += `[Binary/Media file loaded into Guardian workspace]\n`;
+          }
+        }
+        promptContext = text + fileTextBlock;
+      }
 
       try {
         const lower = text.toLowerCase();
@@ -6110,11 +7698,13 @@
             <span style="font-size: 0.68rem; color: var(--primary);">Full ledger and JSON export available in the <strong>Office</strong> tab under Agent Memory Store.</span>
           `;
           appendChatMessage('agent', memHtml);
+          ChatSessionManager.recordMessage('agent', memHtml);
           return;
         }
 
         // 2. Check for PR Review, Conflict, or Merge Actions (Dual-Agent Collaboration)
         if (lower.includes('pr') || lower.includes('pull request') || lower.includes('merge') || lower.includes('squash') || lower.includes('rebase') || lower.includes('audit')) {
+          setAgentStatus('working', 'Auditing PRs...');
           let thinkingBlock = '';
           if (thinkingLevel !== 'low') {
             const simulatedThought = `• Checking AST syntax on all pull requests...\n• Evaluating breaking change boundaries against "Never Break The Code" policy...\n• Scanning CVE dependency advisories & lockfile checksums...\n• Reasoned optimal linear commit strategy: Squash-merge avoids intermediate dependency churn.\n• Formulating final recommendation with explicit (Recommended) choice for user approval.`;
@@ -6132,6 +7722,18 @@
             `;
           }
 
+          const simTelemetryQA = {
+            promptTokens: Math.ceil(text.length / 3.8) + 95,
+            responseTokens: 165,
+            totalTokens: Math.ceil(text.length / 3.8) + 260,
+            speed: '42.5',
+            durationSec: '0.62'
+          };
+          sessionTokensTotal += simTelemetryQA.totalTokens;
+          sessionTokensRead += simTelemetryQA.promptTokens;
+          sessionTokensWrite += simTelemetryQA.responseTokens;
+          updateSessionTokenMeter();
+
           // Step 1: Agent Q&A deep technical investigation
           const qaMsg = `
             <div class="msg-model-tag neon-teal">🔍 AGENT Q&A — EXPERIENCED EXPERTISE AUDITOR</div>
@@ -6143,12 +7745,25 @@
             • <strong>Lockfile Checksums</strong>: <span class="neon-green">VALIDATED</span><br><br>
             Technical audit verified. Forwarding report to <strong>Agent Guardian</strong> for approving authority decision.
           `;
-          appendChatMessage('agent', qaMsg);
+          appendChatMessage('agent', qaMsg, null, null, false, simTelemetryQA);
           AgentMemory.add('Q&A', 'Audit Finding', 'Pre-Merge Code & Syntax Audit', 'Verified code AST syntax and dependencies. 0 breaking changes detected under Never Break The Code directive.');
 
           // Step 2: Agent Guardian reviews and formulates recommendation
+          setAgentStatus('responding', 'Formulating Decision...');
           await new Promise(r => setTimeout(r, 600));
           const isYolo = currentAutonomy === 'yolo';
+          const simTelemetryGuardian = {
+            promptTokens: 260,
+            responseTokens: 140,
+            totalTokens: 400,
+            speed: '38.0',
+            durationSec: '0.45'
+          };
+          sessionTokensTotal += simTelemetryGuardian.totalTokens;
+          sessionTokensRead += simTelemetryGuardian.promptTokens;
+          sessionTokensWrite += simTelemetryGuardian.responseTokens;
+          updateSessionTokenMeter();
+
           const guardianMsg = `
             <div class="msg-model-tag neon-green">🛡️ AGENT GUARDIAN — APPROVING AUTHORITY</div>
             I have reviewed Agent Q&A's audit. Code integrity confirmed under the <em>"Never Break The Code"</em> directive.<br><br>
@@ -6164,7 +7779,7 @@
               <button class="btn-sub-action reject" onclick="approveFromChat('reject')">🚫 Reject / Changes</button>
             </div>
           `;
-          appendChatMessage('agent', guardianMsg);
+          appendChatMessage('agent', guardianMsg, null, null, false, simTelemetryGuardian);
           AgentMemory.add('Guardian', 'Recommendation', 'PR Review Decision Recommendation', 'Guardian issued (Recommended) Squash & Merge option. Linear git tree preserved.');
 
           if (isYolo) {
@@ -6189,7 +7804,7 @@
         } else if (lower.includes('run all') || lower.includes('maintenance')) {
           toolToRun = 'run-all';
           toolLabel = 'Run Full Maintenance Suite';
-        } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('memory') || lower.includes('specs') || lower.includes('device')) {
+        } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('specs') || lower.includes('device')) {
           appendChatMessage('agent', `📱 <strong>Device Diagnostics Scanned</strong>:<br>
           • <strong>CPU</strong>: 8-Core ARM64 (Android / Termux)<br>
           • <strong>RAM</strong>: 7.4 GB Total (~3.0 GB Available)<br>
@@ -6204,6 +7819,7 @@
         }
 
         if (toolToRun) {
+          setAgentStatus('working', 'Running ' + toolLabel);
           if (currentAutonomy === 'yolo') {
             appendChatMessage('agent', `⚡ <strong>YOLO Autonomy Executing:</strong> Launching <code>${toolLabel}</code>...`, [
               { tool: toolLabel, status: 'Running in background daemon', action: toolToRun }
@@ -6254,16 +7870,46 @@
               model: targetModel,
               messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: text }
+                { role: 'user', content: promptContext }
               ],
               stream: false
             })
           });
 
+          setAgentStatus('responding', 'Responding...');
           if (resp.ok) {
             const data = await resp.json();
             const rawReply = data.message?.content || 'Task processed successfully.';
             const parsed = parseThinking(rawReply);
+
+            const promptTokens = data.prompt_eval_count || Math.ceil((systemPrompt.length + promptContext.length) / 3.8);
+            const responseTokens = data.eval_count || Math.ceil(rawReply.length / 3.8);
+            const totalTokens = promptTokens + responseTokens;
+            const durationSec = (data.total_duration ? data.total_duration / 1e9 : (Date.now() - startTime) / 1000);
+            const tokensPerSec = durationSec > 0 ? (responseTokens / durationSec).toFixed(1) : '35.0';
+
+            sessionTokensTotal += totalTokens;
+            sessionTokensRead += promptTokens;
+            sessionTokensWrite += responseTokens;
+            updateSessionTokenMeter();
+
+            const telemetry = {
+              promptTokens,
+              responseTokens,
+              totalTokens,
+              speed: tokensPerSec,
+              durationSec: durationSec.toFixed(2)
+            };
+
+            const telemetryHtml = `
+              <div class="msg-telemetry-chip">
+                <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${promptTokens} tok</span>
+                <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${responseTokens} tok</span>
+                <span class="tok-tag total" title="Total Tokens Evaluated">⚡ ${totalTokens} tok</span>
+                <span class="tok-tag speed" title="Generation Speed">⚡ ${tokensPerSec} tok/s</span>
+                <span class="tok-tag time" title="Response Latency">⏱️ ${durationSec.toFixed(2)}s</span>
+              </div>
+            `;
 
             let thinkingHtml = '';
             if (parsed.thinking) {
@@ -6286,9 +7932,10 @@
             const el = document.getElementById(loadingDivId);
             const agentName = agentMode === 'qa' ? '🔍 Agent Q&A' : '🛡️ Agent Guardian';
             if (el) {
-              el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply.replace(/\n/g, '<br>')}`;
+              el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply.replace(/\n/g, '<br>')}${telemetryHtml}`;
             }
-            AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query.`);
+            AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query. (${totalTokens} tok)`);
+            ChatSessionManager.recordMessage('agent', el ? el.innerHTML : reply, null, telemetry);
           } else {
             throw new Error(`HTTP ${resp.status}`);
           }
@@ -6303,6 +7950,7 @@
       } finally {
         isAgentBusy = false;
         updateQueueUI();
+        setAgentStatus('idle');
 
         // Process next item in queue if available
         if (messageQueue.length > 0) {
@@ -6314,7 +7962,7 @@
             qBadge.style.borderColor = '#39FF14';
           }
           updateQueueUI();
-          executeChatMessage(next.text, next.model, next.agentMode, next.thinkingLevel, next.id);
+          executeChatMessage(next.text, next.model, next.agentMode, next.thinkingLevel, next.id, next.files || []);
         }
       }
     }
@@ -6336,7 +7984,7 @@
       renderOfficePane();
     }
 
-    function appendChatMessage(sender, htmlContent, tools, messageId, isQueued = false) {
+    function appendChatMessage(sender, htmlContent, tools, messageId, isQueued = false, telemetry = null, attachedFiles = null, record = true) {
       const container = document.getElementById('chat-messages');
       const div = document.createElement('div');
       div.className = 'chat-msg ' + sender;
@@ -6346,6 +7994,24 @@
       let queueBadgeHtml = '';
       if (isQueued) {
         queueBadgeHtml = `<div class="msg-queue-badge" id="badge-${id}">⏳ Queued (#${messageQueue.length + 1} in queue)</div>`;
+      }
+
+      let attachHtml = '';
+      if (attachedFiles && attachedFiles.length > 0) {
+        attachHtml = attachedFiles.map(f => {
+          if (f.dataUrl && (f.type.startsWith('image/') || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(f.name))) {
+            return `<div><img src="${f.dataUrl}" class="bubble-img-preview" onclick="openFilePreviewModal('${f.name}', '${f.dataUrl}', 'image')"></div>`;
+          }
+          const icon = f.name.endsWith('.zip') || f.name.endsWith('.rar') || f.name.endsWith('.7z') ? '📦' : f.name.endsWith('.py') || f.name.endsWith('.js') || f.name.endsWith('.ts') ? '💻' : '📄';
+          return `
+            <div class="file-bubble-attachment">
+              <span>${icon}</span>
+              <strong>${f.name}</strong>
+              <span style="color: var(--text-dim); font-size: 0.6rem;">(${(f.size/1024).toFixed(1)} KB)</span>
+              <button class="file-action-btn" onclick="GuardianWorkspace.downloadFileByName('${f.name}')">💾</button>
+            </div>
+          `;
+        }).join('');
       }
 
       let toolHtml = '';
@@ -6359,6 +8025,19 @@
             <div class="tool-card-body">Command: python3 guardian.py ${t.action}</div>
           </div>
         `).join('');
+      }
+
+      let telemetryHtml = '';
+      if (telemetry) {
+        telemetryHtml = `
+          <div class="msg-telemetry-chip">
+            <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${telemetry.promptTokens} tok</span>
+            <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${telemetry.responseTokens} tok</span>
+            <span class="tok-tag total" title="Total Tokens Evaluated">⚡ ${telemetry.totalTokens} tok</span>
+            <span class="tok-tag speed" title="Generation Speed">⚡ ${telemetry.speed} tok/s</span>
+            <span class="tok-tag time" title="Latency">⏱️ ${telemetry.durationSec}s</span>
+          </div>
+        `;
       }
 
       const actionsHtml = `
@@ -6376,9 +8055,13 @@
         </div>
       `;
 
-      div.innerHTML = queueBadgeHtml + htmlContent + toolHtml + actionsHtml;
+      div.innerHTML = queueBadgeHtml + attachHtml + htmlContent + toolHtml + telemetryHtml + actionsHtml;
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
+
+      if (record && !isQueued && sender === 'user') {
+        ChatSessionManager.recordMessage(sender, attachHtml + htmlContent, tools, telemetry, attachedFiles);
+      }
     }
 
     function appendConfirmationCard(toolLabel, action, originalPrompt) {
@@ -6729,6 +8412,10 @@
     updateEnterMode(currentEnterMode, true);
     initTouchSelection();
     initDrawerControlsSlider();
+    GuardianTodo.render();
+    GuardianWorkspace.init();
+    ChatSessionManager.init();
+    updateSessionTokenMeter();
     loadSavedKeys();
     initGithubAuth();
     renderRepos();
