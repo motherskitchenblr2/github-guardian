@@ -1421,24 +1421,36 @@
     .model-recommendation-list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.65rem;
       margin-top: 0.75rem;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .model-rec-item {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-sm);
-      padding: 0.6rem 0.75rem;
+      padding: 0.7rem 0.85rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
+      flex-direction: column;
+      gap: 0.55rem;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      transition: all 0.2s ease;
     }
 
     .model-rec-item.recommended {
-      border-color: rgba(56, 189, 248, 0.4);
+      border-color: rgba(56, 189, 248, 0.45);
       background: rgba(56, 189, 248, 0.06);
+    }
+
+    .model-rec-left {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .model-rec-left h4 {
@@ -1448,21 +1460,48 @@
       display: flex;
       align-items: center;
       gap: 0.35rem;
+      flex-wrap: wrap;
     }
 
     .model-rec-left p {
       font-size: 0.68rem;
       color: var(--text-muted);
-      margin-top: 0.15rem;
+      margin-top: 0.2rem;
+      line-height: 1.35;
+      word-break: break-word;
     }
 
     .model-rec-actions {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      flex-shrink: 0;
+      gap: 6px;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding-top: 0.45rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    @media (min-width: 820px) {
+      .model-rec-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .model-rec-left {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .model-rec-actions {
+        width: auto;
+        justify-content: flex-end;
+        padding-top: 0;
+        border-top: none;
+        flex-shrink: 0;
+      }
     }
 
     .pull-wire-btn {
@@ -3883,6 +3922,10 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .hub-model-card:hover {
       border-color: rgba(236, 72, 153, 0.4);
@@ -3920,11 +3963,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
       padding-top: 6px;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       flex-wrap: wrap;
       gap: 6px;
+      width: 100%;
+      box-sizing: border-box;
     }
     .hub-card-specs {
       font-size: 0.65rem;
@@ -3935,20 +3980,25 @@
       display: flex;
       gap: 6px;
       align-items: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .btn-hub-action {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #FFF;
       border-radius: 5px;
-      padding: 4px 9px;
-      font-size: 0.68rem;
+      padding: 4px 8px;
+      font-size: 0.67rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      white-space: nowrap;
       transition: all 0.15s ease;
+      box-sizing: border-box;
     }
     .btn-hub-action:hover {
       background: rgba(255, 255, 255, 0.12);
@@ -7228,9 +7278,9 @@ Audit Summary:
         } else {
           const isEnabled = isModelEnabled(c.tag);
           const wireBtn = isWired
-            ? `<button class="pull-wire-btn wired" onclick="manualUnwireModel('${c.tag}')" title="Click to Unwire from router"><span>⚡ Wired (${c.role})</span></button>`
-            : `<button class="pull-wire-btn" style="background: rgba(56,189,248,0.15); border-color: #38BDF8; color: #38BDF8;" onclick="manualWireModel('${c.tag}', '${c.role}')" title="Wire to active router"><span>🔌 Wire</span></button>`;
-          const toggleBtn = `<button class="btn-hub-action ${isEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleModelEnabled('${c.tag}')" title="Toggle model active / disabled in router">${isEnabled ? '🟢 ON' : '⚪ OFF'}</button>`;
+            ? `<button class="btn-hub-action unwire" onclick="manualUnwireModel('${c.tag}')" title="Click to Unwire from router"><span>⚡ Wired: ${c.role.toUpperCase()}</span></button>`
+            : `<button class="btn-hub-action wire" onclick="manualWireModel('${c.tag}', '${c.role}')" title="Wire to active router"><span>🔌 Wire</span></button>`;
+          const toggleBtn = `<button class="btn-hub-action ${isEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleModelEnabled('${c.tag}')" title="Toggle model active / disabled in router"><span>${isEnabled ? '🟢 ON' : '⚪ OFF'}</span></button>`;
           const deleteBtn = `<button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${c.tag}')" title="Completely remove model from device storage"><span>🗑️ Remove</span></button>`;
           container.innerHTML = `${wireBtn} ${toggleBtn} ${deleteBtn}`;
         }
