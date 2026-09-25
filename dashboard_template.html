@@ -715,44 +715,80 @@
     }
 
     .terminal-titlebar {
-      background: rgba(5, 8, 16, 0.98);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.55rem 0.85rem;
+      background: linear-gradient(180deg, rgba(10, 16, 32, 0.98) 0%, rgba(5, 8, 18, 0.98) 100%);
+      border-bottom: 1px solid rgba(0, 245, 212, 0.22);
+      padding: 0.5rem 0.85rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.75rem;
+      min-height: 44px;
+      box-sizing: border-box;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
     }
 
     .terminal-dots {
-      display: flex;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .t-dots-group {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
 
     .t-dot {
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       display: inline-block;
       cursor: pointer;
+      flex-shrink: 0;
       transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
     }
-    .t-dot:hover { transform: scale(1.2); }
-    .t-red { background: #FF3366; box-shadow: 0 0 6px rgba(255, 51, 102, 0.7); }
-    .t-yellow { background: #FFB703; box-shadow: 0 0 6px rgba(255, 183, 3, 0.7); }
-    .t-green { background: #39FF14; box-shadow: 0 0 6px rgba(57, 255, 20, 0.7); }
+    .t-dot:hover { transform: scale(1.25); }
+    .t-red {
+      background: radial-gradient(circle at 35% 35%, #FFA3B8, #FF3366 70%);
+      box-shadow: 0 0 8px rgba(255, 51, 102, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .t-yellow {
+      background: radial-gradient(circle at 35% 35%, #FFE599, #FFB703 70%);
+      box-shadow: 0 0 8px rgba(255, 183, 3, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .t-green {
+      background: radial-gradient(circle at 35% 35%, #C2FFB3, #39FF14 70%);
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
     .terminal-filename {
       font-family: var(--font-mono);
       font-size: 0.68rem;
       color: var(--text-dim);
-      margin-left: 8px;
-      font-weight: 500;
+      margin-left: 4px;
+      font-weight: 600;
       letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.4;
     }
 
     .terminal-status-strip {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       font-family: var(--font-mono);
@@ -760,6 +796,7 @@
       color: #00F5D4;
       font-weight: 700;
       letter-spacing: 0.05em;
+      flex-shrink: 0;
     }
 
     /* Dedicated Full Terminal Console Pane */
@@ -907,32 +944,100 @@
     }
 
     .terminal-controls {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .term-ctrl-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-muted);
+      height: 28px;
+      min-height: 28px;
+      max-height: 28px;
+      box-sizing: border-box;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      color: #CBD5E1;
       font-size: 0.64rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: var(--font-mono);
-      padding: 0.2rem 0.55rem;
+      line-height: 1;
+      padding: 0 0.65rem;
       border-radius: 5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      transition: all 0.15s;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      vertical-align: middle;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
     }
 
     .term-ctrl-btn:hover {
       background: rgba(0, 245, 212, 0.15);
       color: #00F5D4;
-      border-color: rgba(0, 245, 212, 0.4);
-      box-shadow: 0 0 8px rgba(0, 245, 212, 0.3);
+      border-color: rgba(0, 245, 212, 0.5);
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .term-ctrl-btn:active {
+      transform: translateY(0);
+    }
+
+    .term-ctrl-btn svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .term-ctrl-btn .telemetry-pulse {
+      width: 7px;
+      height: 7px;
+      min-width: 7px;
+      min-height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0;
+      background: #39FF14;
+      box-shadow: 0 0 8px #39FF14;
+    }
+
+    .term-ctrl-btn.active {
+      border-color: rgba(0, 245, 212, 0.5);
+      color: #00F5D4;
+      background: rgba(0, 245, 212, 0.08);
+    }
+
+    @media (max-width: 640px) {
+      .terminal-titlebar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding: 0.5rem 0.65rem;
+        min-height: auto;
+      }
+      .terminal-titlebar .terminal-dots {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .terminal-titlebar .terminal-controls {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 6px;
+      }
+      .terminal-titlebar .term-ctrl-btn {
+        flex: 1 1 auto;
+        padding: 0 0.45rem;
+        font-size: 0.61rem;
+      }
     }
 
     .terminal-box.full-terminal-box {
@@ -4159,9 +4264,11 @@
       <div class="terminal-window" style="margin-top: 0.5rem;">
         <div class="terminal-titlebar">
           <div class="terminal-dots">
-            <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
-            <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
-            <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
+            <div class="t-dots-group">
+              <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
+              <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
+              <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
+            </div>
             <span class="terminal-filename"><span class="neon-green">guardian@termux</span>:<span class="neon-teal">daemon.log</span></span>
           </div>
           <div class="terminal-status-strip">
@@ -4488,21 +4595,25 @@
       <div class="terminal-window full-terminal">
         <div class="terminal-titlebar">
           <div class="terminal-dots">
-            <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
-            <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
-            <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
-            <span class="terminal-filename"><span class="neon-green">motherskitchenblr2@termux</span>:<span class="neon-teal">~/github-guardian</span> <span class="neon-pink">$ tail -f daemon.log</span></span>
+            <div class="t-dots-group">
+              <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
+              <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
+              <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
+            </div>
+            <span class="terminal-filename">
+              <span class="neon-green">motherskitchenblr2@termux</span><span style="color: var(--text-dim); margin: 0 1px;">:</span><span class="neon-teal">~/github-guardian</span> <span class="neon-pink" style="font-weight: 700;">$ tail -f daemon.log</span>
+            </span>
           </div>
           <div class="terminal-controls">
-            <button class="term-ctrl-btn" id="btn-autoscroll" onclick="toggleTerminalAutoScroll()" title="Toggle Auto-Scroll">
+            <button class="term-ctrl-btn active" id="btn-autoscroll" onclick="toggleTerminalAutoScroll()" title="Toggle Auto-Scroll">
               <span class="telemetry-pulse"></span>
               <span id="autoscroll-label">AUTO-SCROLL: ON</span>
             </button>
-            <button class="term-ctrl-btn" onclick="copyTerminalLogs()" title="Copy all logs">
+            <button class="term-ctrl-btn" id="btn-copy-term" onclick="copyTerminalLogs()" title="Copy all logs">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
-            <button class="term-ctrl-btn" onclick="clearTerminalLogs()" title="Clear console buffer">
+            <button class="term-ctrl-btn" id="btn-clear-term" onclick="clearTerminalLogs()" title="Clear console buffer">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
               <span>Clear</span>
             </button>
@@ -5273,7 +5384,16 @@
       const lbl = document.getElementById('autoscroll-label');
       if (lbl) lbl.innerText = terminalAutoScroll ? 'AUTO-SCROLL: ON' : 'AUTO-SCROLL: OFF';
       const btn = document.getElementById('btn-autoscroll');
-      if (btn) btn.style.color = terminalAutoScroll ? 'var(--primary)' : 'var(--text-dim)';
+      if (btn) {
+        btn.classList.toggle('active', terminalAutoScroll);
+        btn.style.color = terminalAutoScroll ? '#00F5D4' : 'var(--text-dim)';
+        btn.style.borderColor = terminalAutoScroll ? 'rgba(0, 245, 212, 0.45)' : 'rgba(255, 255, 255, 0.12)';
+        const pulse = btn.querySelector('.telemetry-pulse');
+        if (pulse) {
+          pulse.style.background = terminalAutoScroll ? '#39FF14' : '#64748B';
+          pulse.style.boxShadow = terminalAutoScroll ? '0 0 8px #39FF14' : 'none';
+        }
+      }
       showToast('Auto-scroll ' + (terminalAutoScroll ? 'enabled' : 'disabled'));
     }
 
