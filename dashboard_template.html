@@ -653,18 +653,69 @@
       text-overflow: ellipsis;
     }
 
-    /* Terminal Console Window */
+    /* Cyber Neon Terminal Palette & Theming */
+    .neon-teal {
+      color: #00F5D4 !important;
+      text-shadow: 0 0 8px rgba(0, 245, 212, 0.45);
+      font-weight: 700;
+    }
+    .neon-green {
+      color: #39FF14 !important;
+      text-shadow: 0 0 8px rgba(57, 255, 20, 0.45);
+      font-weight: 700;
+    }
+    .neon-white {
+      color: #FFFFFF !important;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.45);
+      font-weight: 700;
+    }
+    .neon-red {
+      color: #FF3366 !important;
+      text-shadow: 0 0 8px rgba(255, 51, 102, 0.6);
+      font-weight: 700;
+    }
+    .neon-blue {
+      color: #00D4FF !important;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+      font-weight: 700;
+    }
+    .neon-pink {
+      color: #FF2A85 !important;
+      text-shadow: 0 0 8px rgba(255, 42, 133, 0.5);
+      font-weight: 600;
+    }
+    .neon-amber {
+      color: #FFB703 !important;
+      text-shadow: 0 0 8px rgba(255, 183, 3, 0.5);
+      font-weight: 700;
+    }
+    .neon-purple {
+      color: #BD00FF !important;
+      text-shadow: 0 0 8px rgba(189, 0, 255, 0.5);
+      font-weight: 700;
+    }
+    .neon-cyan {
+      color: #00F5FF !important;
+      text-shadow: 0 0 8px rgba(0, 245, 255, 0.45);
+      font-weight: 600;
+    }
+    .neon-dim {
+      color: #64748B !important;
+      font-weight: 500;
+    }
+
+    /* Terminal Console Window (Deep Cyber Black with Neon Glow) */
     .terminal-window {
-      background: #030712;
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: #020409;
+      border: 1px solid rgba(0, 245, 212, 0.35);
       border-radius: var(--radius-md);
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(0, 245, 212, 0.08), 0 16px 45px rgba(0, 0, 0, 0.85);
       margin-top: 0.5rem;
     }
 
     .terminal-titlebar {
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(5, 8, 16, 0.98);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 0.55rem 0.85rem;
       display: flex;
@@ -679,21 +730,25 @@
     }
 
     .t-dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       display: inline-block;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .t-red { background: #EF4444; }
-    .t-yellow { background: #F59E0B; }
-    .t-green { background: #10B981; }
+    .t-dot:hover { transform: scale(1.2); }
+    .t-red { background: #FF3366; box-shadow: 0 0 6px rgba(255, 51, 102, 0.7); }
+    .t-yellow { background: #FFB703; box-shadow: 0 0 6px rgba(255, 183, 3, 0.7); }
+    .t-green { background: #39FF14; box-shadow: 0 0 6px rgba(57, 255, 20, 0.7); }
 
     .terminal-filename {
       font-family: var(--font-mono);
       font-size: 0.68rem;
       color: var(--text-dim);
-      margin-left: 6px;
+      margin-left: 8px;
       font-weight: 500;
+      letter-spacing: 0.02em;
     }
 
     .terminal-status-strip {
@@ -702,7 +757,7 @@
       gap: 6px;
       font-family: var(--font-mono);
       font-size: 0.62rem;
-      color: var(--success);
+      color: #00F5D4;
       font-weight: 700;
       letter-spacing: 0.05em;
     }
@@ -724,47 +779,131 @@
 
     .terminal-bar-label {
       font-size: 0.64rem;
-      font-weight: 700;
-      color: var(--text-dim);
+      font-weight: 800;
+      color: #FF2A85;
+      text-shadow: 0 0 6px rgba(255, 42, 133, 0.4);
       font-family: var(--font-mono);
       white-space: nowrap;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .terminal-action-pills {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
     }
 
     .term-pill-btn {
       background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: #E2E8F0;
       font-size: 0.66rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: var(--font-mono);
-      padding: 0.25rem 0.6rem;
+      padding: 0.28rem 0.65rem;
       border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
     }
 
     .term-pill-btn:hover {
-      background: rgba(56, 189, 248, 0.18);
-      border-color: var(--primary);
-      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Pill Color Variants */
+    .term-pill-btn.pill-teal {
+      background: rgba(0, 245, 212, 0.08);
+      border-color: rgba(0, 245, 212, 0.45);
+      color: #00F5D4;
+    }
+    .term-pill-btn.pill-teal:hover {
+      background: rgba(0, 245, 212, 0.22);
+      border-color: #00F5D4;
+      box-shadow: 0 0 12px rgba(0, 245, 212, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-green {
+      background: rgba(57, 255, 20, 0.08);
+      border-color: rgba(57, 255, 20, 0.45);
+      color: #39FF14;
+    }
+    .term-pill-btn.pill-green:hover {
+      background: rgba(57, 255, 20, 0.22);
+      border-color: #39FF14;
+      box-shadow: 0 0 12px rgba(57, 255, 20, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-blue {
+      background: rgba(0, 212, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.45);
+      color: #00D4FF;
+    }
+    .term-pill-btn.pill-blue:hover {
+      background: rgba(0, 212, 255, 0.22);
+      border-color: #00D4FF;
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-cyan {
+      background: rgba(0, 245, 255, 0.08);
+      border-color: rgba(0, 245, 255, 0.45);
+      color: #00F5FF;
+    }
+    .term-pill-btn.pill-cyan:hover {
+      background: rgba(0, 245, 255, 0.22);
+      border-color: #00F5FF;
+      box-shadow: 0 0 12px rgba(0, 245, 255, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-purple {
+      background: rgba(189, 0, 255, 0.08);
+      border-color: rgba(189, 0, 255, 0.45);
+      color: #BD00FF;
+    }
+    .term-pill-btn.pill-purple:hover {
+      background: rgba(189, 0, 255, 0.22);
+      border-color: #BD00FF;
+      box-shadow: 0 0 12px rgba(189, 0, 255, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-amber {
+      background: rgba(255, 183, 3, 0.08);
+      border-color: rgba(255, 183, 3, 0.45);
+      color: #FFB703;
+    }
+    .term-pill-btn.pill-amber:hover {
+      background: rgba(255, 183, 3, 0.22);
+      border-color: #FFB703;
+      box-shadow: 0 0 12px rgba(255, 183, 3, 0.5);
+      color: #FFFFFF;
+    }
+
+    .term-pill-btn.pill-pink {
+      background: rgba(255, 42, 133, 0.08);
+      border-color: rgba(255, 42, 133, 0.45);
+      color: #FF2A85;
+    }
+    .term-pill-btn.pill-pink:hover {
+      background: rgba(255, 42, 133, 0.22);
+      border-color: #FF2A85;
+      box-shadow: 0 0 12px rgba(255, 42, 133, 0.5);
+      color: #FFFFFF;
     }
 
     .terminal-window.full-terminal {
       display: flex;
       flex-direction: column;
-      border-color: rgba(56, 189, 248, 0.35);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+      border-color: rgba(0, 245, 212, 0.4);
+      box-shadow: 0 0 35px rgba(0, 245, 212, 0.12), 0 16px 50px rgba(0, 0, 0, 0.9);
     }
 
     .terminal-controls {
@@ -775,12 +914,12 @@
 
     .term-ctrl-btn {
       background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-muted);
       font-size: 0.64rem;
       font-weight: 600;
       font-family: var(--font-mono);
-      padding: 0.18rem 0.5rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 5px;
       cursor: pointer;
       display: inline-flex;
@@ -790,23 +929,24 @@
     }
 
     .term-ctrl-btn:hover {
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--primary);
-      border-color: rgba(56, 189, 248, 0.3);
+      background: rgba(0, 245, 212, 0.15);
+      color: #00F5D4;
+      border-color: rgba(0, 245, 212, 0.4);
+      box-shadow: 0 0 8px rgba(0, 245, 212, 0.3);
     }
 
     .terminal-box.full-terminal-box {
       min-height: 440px;
       max-height: calc(72vh - 120px);
-      padding: 0.95rem;
-      font-size: 0.73rem;
-      line-height: 1.6;
+      padding: 1rem;
+      font-size: 0.74rem;
+      line-height: 1.65;
       border-radius: 0;
       border-left: none;
       border-right: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #38BDF8;
-      background: #030712;
+      color: #F8FAFC;
+      background: #020409;
       overflow-y: auto;
       user-select: text;
     }
@@ -815,13 +955,14 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(10, 15, 26, 0.98);
-      padding: 0.55rem 0.75rem;
+      background: #050812;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.6rem 0.85rem;
     }
 
     .term-prompt {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -830,35 +971,40 @@
       flex: 1;
       background: transparent;
       border: none;
-      color: #FFFFFF;
+      color: #39FF14;
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 600;
       outline: none;
       padding: 0.2rem 0;
     }
 
     .term-cli-input::placeholder {
-      color: var(--text-dim);
+      color: #475569;
       font-size: 0.68rem;
     }
 
     .term-cli-submit {
-      background: linear-gradient(135deg, #0284C7, #6366F1);
+      background: linear-gradient(135deg, #00F5D4, #0284C7);
       border: none;
-      color: white;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 0.25rem 0.65rem;
+      color: #020409;
+      font-size: 0.7rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      padding: 0.3rem 0.75rem;
       border-radius: 5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
       transition: all 0.2s;
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.35);
     }
 
     .term-cli-submit:hover {
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 16px rgba(0, 245, 212, 0.6);
+      transform: translateY(-1px);
     }
 
     .terminal-telemetry-meta {
@@ -1097,18 +1243,19 @@
 
     /* Terminal Logs */
     .terminal-box {
-      background: #030712;
-      border: 1px solid var(--card-border);
+      background: #020409;
+      border: 1px solid rgba(0, 245, 212, 0.25);
       border-radius: var(--radius-md);
-      padding: 0.75rem;
+      padding: 0.85rem;
       font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: #38BDF8;
+      font-size: 0.72rem;
+      color: #F8FAFC;
       max-height: 280px;
       overflow-y: auto;
       white-space: pre-wrap;
-      word-break: break-all;
-      line-height: 1.5;
+      word-break: break-word;
+      line-height: 1.6;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
     }
 
     /* AI Suite & Hardware Advisor Styling */
@@ -2347,14 +2494,14 @@
       <div class="terminal-window" style="margin-top: 0.5rem;">
         <div class="terminal-titlebar">
           <div class="terminal-dots">
-            <span class="t-dot t-red"></span>
-            <span class="t-dot t-yellow"></span>
-            <span class="t-dot t-green"></span>
-            <span class="terminal-filename">guardian-daemon.telemetry</span>
+            <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
+            <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
+            <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
+            <span class="terminal-filename"><span class="neon-green">guardian@termux</span>:<span class="neon-teal">daemon.log</span></span>
           </div>
           <div class="terminal-status-strip">
             <span class="telemetry-pulse"></span>
-            <span>STREAMING</span>
+            <span class="neon-teal">LIVE TELEMETRY</span>
           </div>
         </div>
         <div class="terminal-box" id="daemon-logs">Connecting to Guardian daemon telemetry...</div>
@@ -2461,33 +2608,41 @@
       <div class="terminal-quick-bar">
         <span class="terminal-bar-label">DISPATCH:</span>
         <div class="terminal-action-pills">
-          <button class="term-pill-btn" onclick="triggerRun('run-all')">
+          <button class="term-pill-btn pill-teal" onclick="triggerRun('run-all')" title="Run Master Maintenance Suite">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span>Run All</span>
           </button>
-          <button class="term-pill-btn" onclick="triggerRun('review-prs')">
+          <button class="term-pill-btn pill-blue" onclick="triggerRun('review-prs')" title="Auto-Review & Squash Merge PRs">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/></svg>
             <span>Review PRs</span>
           </button>
-          <button class="term-pill-btn" onclick="triggerRun('sync-forks')">
+          <button class="term-pill-btn pill-cyan" onclick="triggerRun('sync-forks')" title="Synchronize 193 Forks">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             <span>Sync Forks</span>
           </button>
-          <button class="term-pill-btn" onclick="triggerRun('scan-secrets')">
+          <button class="term-pill-btn pill-purple" onclick="triggerRun('scan-secrets')" title="Scan Exposed Credentials">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span>Scan Secrets</span>
           </button>
-          <button class="term-pill-btn" onclick="triggerRun('harden')">
+          <button class="term-pill-btn pill-amber" onclick="triggerRun('harden')" title="Hardening & Branch Defenses">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             <span>Harden</span>
           </button>
-          <button class="term-pill-btn" onclick="executeTerminalCommandDirect('ollama list')" title="List installed local models">
+          <button class="term-pill-btn pill-green" onclick="executeTerminalCommandDirect('ollama list')" title="List installed local models">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
             <span>Ollama Models</span>
           </button>
-          <button class="term-pill-btn" onclick="pullAndWireModel('qwen2.5-coder:1.5b', 'coding')" title="Pull & Wire Recommended 1.5B Model">
+          <button class="term-pill-btn pill-green" onclick="pullAndWireModel('qwen2.5-coder:1.5b', 'coding')" title="Pull & Wire Recommended 1.5B Model">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             <span>Pull 1.5B</span>
+          </button>
+          <button class="term-pill-btn pill-green" onclick="pullAndWireModel('deepseek-r1:1.5b', 'reasoning')" title="Pull & Wire DeepSeek R1 Reasoning Model">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+            <span>Pull DeepSeek R1</span>
+          </button>
+          <button class="term-pill-btn pill-pink" onclick="testOfflineAiInTerminal('Explain how GitHub Guardian reviews and auto-merges PRs')" title="Run Offline Inference Test">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Test Inference</span>
           </button>
         </div>
       </div>
@@ -2499,7 +2654,7 @@
             <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
             <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
             <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
-            <span class="terminal-filename">motherskitchenblr2@termux:~/github-guardian $ tail -f daemon.log</span>
+            <span class="terminal-filename"><span class="neon-green">motherskitchenblr2@termux</span>:<span class="neon-teal">~/github-guardian</span> <span class="neon-pink">$ tail -f daemon.log</span></span>
           </div>
           <div class="terminal-controls">
             <button class="term-ctrl-btn" id="btn-autoscroll" onclick="toggleTerminalAutoScroll()" title="Toggle Auto-Scroll">
@@ -2522,9 +2677,9 @@
         <!-- Terminal Command Line Prompt Bar -->
         <div class="terminal-cli-bar">
           <div class="term-prompt">
-            <span style="color: var(--primary);">guardian@termux</span>:<span style="color: #818CF8;">~</span><span style="color: #10B981;">$</span>
+            <span class="neon-green">guardian@termux</span>:<span class="neon-teal">~</span><span class="neon-pink" style="font-weight: 800;">$</span>
           </div>
-          <input type="text" class="term-cli-input" id="terminal-cli-input" placeholder="Type command: run-all, review-prs, sync-forks, scan-secrets, harden, clear..." onkeydown="if(event.key==='Enter') executeTerminalCommand()">
+          <input type="text" class="term-cli-input" id="terminal-cli-input" placeholder="Type command: run-all, review-prs, sync-forks, scan-secrets, harden, ollama list, test ai..." onkeydown="if(event.key==='Enter') executeTerminalCommand()">
           <button class="term-cli-submit" onclick="executeTerminalCommand()">
             <span>Run</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2536,19 +2691,19 @@
       <div class="terminal-telemetry-meta">
         <div class="term-meta-item">
           <span class="term-meta-label">STATUS</span>
-          <span class="term-meta-value online">● LIVE STREAMING</span>
+          <span class="term-meta-value online neon-blue">● LIVE STREAMING</span>
         </div>
         <div class="term-meta-item">
           <span class="term-meta-label">ENDPOINT</span>
-          <span class="term-meta-value">/api/logs (PORT 8765)</span>
+          <span class="term-meta-value neon-cyan">/api/logs (PORT 8765)</span>
         </div>
         <div class="term-meta-item">
           <span class="term-meta-label">AUTONOMY</span>
-          <span class="term-meta-value" style="color: var(--primary);">FULL YOLO</span>
+          <span class="term-meta-value neon-teal">FULL YOLO</span>
         </div>
         <div class="term-meta-item">
           <span class="term-meta-label">REFRESH</span>
-          <span class="term-meta-value">POLL 2000ms</span>
+          <span class="term-meta-value neon-pink">POLL 2000ms</span>
         </div>
       </div>
     </div>
@@ -3103,11 +3258,102 @@
       }
     }
 
+    // Cyber Neon Telemetry Formatter (Teal, Green, White, Red, Blue, Pink, Amber, Purple, Cyan)
+    function formatCyberTelemetry(text) {
+      if (!text) return '';
+      const lines = text.split('\n');
+      return lines.map(line => {
+        let esc = line
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        // 1. Terminal Prompt / User Command line
+        if (esc.includes('[guardian@termux:~$]') || esc.startsWith('[guardian@termux')) {
+          return esc.replace(/(\[guardian@termux:~\$\])(.*)/g, (m, p1, p2) => {
+            return `<span class="neon-teal" style="font-weight: 800;">${p1}</span> <span class="neon-green" style="font-weight: 700;">${p2}</span>`;
+          });
+        }
+
+        // 2. High-priority Errors (Neon Red)
+        if (/\b(error|failed|exception|failure|merge_failed|rebase_failed|fatal|could not connect)\b/i.test(esc) || esc.includes('✕') || esc.includes('[✕]') || /HTTP\s+[45]\d\d/i.test(esc)) {
+          return `<span class="neon-red">${esc}</span>`;
+        }
+
+        // 3. High-priority Success & Completed (Neon Blue)
+        if (esc.includes('✔') || esc.includes('[✔]') || esc.includes('[SUCCESS]') || /\b(SUCCESSFULLY|COMPLETED SUCCESSFULLY|Squash-merged|Squash-Merged)\b/.test(esc)) {
+          return `<span class="neon-blue">${esc}</span>`;
+        }
+
+        // 4. Processing Steps & Header Bars (Neon Pink)
+        if (/\[STEP\s+\d+\/\d+\]/i.test(esc) || /--- \[.*\] ---/.test(esc)) {
+          return `<span class="neon-pink" style="font-weight: 800; text-transform: uppercase;">${esc}</span>`;
+        }
+
+        // Progress Bars (Neon Pink brackets, Neon Green percentage, Neon Teal size)
+        if (/\[[=>\s]{8,}\]\s*\d+%/.test(esc)) {
+          return esc.replace(/(\[[=>\s]{8,}\])(\s*\d+%\s*\([^)]+\))(.*)/, (m, bar, pct, rest) => {
+            return `<span class="neon-pink">${bar}</span> <span class="neon-green">${pct}</span> <span class="neon-teal">${rest}</span>`;
+          });
+        }
+
+        // Running Telemetry triggers & background streaming notices (Neon Pink)
+        if (/(tail -f|Connecting to|Initiating download|Pulling layer|Pulling manifest|Waiting for next telemetry|Starting |Refreshed telemetry|POLL 2000ms|LIVE STREAMING)/i.test(esc)) {
+          return `<span class="neon-pink">${esc}</span>`;
+        }
+
+        // 5. Warnings & Conflicts (Neon Amber)
+        if (/\b(warning|warn|conflict|dirty|rebased|pending)\b/i.test(esc) || esc.includes('⚠️')) {
+          esc = esc.replace(/\b(warning|warn|conflict|dirty|rebased|pending)\b/gi, '<span class="neon-amber">$1</span>');
+        }
+
+        // 6. AI Models & Quantized Models (Neon Green)
+        if (/(qwen2\.5-coder|deepseek-r1|smollm2|llama-3\.3|gemini-2\.0|mixtral)/i.test(esc)) {
+          esc = esc.replace(/(qwen2\.5-coder:[a-z0-9\.]+|deepseek-r1:[a-z0-9\.]+|smollm2:[a-z0-9\.]+|[a-zA-Z0-9\.\-]+:[a-zA-Z0-9\.\-]+)/gi, '<span class="neon-green">$1</span>');
+        }
+
+        // 7. AI Agents & Autonomous Engine (Neon Teal)
+        if (/(ai agent|yolo autonomy|full yolo|auto-wiring|ollama daemon|ollama engine|offline engine|multimodal ai|guardian ai)/i.test(esc)) {
+          esc = esc.replace(/(ai agent|yolo autonomy|full yolo|auto-wiring|ollama daemon|ollama engine|offline engine|multimodal ai|guardian ai)/gi, '<span class="neon-teal">$1</span>');
+        }
+
+        // 8. Apps Running Tasks & Dispatched Commands (Bright White)
+        if (/(python3\s+[-a-zA-Z0-9_/\.]+|command:\s*python3|guardian\.py|run_worker|subprocess\.run)/i.test(esc)) {
+          esc = esc.replace(/(python3\s+[-a-zA-Z0-9_/\.]+|command:\s*python3|guardian\.py)/gi, '<span class="neon-white">$1</span>');
+        }
+
+        // 9. Secrets, Tokens & Encryption Vault (Neon Purple)
+        if (/(aes-256|aes-gcm|pbkdf2|vault|secret|token|password|passphrase|credentials)/i.test(esc)) {
+          esc = esc.replace(/(aes-256|aes-gcm|pbkdf2|vault|secret|token|credentials)/gi, '<span class="neon-purple">$1</span>');
+        }
+
+        // 10. Forks, branches & PR numbers (Neon Cyan)
+        if (/(branch:\s*[\w\.\-]+|#\d+|fork_sync|upstream|github\.com)/i.test(esc)) {
+          esc = esc.replace(/(branch:\s*[\w\.\-]+|#\d+|fork_sync|upstream)/gi, '<span class="neon-cyan">$1</span>');
+        }
+
+        // 11. Dividers & Timestamps (Neon Dim Slate)
+        if (/^[=\-]{10,}$/.test(esc)) {
+          return `<span class="neon-dim">${esc}</span>`;
+        }
+
+        return esc;
+      }).join('<br>');
+    }
+
+    function appendTerminalLog(line) {
+      const term = document.getElementById('terminal-logs-pane');
+      if (term) {
+        term.innerHTML += `<div>${formatCyberTelemetry(line)}</div>`;
+        if (terminalAutoScroll) term.scrollTop = term.scrollHeight;
+      }
+    }
+
     function clearTerminalLogs() {
       const el = document.getElementById('terminal-logs-pane');
-      if (el) el.innerText = 'Terminal cleared. Waiting for next telemetry event...';
+      if (el) el.innerHTML = `<span class="neon-teal">[guardian@termux:~$]</span> <span class="neon-green">clear</span><br><span class="neon-dim">Terminal buffer cleared. Waiting for telemetry events...</span>`;
       const elMini = document.getElementById('daemon-logs');
-      if (elMini) elMini.innerText = 'Terminal cleared.';
+      if (elMini) elMini.innerHTML = `<span class="neon-dim">Terminal buffer cleared.</span>`;
       showToast('Terminal output cleared');
     }
 
@@ -3132,7 +3378,7 @@
       const cmd = raw.toLowerCase();
       const el = document.getElementById('terminal-logs-pane');
       if (el) {
-        el.innerText += `\n\n[guardian@termux:~$] ${raw}\n`;
+        el.innerHTML += `<br><span class="neon-teal" style="font-weight: 800;">[guardian@termux:~$]</span> <span class="neon-green" style="font-weight: 700;">${raw}</span><br>`;
         el.scrollTop = el.scrollHeight;
       }
 
@@ -3140,18 +3386,18 @@
         clearTerminalLogs();
       } else if (cmd === 'help') {
         if (el) {
-          el.innerText += `Available CLI Commands:
-  • run-all      - Run master automated maintenance suite (PRs, Forks, Secrets, Hardening)
-  • review-prs   - Autonomous PR evaluation, squash-merge, and conflict resolution
-  • sync-forks   - Synchronize all 193 forked repos with upstream
-  • scan-secrets - Scan repositories for exposed credentials and tokens
-  • harden       - Enforce Dependabot alerts, automated fixes, and branch defenses
-  • ollama list  - List local offline models installed on this device
-  • ollama pull <model> - Download and auto-wire model (e.g. ollama pull qwen2.5-coder:1.5b)
-  • ollama status- Check local Ollama daemon service health on port 11434
-  • test ai <prompt> - Run offline inference test on local model directly
-  • clear        - Clear terminal buffer
-  • refresh      - Fetch latest telemetry stream\n`;
+          el.innerHTML += `<span class="neon-pink" style="font-weight: 800;">Available Cyber CLI Commands:</span><br>
+  • <span class="neon-teal">run-all</span>      - <span class="neon-white">Run master automated maintenance suite (PRs, Forks, Secrets, Hardening)</span><br>
+  • <span class="neon-blue">review-prs</span>   - <span class="neon-white">Autonomous PR evaluation, squash-merge, and conflict resolution</span><br>
+  • <span class="neon-cyan">sync-forks</span>   - <span class="neon-white">Synchronize all 193 forked repos with upstream</span><br>
+  • <span class="neon-purple">scan-secrets</span> - <span class="neon-white">Scan repositories for exposed credentials and tokens</span><br>
+  • <span class="neon-amber">harden</span>       - <span class="neon-white">Enforce Dependabot alerts, automated fixes, and branch defenses</span><br>
+  • <span class="neon-green">ollama list</span>  - <span class="neon-white">List local offline models installed on this device</span><br>
+  • <span class="neon-green">ollama pull &lt;model&gt;</span> - <span class="neon-white">Download and auto-wire model (e.g. ollama pull qwen2.5-coder:1.5b)</span><br>
+  • <span class="neon-green">ollama status</span>- <span class="neon-white">Check local Ollama daemon service health on port 11434</span><br>
+  • <span class="neon-pink">test ai &lt;prompt&gt;</span> - <span class="neon-white">Run offline inference test on local model directly</span><br>
+  • <span class="neon-teal">clear</span>        - <span class="neon-white">Clear terminal buffer</span><br>
+  • <span class="neon-blue">refresh</span>      - <span class="neon-white">Fetch latest telemetry stream</span><br><br>`;
           el.scrollTop = el.scrollHeight;
         }
       } else if (cmd === 'refresh') {
@@ -3310,12 +3556,7 @@
     async function pullAndWireModel(modelName, category = 'coding') {
       switchNav('terminal');
       const term = document.getElementById('terminal-logs-pane');
-      const appendLog = (line) => {
-        if (term) {
-          term.innerText += `\n${line}`;
-          if (terminalAutoScroll) term.scrollTop = term.scrollHeight;
-        }
-      };
+      const appendLog = appendTerminalLog;
 
       appendLog(`\n======================================================`);
       appendLog(`[guardian@termux:~$] ollama pull ${modelName}`);
@@ -3540,13 +3781,7 @@
     }
 
     async function checkOllamaModelsInTerminal() {
-      const term = document.getElementById('terminal-logs-pane');
-      const appendLog = (line) => {
-        if (term) {
-          term.innerText += `\n${line}`;
-          if (terminalAutoScroll) term.scrollTop = term.scrollHeight;
-        }
-      };
+      const appendLog = appendTerminalLog;
 
       appendLog(`[guardian@termux:~$] ollama list`);
       try {
@@ -3578,13 +3813,7 @@
     }
 
     async function checkOllamaStatusInTerminal() {
-      const term = document.getElementById('terminal-logs-pane');
-      const appendLog = (line) => {
-        if (term) {
-          term.innerText += `\n${line}`;
-          if (terminalAutoScroll) term.scrollTop = term.scrollHeight;
-        }
-      };
+      const appendLog = appendTerminalLog;
 
       appendLog(`[guardian@termux:~$] ollama status`);
       try {
@@ -3607,13 +3836,7 @@
     }
 
     async function testOfflineAiInTerminal(promptText = 'Hello') {
-      const term = document.getElementById('terminal-logs-pane');
-      const appendLog = (line) => {
-        if (term) {
-          term.innerText += `\n${line}`;
-          if (terminalAutoScroll) term.scrollTop = term.scrollHeight;
-        }
-      };
+      const appendLog = appendTerminalLog;
 
       const codingModel = document.getElementById('cfg-coding-model')?.value || 'qwen2.5-coder:1.5b';
       appendLog(`[guardian@termux:~$] test-ai "${promptText}" using [${codingModel}]`);
@@ -4031,13 +4254,14 @@
         const resLogs = await fetch('/api/logs');
         if (resLogs.ok) {
           const logs = await resLogs.text();
+          const formatted = formatCyberTelemetry(logs);
           const logEl = document.getElementById('daemon-logs');
           if (logEl && logs) {
-            logEl.innerText = logs;
+            logEl.innerHTML = formatted;
           }
           const logFull = document.getElementById('terminal-logs-pane');
           if (logFull && logs) {
-            logFull.innerText = logs;
+            logFull.innerHTML = formatted;
             if (terminalAutoScroll) {
               logFull.scrollTop = logFull.scrollHeight;
             }
