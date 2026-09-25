@@ -1504,6 +1504,80 @@
       }
     }
 
+    /* Custom Model Tag & Hugging Face GGUF Pull Bars */
+    .custom-pull-bar {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.8rem;
+      margin: 0.6rem 0;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .custom-pull-bar.hf-bar {
+      border-color: rgba(236, 72, 153, 0.35);
+      background: rgba(236, 72, 153, 0.04);
+    }
+    .custom-pull-input {
+      flex: 1 1 200px;
+      min-width: 150px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 5px;
+      color: #FFF;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      box-sizing: border-box;
+    }
+    .custom-pull-input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    .custom-pull-bar.hf-bar .custom-pull-input:focus {
+      border-color: #F472B6;
+    }
+    .custom-pull-role {
+      flex: 0 0 auto;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      color: #FFF;
+      padding: 6px 8px;
+      font-size: 0.70rem;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .custom-pull-btn {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0.08));
+      border: 1px solid #38BDF8;
+      color: #38BDF8;
+      border-radius: 5px;
+      padding: 6px 12px;
+      font-size: 0.70rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .custom-pull-btn:hover {
+      background: #38BDF8;
+      color: #0F172A;
+    }
+    .custom-pull-btn.hf-btn {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.22), rgba(236, 72, 153, 0.08));
+      border-color: #F472B6;
+      color: #F472B6;
+    }
+    .custom-pull-btn.hf-btn:hover {
+      background: #F472B6;
+      color: #0F172A;
+    }
+
     .pull-wire-btn {
       background: linear-gradient(135deg, #0284C7, #0369A1);
       border: 1px solid rgba(56, 189, 248, 0.45);
@@ -4810,6 +4884,27 @@
           <span style="font-size: 0.65rem; color: var(--text-dim);">Download & Manual Wiring</span>
         </div>
 
+        <!-- Ollama Custom Model Tag Download Bar -->
+        <div class="custom-pull-bar">
+          <div style="font-size: 0.68rem; font-weight: 700; color: var(--primary); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>⬇️ PULL ANY OLLAMA MODEL BY TAG OR NAME</span>
+            <span style="font-size: 0.62rem; color: var(--text-dim);">e.g. starcoder2:3b, mistral, codellama, phi3</span>
+          </div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+            <input type="text" class="custom-pull-input" id="ollama-custom-model-input" placeholder="Enter Ollama model tag (e.g. starcoder2:3b, mistral, codellama)..." onkeydown="if(event.key==='Enter')startCustomOllamaPull()">
+            <select class="custom-pull-role" id="ollama-custom-model-role" title="Target Routing Role">
+              <option value="coding">💻 Coding</option>
+              <option value="reasoning">🧠 Reasoning</option>
+              <option value="vision">👁️ Vision</option>
+              <option value="chat">💬 Chat</option>
+            </select>
+            <button class="custom-pull-btn" id="btn-pull-custom-ollama" onclick="startCustomOllamaPull()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Pull Model</span>
+            </button>
+          </div>
+        </div>
+
         <div class="model-recommendation-list">
           <!-- Model 0: Moondream 1.8B (Visual AI / Vision-Language) -->
           <div class="model-rec-item recommended" id="card-rec-moondream">
@@ -4884,6 +4979,76 @@
               </button>
               <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull smollm2:360m')" title="Copy pull command">📋</button>
             </div>
+          </div>
+
+          <!-- Dynamic Extra Installed Ollama Models List -->
+          <div id="ollama-extra-installed-models" style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.45rem;"></div>
+        </div>
+      </div>
+
+      <!-- Hugging Face GGUF Suite & Edge Model Hub -->
+      <div class="config-card" id="card-huggingface-suite" style="border-color: rgba(236,72,153,0.35); background: radial-gradient(circle at 10% 20%, rgba(236,72,153,0.06), transparent 45%), var(--card-bg); margin-top: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.25rem;">🤗</span>
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 800; color: #FFF; margin: 0;">Hugging Face GGUF Offline Suite</h3>
+              <span style="font-size: 0.65rem; color: #F472B6; font-weight: 600;">ARM64 Quantized GGUF • Direct URL Downloads • Native Multi-Agent Routing</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="ollama-service-btn" style="border-color: rgba(236,72,153,0.5); color: #F472B6; background: rgba(236,72,153,0.12);" onclick="openModelHubModal('huggingface')" title="Open Hugging Face GGUF Model Hub">🤗 HF Hub Modal</button>
+            <button class="ollama-service-btn" onclick="checkOllamaService(true)" title="Refresh Installed Models">🔄 Refresh</button>
+          </div>
+        </div>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.45;">
+          Directly paste any Hugging Face model repository or GGUF URL (e.g., <code>https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF</code>). Models execute locally on-device via native ARM64 quant processing with zero cloud telemetry, wired directly into Guardian's router with individual Wire, On/Off, and Remove controls.
+        </p>
+
+        <!-- Hugging Face URL / Repo Download Bar -->
+        <div class="custom-pull-bar hf-bar">
+          <div style="font-size: 0.68rem; font-weight: 700; color: #F472B6; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>⬇️ DOWNLOAD WITH HUGGING FACE URL OR GGUF REPO</span>
+            <span style="font-size: 0.62rem; color: var(--text-dim);">Accepts huggingface.co URLs or hf.co/author/repo:quant</span>
+          </div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+            <input type="text" class="custom-pull-input" id="hf-url-input" placeholder="Paste HuggingFace URL (e.g. https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF or hf.co/author/repo:Q4_K_M)..." onkeydown="if(event.key==='Enter')startHuggingFaceUrlPull()">
+            <select class="custom-pull-role" id="hf-url-role" title="Target Routing Role">
+              <option value="chat">💬 Chat</option>
+              <option value="coding">💻 Coding</option>
+              <option value="reasoning">🧠 Reasoning</option>
+              <option value="vision">👁️ Vision</option>
+            </select>
+            <button class="custom-pull-btn hf-btn" id="btn-pull-hf-url" onclick="startHuggingFaceUrlPull()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download GGUF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section: Installed Hugging Face GGUF Models -->
+        <div style="margin-top: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <div style="font-size: 0.72rem; font-weight: 700; color: #F472B6; text-transform: uppercase;">
+              💾 Installed Hugging Face GGUF Models (Local Storage)
+            </div>
+            <span style="font-size: 0.65rem; color: var(--text-dim);" id="hf-installed-count-badge">0 Models</span>
+          </div>
+          <div id="hf-installed-models-list" class="model-recommendation-list">
+            <!-- Populated dynamically by renderHuggingFaceCards() -->
+          </div>
+        </div>
+
+        <!-- Section: Curated Hugging Face GGUF Recommendations -->
+        <div style="margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <div style="font-size: 0.72rem; font-weight: 700; color: #F472B6; text-transform: uppercase;">
+              ⭐ Curated Hugging Face GGUF Models (ARM64 Optimized)
+            </div>
+            <span style="font-size: 0.65rem; color: var(--text-dim);">Tested on Edge ARM64 (~7.4GB RAM)</span>
+          </div>
+          <div id="hf-curated-recommendations-list" class="model-recommendation-list">
+            <!-- Populated dynamically by renderHuggingFaceCards() -->
           </div>
         </div>
       </div>
@@ -6830,8 +6995,62 @@ Audit Summary:
           role: 'chat',
           specs: '1B Params • ~1.3GB GGUF • Q4_K_M • Summarization'
         }
+      ],
+      huggingface: [
+        {
+          name: 'hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M',
+          tag: 'hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M',
+          title: '⭐ Llama-3.2-1B-Instruct (GGUF)',
+          subtitle: 'Meta High-Efficiency General Dialogue & Instructions',
+          desc: 'High-throughput conversational reasoning, natural dialogue & multi-turn interaction optimized for ARM64 mobile hardware.',
+          badges: ['⭐ Meta Instruct', 'Hugging Face GGUF', 'Q4_K_M'],
+          role: 'chat',
+          specs: '1B Params • ~800MB GGUF • ~1.2GB RAM • Dialogue'
+        },
+        {
+          name: 'hf.co/unsloth/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M',
+          tag: 'hf.co/unsloth/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M',
+          title: '⭐ Qwen2.5-Coder-1.5B-Instruct (GGUF)',
+          subtitle: 'Unsloth Fast Dynamic Coder & Conflict Resolver',
+          desc: 'Supreme code synthesis, patch generation, syntax linting & merge conflict rectification under the "Never Break The Code" policy.',
+          badges: ['⭐ Recommended Coder', 'Unsloth GGUF', 'Q4_K_M'],
+          role: 'coding',
+          specs: '1.5B Params • ~986MB GGUF • ~1.4GB RAM • Coding'
+        },
+        {
+          name: 'hf.co/bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF:Q4_K_M',
+          tag: 'hf.co/bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF:Q4_K_M',
+          title: '🧠 DeepSeek-R1-Distill-1.5B (GGUF)',
+          subtitle: 'Algorithmic Chain-of-Thought PR Reasoning',
+          desc: 'Deep mathematical & algorithmic chain-of-thought for PR merge strategies, architectural reviews, risk assessment & decision formulation.',
+          badges: ['🧠 CoT Reasoning', 'Hugging Face GGUF', 'Q4_K_M'],
+          role: 'reasoning',
+          specs: '1.5B Params • ~1.1GB GGUF • ~1.6GB RAM • Reasoning'
+        },
+        {
+          name: 'hf.co/bartowski/SmolLM2-360M-Instruct-GGUF:Q4_K_M',
+          tag: 'hf.co/bartowski/SmolLM2-360M-Instruct-GGUF:Q4_K_M',
+          title: '⚡ SmolLM2-360M-Instruct (GGUF)',
+          subtitle: 'Ultra-Compact Micro-Agent Chat',
+          desc: 'Instant micro-agent execution, lowest battery draw, and rapid response for interactive Q&A and status reporting.',
+          badges: ['Micro-Agent', 'Ultra-Light', '260MB'],
+          role: 'chat',
+          specs: '360M Params • ~260MB GGUF • ~450MB RAM • Discussion'
+        },
+        {
+          name: 'hf.co/bartowski/SmolLM2-1.7B-Instruct-GGUF:Q4_K_M',
+          tag: 'hf.co/bartowski/SmolLM2-1.7B-Instruct-GGUF:Q4_K_M',
+          title: 'SmolLM2-1.7B-Instruct (GGUF)',
+          subtitle: 'High-Efficiency Compact Dialogue Agent',
+          desc: 'Expanded knowledge, higher nuance, and robust tool-following with low resource overhead on edge devices.',
+          badges: ['Compact Agent', 'Hugging Face GGUF', '1.7B'],
+          role: 'chat',
+          specs: '1.7B Params • ~1.1GB GGUF • ~1.5GB RAM • Discussion'
+        }
       ]
     };
+
+    const HF_CURATED_MODELS = MODEL_HUB_CATALOG.huggingface;
 
     // Model Enabled State (On/Off Toggle per Model in Router)
     function getModelEnabledMap() {
@@ -6943,19 +7162,76 @@ Audit Summary:
       let s = (raw || '').trim();
       if (!s) return '';
       s = s.replace(/^["'`]|["'`]$/g, '');
-      const hfMatch = s.match(/(?:https?:\/\/)?(?:www\.)?huggingface\.co\/([^\/\s]+)\/([^\/\s?#]+)(?:\/blob\/[^\/\s]+\/([^\/\s?#]+))?/i);
+      // Strip protocol
+      s = s.replace(/^https?:\/\//i, '');
+
+      // Direct hf.co tag e.g. hf.co/author/repo or hf.co/author/repo:tag
+      if (/^hf\.co\//i.test(s)) {
+        return s;
+      }
+
+      // Hugging Face full URL e.g. huggingface.co/author/repo... or www.huggingface.co/...
+      const hfMatch = s.match(/^(?:www\.)?huggingface\.co\/([^\/\s]+)\/([^\/\s?#]+)(?:\/(?:blob|resolve)\/[^\/\s]+\/([^\/\s?#]+))?/i);
       if (hfMatch) {
         const author = hfMatch[1];
         const repo = hfMatch[2];
         const file = hfMatch[3];
         if (file && file.toLowerCase().endsWith('.gguf')) {
-          const quantMatch = file.match(/:?([A-Za-z0-9_]+)\.gguf$/i);
+          const quantMatch = file.match(/[_\.\-]([qQ]\d+_[a-zA-Z0-9_\-]+|[fF]16|[fF]32|[bB][fF]16)\.gguf$/i) || file.match(/:?([A-Za-z0-9_\-]+)\.gguf$/i);
           const tag = quantMatch ? quantMatch[1] : 'latest';
           return `hf.co/${author}/${repo}:${tag}`;
         }
         return `hf.co/${author}/${repo}`;
       }
+
+      // Author/Repo shorthand without hf.co/ (e.g. bartowski/Llama-3.2-1B-Instruct-GGUF or unsloth/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M)
+      if (s.includes('/') && !s.includes(' ') && !s.startsWith('.')) {
+        const parts = s.split('/');
+        if (parts.length === 2 && !parts[0].includes(':')) {
+          return `hf.co/${s}`;
+        }
+      }
+
       return s;
+    }
+
+    function startCustomOllamaPull() {
+      const input = document.getElementById('ollama-custom-model-input');
+      const roleSel = document.getElementById('ollama-custom-model-role');
+      const raw = input?.value.trim();
+      const role = roleSel?.value || 'coding';
+      if (!raw) {
+        showToast('Please enter an Ollama model tag (e.g. starcoder2:3b, mistral)');
+        input?.focus();
+        return;
+      }
+      downloadOllamaModel(raw, role);
+    }
+
+    function startHuggingFaceUrlPull() {
+      const input = document.getElementById('hf-url-input');
+      const roleSel = document.getElementById('hf-url-role');
+      const raw = input?.value.trim();
+      const role = roleSel?.value || 'chat';
+      if (!raw) {
+        showToast('Please paste a Hugging Face URL or GGUF repo');
+        input?.focus();
+        return;
+      }
+      const normalized = normalizeModelTagOrUrl(raw);
+      downloadOllamaModel(normalized, role);
+    }
+
+    function promptWireModel(modelName, defaultRole = 'coding') {
+      const role = prompt(`Select target role to wire "${modelName}" into Guardian router:\n\nEnter one of: coding, reasoning, vision, chat`, defaultRole || 'coding');
+      if (!role) return;
+      const cleanRole = role.trim().toLowerCase();
+      const validRoles = ['coding', 'reasoning', 'vision', 'chat'];
+      if (!validRoles.includes(cleanRole)) {
+        showToast(`Invalid role "${role}". Choose from: ${validRoles.join(', ')}`);
+        return;
+      }
+      manualWireModel(modelName, cleanRole);
     }
 
     // Active Ollama Model Download Engine (STRICT: NO AUTO-WIRING)
@@ -6978,7 +7254,7 @@ Audit Summary:
       isHubDownloading = true;
 
       // Update button on overview card if present
-      const btnId = `btn-pull-${modelName.replace(/[:.]/g, '-')}`;
+      const btnId = `btn-pull-${modelName.replace(/[:.\/]/g, '-')}`;
       const btn = document.getElementById(btnId);
       if (btn) {
         btn.className = 'pull-wire-btn pulling';
@@ -7121,14 +7397,14 @@ Audit Summary:
       const isCoder = category === 'coding' || modelName.includes('coder');
       const isReasoning = category === 'reasoning' || modelName.includes('r1');
       const isVision = category === 'vision' || modelName.includes('moondream') || modelName.includes('vl');
-      const isChat = category === 'chat' || modelName.includes('smollm') || modelName.includes('gemma');
+      const isChat = category === 'chat' || category === 'discussion' || modelName.includes('smollm') || modelName.includes('gemma') || modelName.includes('llama');
 
       // 1. Coding select
       const codingSelect = document.getElementById('cfg-coding-model');
       if (codingSelect) {
         let opt = Array.from(codingSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
         if (!opt) {
-          opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
+          opt = new Option(`Local: ${modelName} (Active)`, modelName);
           codingSelect.add(opt, 0);
         }
         if (isCoder) {
@@ -7142,7 +7418,7 @@ Audit Summary:
       if (reasoningSelect) {
         let opt = Array.from(reasoningSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
         if (!opt) {
-          opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
+          opt = new Option(`Local: ${modelName} (Active)`, modelName);
           reasoningSelect.add(opt, 0);
         }
         if (isReasoning) {
@@ -7156,7 +7432,7 @@ Audit Summary:
       if (visionSelect) {
         let opt = Array.from(visionSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
         if (!opt) {
-          opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
+          opt = new Option(`Local: ${modelName} (Active)`, modelName);
           visionSelect.add(opt, 0);
         }
         if (isVision) {
@@ -7170,7 +7446,7 @@ Audit Summary:
       if (chatSelect) {
         let opt = Array.from(chatSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
         if (!opt) {
-          opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
+          opt = new Option(`Local: ${modelName} (Active)`, modelName);
           chatSelect.add(opt, 0);
         }
         if (isChat) {
@@ -7183,9 +7459,12 @@ Audit Summary:
       const drawerSelect = document.getElementById('active-model-select');
       if (drawerSelect) {
         let opt = Array.from(drawerSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
-        const roleIcon = isVision ? '👁️' : isCoder ? '💻' : isReasoning ? '🧠' : '💬';
+        const isHf = modelName.includes('hf.co');
+        const roleIcon = isHf ? '🤗' : (isVision ? '👁️' : isCoder ? '💻' : isReasoning ? '🧠' : '💬');
+        const shortName = isHf ? modelName.replace('hf.co/', '') : modelName.split(':')[0];
+        const label = `${roleIcon} ${shortName.length > 25 ? shortName.slice(0, 23) + '...' : shortName}`;
         if (!opt) {
-          opt = new Option(`${roleIcon} ${modelName.split(':')[0]}`, modelName);
+          opt = new Option(label, modelName);
           drawerSelect.add(opt, 1);
         }
         drawerSelect.value = opt.value;
@@ -7302,6 +7581,155 @@ Audit Summary:
           container.innerHTML = `${wireBtn} ${toggleBtn} ${deleteBtn}`;
         }
       });
+
+      // Render extra installed Ollama models (non-core-5 and non-Hugging Face)
+      const extraContainer = document.getElementById('ollama-extra-installed-models');
+      if (extraContainer) {
+        const coreTags = ['moondream', 'qwen2.5-coder:1.5b', 'deepseek-r1:1.5b', 'qwen2.5-coder:0.5b', 'smollm2:360m'];
+        const extraModels = lastKnownOllamaModels.filter(m => {
+          const isCore = coreTags.some(ct => m.name === ct || m.name.startsWith(ct.split(':')[0]));
+          const isHf = m.name.includes('hf.co') || m.name.includes('/') || m.name.toLowerCase().includes('gguf');
+          return !isCore && !isHf;
+        });
+
+        if (extraModels.length > 0) {
+          extraContainer.innerHTML = `
+            <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-dim); margin-top: 0.5rem; text-transform: uppercase;">
+              📦 Other Installed Ollama Models (${extraModels.length})
+            </div>
+            ${extraModels.map(m => {
+              const isWired = isModelWired(m.name);
+              const role = getModelWiredRole(m.name) || 'coding';
+              const isEnabled = isModelEnabled(m.name);
+              const sizeMb = ((m.size || 0) / (1024 * 1024)).toFixed(0);
+              const sizeGb = ((m.size || 0) / (1024 * 1024 * 1024)).toFixed(2);
+              const displaySize = sizeMb > 1000 ? `${sizeGb} GB` : `${sizeMb} MB`;
+              const paramSize = m.details?.parameter_size || 'Unknown';
+              const quant = m.details?.quantization_level || 'GGUF';
+
+              const wireBtn = isWired
+                ? `<button class="btn-hub-action unwire" onclick="manualUnwireModel('${m.name}')" title="Click to Unwire from router"><span>⚡ Wired: ${role.toUpperCase()}</span></button>`
+                : `<button class="btn-hub-action wire" onclick="promptWireModel('${m.name}', '${role}')" title="Wire to active router"><span>🔌 Wire</span></button>`;
+              const toggleBtn = `<button class="btn-hub-action ${isEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleModelEnabled('${m.name}')" title="Toggle model active / disabled in router"><span>${isEnabled ? '🟢 ON' : '⚪ OFF'}</span></button>`;
+              const deleteBtn = `<button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${m.name}')" title="Completely remove model from device storage"><span>🗑️ Remove</span></button>`;
+
+              return `
+                <div class="model-rec-item">
+                  <div class="model-rec-left">
+                    <h4><span>💾 ${m.name}</span> <span class="card-badge badge-ai">${quant}</span></h4>
+                    <p>${displaySize} • Params: ${paramSize} • Local Ollama Engine</p>
+                  </div>
+                  <div class="model-rec-actions">
+                    ${wireBtn} ${toggleBtn} ${deleteBtn}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          `;
+        } else {
+          extraContainer.innerHTML = '';
+        }
+      }
+
+      // Also render Hugging Face Suite cards
+      renderHuggingFaceCards();
+    }
+
+    // Hugging Face GGUF Suite Card Renderer
+    function renderHuggingFaceCards() {
+      const installedContainer = document.getElementById('hf-installed-models-list');
+      const curatedContainer = document.getElementById('hf-curated-recommendations-list');
+      const countBadge = document.getElementById('hf-installed-count-badge');
+
+      // Filter for Hugging Face models installed in local Ollama daemon
+      const hfInstalled = lastKnownOllamaModels.filter(m => m.name.includes('hf.co') || m.name.includes('/') || m.name.toLowerCase().includes('gguf'));
+
+      if (countBadge) {
+        countBadge.innerText = `${hfInstalled.length} Installed`;
+      }
+
+      // 1. Render Installed Hugging Face Models
+      if (installedContainer) {
+        if (hfInstalled.length === 0) {
+          installedContainer.innerHTML = `
+            <div style="text-align: center; padding: 1.2rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px dashed rgba(236,72,153,0.25); border-radius: 6px; color: var(--text-dim); font-size: 0.72rem;">
+              <span style="font-size: 1.3rem;">🤗</span><br>
+              <strong>No Hugging Face GGUF models installed yet.</strong><br>
+              <span style="font-size: 0.65rem;">Paste any Hugging Face GGUF URL above or pick a curated model below.</span>
+            </div>
+          `;
+        } else {
+          installedContainer.innerHTML = hfInstalled.map(m => {
+            const isWired = isModelWired(m.name);
+            const role = getModelWiredRole(m.name) || 'chat';
+            const isEnabled = isModelEnabled(m.name);
+            const sizeMb = ((m.size || 0) / (1024 * 1024)).toFixed(0);
+            const sizeGb = ((m.size || 0) / (1024 * 1024 * 1024)).toFixed(2);
+            const displaySize = sizeMb > 1000 ? `${sizeGb} GB` : `${sizeMb} MB`;
+            const quant = m.details?.quantization_level || 'GGUF';
+            const paramSize = m.details?.parameter_size || 'Edge';
+
+            const wireBtn = isWired
+              ? `<button class="btn-hub-action unwire" onclick="manualUnwireModel('${m.name}')" title="Click to Unwire from router"><span>⚡ Wired: ${role.toUpperCase()}</span></button>`
+              : `<button class="btn-hub-action wire" onclick="promptWireModel('${m.name}', '${role}')" title="Wire to active router"><span>🔌 Wire</span></button>`;
+            const toggleBtn = `<button class="btn-hub-action ${isEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleModelEnabled('${m.name}')" title="Toggle model active / disabled in router"><span>${isEnabled ? '🟢 ON' : '⚪ OFF'}</span></button>`;
+            const deleteBtn = `<button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${m.name}')" title="Completely remove model from device storage"><span>🗑️ Remove</span></button>`;
+
+            return `
+              <div class="model-rec-item" style="border-color: rgba(236,72,153,0.3); background: rgba(236,72,153,0.03);">
+                <div class="model-rec-left">
+                  <h4><span>🤗 ${m.name}</span> <span class="card-badge badge-ai" style="border-color: #F472B6; color: #F472B6;">${quant}</span></h4>
+                  <p>${displaySize} • Parameter Size: ${paramSize} • Local ARM64 GGUF Execution</p>
+                </div>
+                <div class="model-rec-actions">
+                  ${wireBtn} ${toggleBtn} ${deleteBtn}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // 2. Render Curated Hugging Face Models
+      if (curatedContainer) {
+        const curatedList = (MODEL_HUB_CATALOG && MODEL_HUB_CATALOG.huggingface) ? MODEL_HUB_CATALOG.huggingface : [];
+        curatedContainer.innerHTML = curatedList.map(item => {
+          const isInstalled = lastKnownOllamaModels.some(m => m.name === item.tag || m.name === item.name || m.name.includes(item.tag.split(':')[0]));
+          const isWired = isModelWired(item.tag);
+          const isEnabled = isModelEnabled(item.tag);
+          const role = getModelWiredRole(item.tag) || item.role;
+
+          let actionsHtml = '';
+          if (!isInstalled) {
+            actionsHtml = `
+              <button class="pull-wire-btn" id="btn-pull-${item.tag.replace(/[:.\/]/g, '-')}" onclick="downloadOllamaModel('${item.tag}', '${item.role}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download GGUF</span>
+              </button>
+              <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull ${item.tag}')" title="Copy pull command">📋</button>
+            `;
+          } else {
+            const wireBtn = isWired
+              ? `<button class="btn-hub-action unwire" onclick="manualUnwireModel('${item.tag}')" title="Click to Unwire from router"><span>⚡ Wired: ${role.toUpperCase()}</span></button>`
+              : `<button class="btn-hub-action wire" onclick="manualWireModel('${item.tag}', '${item.role}')" title="Wire to active router"><span>🔌 Wire</span></button>`;
+            const toggleBtn = `<button class="btn-hub-action ${isEnabled ? 'toggle-on' : 'toggle-off'}" onclick="toggleModelEnabled('${item.tag}')" title="Toggle model active / disabled in router"><span>${isEnabled ? '🟢 ON' : '⚪ OFF'}</span></button>`;
+            const deleteBtn = `<button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${item.tag}')" title="Completely remove model from device storage"><span>🗑️ Remove</span></button>`;
+            actionsHtml = `${wireBtn} ${toggleBtn} ${deleteBtn}`;
+          }
+
+          return `
+            <div class="model-rec-item ${item.badges.some(b => b.includes('Recommended') || b.includes('Meta')) ? 'recommended' : ''}" style="border-color: rgba(236,72,153,0.25);">
+              <div class="model-rec-left">
+                <h4><span>🤗 ${item.title}</span> <span class="card-badge badge-merged" style="border-color: #F472B6; color: #F472B6;">${item.badges[0]}</span></h4>
+                <p>${item.specs} • ${item.desc}</p>
+              </div>
+              <div class="model-rec-actions" id="rec-actions-${item.tag.replace(/[:.\/]/g, '-')}">
+                ${actionsHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
     // Model Hub Modal Controller
@@ -7432,12 +7860,18 @@ Audit Summary:
       } else {
         const catalogList = MODEL_HUB_CATALOG[currentHubTab] || [];
         const isVisionTab = currentHubTab === 'vision';
+        const isHfTab = currentHubTab === 'huggingface';
 
         tabContentHtml = `
           ${isVisionTab ? `
             <div style="background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.3); border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 0.72rem; line-height: 1.4;">
               <strong style="color: #F472B6;">👁️ How Visual AI (VL) Works with Agent Guardian:</strong><br>
               Visual models inspect uploaded images, UI mockups, documents, and terminal screenshots. They extract verbatim text (OCR) and layout details so <strong>Agent Guardian</strong> & <strong>Agent Q&A</strong> can plan patches, audit design decisions, and review PRs without breaking code!
+            </div>
+          ` : isHfTab ? `
+            <div style="background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.3); border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 0.72rem; line-height: 1.4;">
+              <strong style="color: #F472B6;">🤗 Hugging Face Edge AI Models (GGUF Quantized):</strong><br>
+              Directly download and run Hugging Face GGUF models on mobile ARM64 hardware with 0 external telemetry. Click <strong>Download</strong> or paste any Hugging Face repo or GGUF URL above!
             </div>
           ` : ''}
 
@@ -7447,14 +7881,14 @@ Audit Summary:
               const isWired = isModelWired(item.tag);
 
               return `
-                <div class="hub-model-card ${item.badges.some(b => b.includes('Recommended') || b.includes('Top')) ? 'recommended' : ''}">
+                <div class="hub-model-card ${item.badges.some(b => b.includes('Recommended') || b.includes('Top') || b.includes('Meta')) ? 'recommended' : ''}">
                   <div class="hub-card-header">
                     <div class="hub-card-title">
-                      <span>${isVisionTab ? '👁️' : currentHubTab === 'coder' ? '💻' : '🧠'}</span>
+                      <span>${isVisionTab ? '👁️' : currentHubTab === 'coder' ? '💻' : isHfTab ? '🤗' : '🧠'}</span>
                       <span>${item.title}</span>
                     </div>
                     <div class="hub-card-badges">
-                      ${item.badges.map(b => `<span class="card-badge ${b.includes('Recommended') || b.includes('Top') ? 'badge-merged' : 'badge-ai'}" style="${b.includes('Top') ? 'border-color: #F472B6; color: #F472B6;' : ''}">${b}</span>`).join('')}
+                      ${item.badges.map(b => `<span class="card-badge ${b.includes('Recommended') || b.includes('Top') || b.includes('Meta') ? 'badge-merged' : 'badge-ai'}" style="${b.includes('Top') || b.includes('Meta') ? 'border-color: #F472B6; color: #F472B6;' : ''}">${b}</span>`).join('')}
                     </div>
                   </div>
                   <div class="hub-card-desc">
@@ -7526,7 +7960,7 @@ Audit Summary:
                     <option value="vision" ${currentHubTab === 'vision' ? 'selected' : ''}>👁️ Vision</option>
                     <option value="coding" ${currentHubTab === 'coder' ? 'selected' : ''}>💻 Coding</option>
                     <option value="reasoning" ${currentHubTab === 'reasoning' ? 'selected' : ''}>🧠 Reasoning</option>
-                    <option value="chat">💬 Chat</option>
+                    <option value="chat" ${currentHubTab === 'huggingface' ? 'selected' : ''}>💬 Chat</option>
                   </select>
                   <button class="hub-btn-download" onclick="startHubModelDownload()">
                     <span>⬇️ Download</span>
@@ -7539,7 +7973,8 @@ Audit Summary:
                   <span class="hub-tag-pill recommended" onclick="setHubInput('qwen2.5-coder:1.5b', 'coding')">💻 qwen2.5-coder:1.5b</span>
                   <span class="hub-tag-pill recommended" onclick="setHubInput('deepseek-r1:1.5b', 'reasoning')">🧠 deepseek-r1:1.5b</span>
                   <span class="hub-tag-pill" onclick="setHubInput('smollm2:360m', 'chat')">💬 smollm2:360m</span>
-                  <span class="hub-tag-pill" onclick="setHubInput('gemma2:2b', 'chat')">💬 gemma2:2b</span>
+                  <span class="hub-tag-pill" style="border-color: rgba(236,72,153,0.5); color: #F472B6;" onclick="setHubInput('hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M', 'chat')">🤗 Llama-3.2:1b (GGUF)</span>
+                  <span class="hub-tag-pill" style="border-color: rgba(236,72,153,0.5); color: #F472B6;" onclick="setHubInput('hf.co/unsloth/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M', 'coding')">🤗 Qwen2.5-Coder:1.5b (GGUF)</span>
                 </div>
 
                 <!-- Live Progress Box -->
@@ -7563,10 +7998,13 @@ Audit Summary:
                   <span>💻 Small Coder</span>
                 </button>
                 <button class="hub-tab-btn ${currentHubTab === 'reasoning' ? 'active' : ''}" onclick="switchHubTab('reasoning')">
-                  <span>💬 Reasoning & Chat</span>
+                  <span>🧠 Reasoning & Chat</span>
+                </button>
+                <button class="hub-tab-btn ${currentHubTab === 'huggingface' ? 'active' : ''}" onclick="switchHubTab('huggingface')" style="border-color: rgba(236,72,153,0.4); color: ${currentHubTab === 'huggingface' ? '#FFF' : '#F472B6'};">
+                  <span>🤗 Hugging Face GGUF</span>
                 </button>
                 <button class="hub-tab-btn ${currentHubTab === 'installed' ? 'active' : ''}" onclick="switchHubTab('installed')">
-                  <span>💾 Installed On Device (${installedCount})</span>
+                  <span>💾 Installed (${installedCount})</span>
                 </button>
               </div>
 
@@ -9864,14 +10302,39 @@ Audit Summary:
           'high': 'Perform deep exhaustive reasoning, evaluating code syntax edge cases, security vectors, and backwards compatibility.'
         };
 
-        const systemPrompt = `You are ${agentMode === 'qa' ? 'Agent Q&A (Senior Technical Code Auditor)' : 'Agent Guardian (Strict Auditor and Approving Authority)'} for GitHub Guardian repositories (@motherskitchenblr2).
+        const systemPrompt = `You are ${agentMode === 'qa' ? 'Agent Q&A (Senior Technical Code Auditor)' : 'Agent Guardian (Strict Auditor and Approving Authority)'} in the GitHub Guardian Autonomous Suite for @motherskitchenblr2 (managing 193 repositories/forks).
 
-CORE BEHAVIOR & NATURAL CONVERSATION MANDATE:
+INTEGRATED PLATFORM ARCHITECTURE & SUPPORTING SYSTEMS DIRECTORY:
+You are directly integrated into an advanced autonomous engineering platform with complete access to the following supporting systems and tools:
+1. 💻 CYBER TERMINAL & SHELL ENGINE (Port 8765):
+   • Direct native Termux ARM64 Linux shell execution.
+   • Capable of running Git commands (fetch, checkout, rebase, merge, push), dependency managers (npm, pip, yarn), linters (flake8, eslint), AST syntax checkers, and test runners.
+   • Purpose: Direct execution of code fixes, running automated commands, checking out branches, and pushing conflict resolutions.
+2. 🔄 PR ENGINE & CONFLICT RESOLVER:
+   • Specializes in Dependabot, Renovate, and contributor pull requests across 193 repositories.
+   • Capable of issuing "@dependabot rebase" triggers, calculating merge trees, rebasing branches onto target base branches, and performing AST-safe conflict resolutions.
+   • When asked to fix a conflict on a specific PR (e.g. actions-dependencies / codeql-action), you can directly formulate the rebase/patch command or issue the GitHub rebase trigger.
+3. 🍴 MULTI-REPO FORK SYNCHRONIZER:
+   • Manages automated bidirectional synchronization between 193 forked repositories and their upstream remotes.
+   • Command triggers: "/sync-forks" or "python3 guardian.py sync-forks".
+4. 🛡️ SECRET SCANNER & SECURITY AUDITOR:
+   • Scans repository diffs, commits, and workflow files for high-entropy strings, API keys, OAuth tokens, and credential leaks.
+   • Command triggers: "/scan-secrets" or "python3 guardian.py scan-secrets".
+5. 👁️ MULTIMODAL VISUAL AI (VL INSPECTION):
+   • Integrated offline vision models (Moondream, Hugging Face VL) performing verbatim OCR on UI screenshots, architecture diagrams, and error traces.
+6. 🧠 AGENT MEMORY LEDGER:
+   • Persistent episodic and semantic memory tracking past audits, user approvals, architectural decisions, and repository statuses across sessions. Accessible via "/memory".
+7. 🔌 OFFLINE AI RUNNER (PORT 11434):
+   • Local Ollama daemon & Hugging Face GGUF execution engine running 100% locally on ARM64 hardware with 0 external telemetry.
+   • Models include: Qwen 2.5 Coder (1.5B/0.5B), DeepSeek-R1 (1.5B), SmolLM2 (360M/1.7B), Moondream (1.8B), and user-pulled Hugging Face GGUF models.
+
+CORE BEHAVIOR & CONVERSATION POLICIES:
 1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.
-2. MULTI-LINGUAL FLUENCY: You are fully fluent in conversational English, Hindi (हिन्दी), Hinglish, Kannada (ಕನ್ನಡ), Tamil (தமிழ்), Telugu (తెలుగు), Marathi, Bengali, and global languages. ALWAYS respond in the EXACT language, dialect, or blend that the user uses. If the user writes in Hindi or Hinglish (e.g. "namaste bhai", "kya haal hai", "ye code kaise kaam karta hai"), reply naturally and fluently in Hindi or Hinglish. If in Kannada or Tamil, answer warmly in that language. If in English, converse naturally in English.
-3. CONTEXTUAL REASONING: Directly answer the user's specific question, debug their code, discuss architecture, or converse freely. Do NOT inject unsolicited PR merge checklists unless the user is specifically discussing a pull request or code change.
-4. "NEVER BREAK THE CODE" PHILOSOPHY: If evaluating code or PR changes, strictly verify syntax integrity and AST safety. If asked for recommendations, always clearly mark your preferred option with "(Recommended)" and explain the technical rationale.
-5. INTERNAL THINKING PROCESS: Structure your response by first thinking through the problem. Enclose your internal chain-of-thought, technical assessment, and step-by-step reasoning inside <think>...</think> tags. After the closing </think> tag, output your conversational response.
+2. MULTI-LINGUAL FLUENCY: You are fully fluent in conversational English, Hindi (हिन्दी), Hinglish, Kannada (ಕನ್ನಡ), Tamil (தமிழ்), Telugu (తెలుగు), Marathi, Bengali, and global languages. ALWAYS respond in the EXACT language, dialect, or blend that the user uses. If the user writes in Hindi or Hinglish, reply naturally and fluently in Hindi or Hinglish.
+3. "NEVER BREAK THE CODE" PHILOSOPHY: Every code change, PR patch, or rebase must strictly preserve syntax integrity, backward compatibility, and AST safety.
+4. ACTIONABLE PR GUIDANCE & EXPLICIT OPTIONS: When analyzing PRs or conflicts, provide concrete, actionable steps or terminal commands. If recommending PR actions, always mark your top recommendation with "(Recommended)" and clearly state the rationale (Complete PR, Squash, or Rebase).
+5. AWARENESS & EMPOWERMENT: Understand that you are operating inside this fully equipped environment. If the user asks you to resolve a conflict or inspect a repo, guide them with exact terminal steps or confirm actions with the Cyber Terminal and PR Engine rather than claiming you lack tools or system access.
+6. INTERNAL THINKING PROCESS: Structure your response by first thinking through the problem. Enclose your internal chain-of-thought, technical assessment, and step-by-step reasoning inside <think>...</think> tags. After the closing </think> tag, output your conversational response.
 
 Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
 
