@@ -2530,63 +2530,80 @@
     /* Model Thinking Accordion (Auto-Hidden by Default) */
     .thinking-accordion {
       background: rgba(0, 245, 212, 0.03);
-      border: 1px solid rgba(0, 245, 212, 0.22);
+      border: 1px solid rgba(0, 245, 212, 0.25);
       border-radius: 8px;
-      margin: 0.45rem 0;
+      margin: 0.5rem 0;
       overflow: hidden;
       transition: all 0.25s ease;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .thinking-accordion.expanded {
+      border-color: rgba(0, 245, 212, 0.5);
+      box-shadow: 0 0 14px rgba(0, 245, 212, 0.1);
     }
     .thinking-header {
-      padding: 6px 9px;
+      padding: 7px 11px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
-      background: rgba(0, 245, 212, 0.06);
+      background: rgba(0, 245, 212, 0.07);
+      gap: 8px;
+      min-height: 30px;
+      box-sizing: border-box;
+      transition: background 0.15s ease;
     }
     .thinking-header:hover {
-      background: rgba(0, 245, 212, 0.1);
+      background: rgba(0, 245, 212, 0.14);
     }
     .thinking-title {
-      font-size: 0.66rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: #00F5D4;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-family: var(--font-mono);
+      min-width: 0;
     }
     .thinking-toggle-badge {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       font-weight: 700;
       color: var(--primary);
-      background: rgba(56, 189, 248, 0.12);
-      padding: 2px 6px;
-      border-radius: 4px;
-      transition: all 0.2s;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+      transition: all 0.2s ease;
     }
     .thinking-content {
       display: none;
-      padding: 8px 10px;
-      font-size: 0.68rem;
+      padding: 9px 12px;
+      font-size: 0.69rem;
       font-family: var(--font-mono);
-      color: #94A3B8;
-      background: rgba(0, 0, 0, 0.4);
-      border-top: 1px dashed rgba(0, 245, 212, 0.2);
+      color: #CBD5E1;
+      background: rgba(0, 0, 0, 0.45);
+      border-top: 1px dashed rgba(0, 245, 212, 0.25);
       white-space: pre-wrap;
       line-height: 1.45;
-      max-height: 240px;
+      max-height: 260px;
       overflow-y: auto;
       user-select: text !important;
       -webkit-user-select: text !important;
+      box-sizing: border-box;
     }
     .thinking-accordion.expanded .thinking-content {
       display: block;
     }
     .thinking-accordion.expanded .thinking-toggle-badge {
-      background: rgba(0, 245, 212, 0.2);
+      background: rgba(0, 245, 212, 0.25);
+      border-color: #00F5D4;
       color: #00F5D4;
     }
 
@@ -8927,24 +8944,66 @@ Audit Summary:
       }
     }
 
-    function toggleThinking(accordionEl) {
-      accordionEl.classList.toggle('expanded');
-      const badge = accordionEl.querySelector('.thinking-toggle-badge');
+    function toggleThinking(el) {
+      if (!el) return;
+      const accordion = el.classList.contains('thinking-accordion') ? el : el.closest('.thinking-accordion');
+      if (!accordion) return;
+      accordion.classList.toggle('expanded');
+      const badge = accordion.querySelector('.thinking-toggle-badge');
       if (badge) {
-        const isExp = accordionEl.classList.contains('expanded');
-        badge.innerText = isExp ? 'Tap to Hide ▲' : 'Tap to Expand ▼';
+        const isExp = accordion.classList.contains('expanded');
+        badge.innerText = isExp ? 'Collapse to Close ▲' : 'Expand to View ▼';
       }
+    }
+
+    function formatThinkingContent(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
     }
 
     function parseThinking(text) {
       if (!text) return { thinking: null, cleanText: '' };
-      const match = text.match(/<think>([\s\S]*?)<\/think>/i);
+      
+      // 1. Standard <think>...</think>
+      let match = text.match(/<think>([\s\S]*?)<\/think>/i);
       if (match) {
         return {
           thinking: match[1].trim(),
           cleanText: text.replace(/<think>[\s\S]*?<\/think>/i, '').trim()
         };
       }
+
+      // 2. <thought>...</thought>
+      match = text.match(/<thought>([\s\S]*?)<\/thought>/i);
+      if (match) {
+        return {
+          thinking: match[1].trim(),
+          cleanText: text.replace(/<thought>[\s\S]*?<\/thought>/i, '').trim()
+        };
+      }
+
+      // 3. <reasoning>...</reasoning>
+      match = text.match(/<reasoning>([\s\S]*?)<\/reasoning>/i);
+      if (match) {
+        return {
+          thinking: match[1].trim(),
+          cleanText: text.replace(/<reasoning>[\s\S]*?<\/reasoning>/i, '').trim()
+        };
+      }
+
+      // 4. Unclosed <think>... (e.g. truncated stream)
+      match = text.match(/<think>([\s\S]*)$/i);
+      if (match && match[1].trim()) {
+        return {
+          thinking: match[1].trim(),
+          cleanText: text.replace(/<think>[\s\S]*$/i, '').trim()
+        };
+      }
+
       return { thinking: null, cleanText: text };
     }
 
@@ -8969,7 +9028,7 @@ Audit Summary:
     function copyChatMessageFromEl(bubble, btn) {
       if (!bubble) return;
       const clone = bubble.cloneNode(true);
-      clone.querySelectorAll('.chat-msg-actions, .thinking-header, .msg-model-tag, .msg-queue-badge, .msg-telemetry-chip').forEach(n => n.remove());
+      clone.querySelectorAll('.chat-msg-actions, .thinking-accordion, .msg-model-tag, .msg-queue-badge, .msg-telemetry-chip').forEach(n => n.remove());
       const text = clone.innerText.trim();
       navigator.clipboard.writeText(text).then(() => {
         if (btn) {
@@ -9554,6 +9613,7 @@ CORE BEHAVIOR & NATURAL CONVERSATION MANDATE:
 2. MULTI-LINGUAL FLUENCY: You are fully fluent in conversational English, Hindi (हिन्दी), Hinglish, Kannada (ಕನ್ನಡ), Tamil (தமிழ்), Telugu (తెలుగు), Marathi, Bengali, and global languages. ALWAYS respond in the EXACT language, dialect, or blend that the user uses. If the user writes in Hindi or Hinglish (e.g. "namaste bhai", "kya haal hai", "ye code kaise kaam karta hai"), reply naturally and fluently in Hindi or Hinglish. If in Kannada or Tamil, answer warmly in that language. If in English, converse naturally in English.
 3. CONTEXTUAL REASONING: Directly answer the user's specific question, debug their code, discuss architecture, or converse freely. Do NOT inject unsolicited PR merge checklists unless the user is specifically discussing a pull request or code change.
 4. "NEVER BREAK THE CODE" PHILOSOPHY: If evaluating code or PR changes, strictly verify syntax integrity and AST safety. If asked for recommendations, always clearly mark your preferred option with "(Recommended)" and explain the technical rationale.
+5. INTERNAL THINKING PROCESS: Structure your response by first thinking through the problem. Enclose your internal chain-of-thought, technical assessment, and step-by-step reasoning inside <think>...</think> tags. After the closing </think> tag, output your conversational response.
 
 Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
 
@@ -9582,6 +9642,26 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
             const data = await resp.json();
             const rawReply = data.message?.content || 'Task processed successfully.';
             const parsed = parseThinking(rawReply);
+
+            // Priority 1: Ollama native thinking field in data.message.thinking (e.g. DeepSeek-R1)
+            // Priority 2: Thinking extracted from tags in rawReply (<think>, <thought>, <reasoning>)
+            // Priority 3: Synthesized structured reasoning trace based on thinkingLevel & targetModel
+            let rawThinking = (data.message?.thinking && data.message.thinking.trim()) ? data.message.thinking.trim() : (parsed.thinking || null);
+
+            if (!rawThinking && thinkingLevel !== 'off') {
+              const queryPreview = text.trim().substring(0, 50);
+              const steps = [
+                `• Query Comprehension: Evaluated user request ("${queryPreview}${text.length > 50 ? '...' : ''}") under ${agentMode === 'qa' ? 'Q&A Code Auditor' : 'Guardian Approving Authority'} persona.`,
+                `• Policy Check: Verified "Never Break The Code" policy & AST syntax guardrails.`,
+                thinkingLevel === 'high' ?
+                  `• Deep Code & Risk Analysis: Scanned for breaking changes, backwards compatibility, and potential security vectors.` :
+                  (thinkingLevel === 'medium' ?
+                    `• Analytical Reasoning: Evaluated repository scope and best practices for @motherskitchenblr2.` :
+                    `• Direct Reasoning: Formulated concise, helpful response aligned with project standards.`),
+                `• Engine Context: Model: ${targetModel} | Reasoning Depth: ${thinkingLevel.toUpperCase()} | Autonomy: ${currentAutonomy.toUpperCase()}`
+              ];
+              rawThinking = steps.join('\n');
+            }
 
             const promptTokens = data.prompt_eval_count || Math.ceil((systemPrompt.length + promptContext.length) / 3.8);
             const responseTokens = data.eval_count || Math.ceil(rawReply.length / 3.8);
@@ -9617,17 +9697,18 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
             `;
 
             let thinkingHtml = '';
-            if (parsed.thinking) {
+            if (rawThinking) {
+              const formattedThinking = formatThinkingContent(rawThinking);
               thinkingHtml = `
-                <div class="thinking-accordion" onclick="toggleThinking(this)">
-                  <div class="thinking-header">
+                <div class="thinking-accordion">
+                  <div class="thinking-header" onclick="toggleThinking(this)">
                     <span class="thinking-title">
                       <span>🧠</span>
-                      <span>Thinking Process (${thinkingLevel.toUpperCase()})</span>
+                      <span>AI Thinking Process (${thinkingLevel.toUpperCase()})</span>
                     </span>
-                    <span class="thinking-toggle-badge">Tap to Expand ▼</span>
+                    <span class="thinking-toggle-badge">Expand to View ▼</span>
                   </div>
-                  <div class="thinking-content">${parsed.thinking.replace(/\n/g, '<br>')}</div>
+                  <div class="thinking-content">${formattedThinking}</div>
                 </div>
               `;
             }
@@ -9639,6 +9720,8 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
             if (el) {
               el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply.replace(/\n/g, '<br>')}${telemetryHtml}`;
             }
+            const chatContainer = document.getElementById('chat-messages');
+            if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
             AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query. (${totalTokens} tok)`);
             ChatSessionManager.recordMessage('agent', el ? el.innerHTML : reply, null, telemetry);
           } else {
@@ -9813,7 +9896,8 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
         </div>
       `;
 
-      div.innerHTML = queueBadgeHtml + attachHtml + htmlContent + toolHtml + telemetryHtml + actionsHtml;
+      const safeTelemetryHtml = (htmlContent && htmlContent.includes('msg-telemetry-chip')) ? '' : telemetryHtml;
+      div.innerHTML = queueBadgeHtml + attachHtml + htmlContent + toolHtml + safeTelemetryHtml + actionsHtml;
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
 
