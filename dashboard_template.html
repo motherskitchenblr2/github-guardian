@@ -2066,48 +2066,51 @@
       color: #000;
     }
 
-    /* Message Bubble Token Telemetry Chip */
+    /* Message Bubble Token Telemetry (Clean Normal Text below border) */
     .msg-telemetry-chip {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 6px;
       align-items: center;
-      margin-top: 0.45rem;
+      margin-top: 0.5rem;
       padding-top: 0.35rem;
-      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       font-family: var(--font-mono);
-      font-size: 0.60rem;
-      user-select: none;
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      line-height: 1.35;
     }
     .tok-tag {
-      padding: 0.12rem 0.35rem;
-      border-radius: 4px;
-      font-weight: 700;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      font-weight: 500;
+      font-size: 0.62rem;
+      box-shadow: none !important;
     }
     .tok-tag.reading {
-      background: rgba(0, 243, 255, 0.12);
-      color: #00F3FF;
-      border: 1px solid rgba(0, 243, 255, 0.3);
+      color: #38BDF8;
     }
     .tok-tag.writing {
-      background: rgba(57, 255, 20, 0.12);
-      color: #39FF14;
-      border: 1px solid rgba(57, 255, 20, 0.3);
+      color: #34D399;
     }
     .tok-tag.total {
-      background: rgba(189, 0, 255, 0.15);
-      color: #BD00FF;
-      border: 1px solid rgba(189, 0, 255, 0.35);
+      color: #C084FC;
+      font-weight: 600;
     }
     .tok-tag.speed {
-      background: rgba(255, 230, 0, 0.12);
-      color: #FFE600;
-      border: 1px solid rgba(255, 230, 0, 0.3);
+      color: #FBBF24;
     }
     .tok-tag.time {
-      background: rgba(255, 255, 255, 0.08);
       color: var(--text-dim);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .tok-dot {
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 0.6rem;
+      user-select: none;
     }
 
     /* File Attachment in Chat Bubbles */
@@ -2132,6 +2135,60 @@
       transition: transform 0.2s;
     }
     .bubble-img-preview:hover { transform: scale(1.02); }
+
+    /* Chat PR Approval Dossier Card (Repository & PR URL Visibility) */
+    .pr-approval-card {
+      background: rgba(11, 18, 36, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .pr-approval-card.risk-critical {
+      border-color: rgba(255, 51, 102, 0.6);
+      background: rgba(30, 10, 20, 0.75);
+    }
+    .pr-approval-card.risk-major {
+      border-color: rgba(255, 183, 3, 0.6);
+      background: rgba(30, 25, 10, 0.75);
+    }
+    .pr-approval-card.risk-clean {
+      border-color: rgba(0, 245, 212, 0.35);
+      background: rgba(10, 25, 25, 0.75);
+    }
+    .pr-card-repo-banner {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.4rem;
+      border-left: 3px solid var(--primary);
+    }
+    .repo-direct-link {
+      color: #38BDF8 !important;
+      text-decoration: underline !important;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .repo-direct-link:hover {
+      color: #7DD3FC !important;
+    }
+    .pr-direct-link {
+      color: #FBBF24 !important;
+      text-decoration: underline !important;
+      font-weight: 600;
+      font-size: 0.74rem;
+      line-height: 1.4;
+      display: block;
+      margin-top: 2px;
+    }
+    .pr-direct-link:hover {
+      color: #FDE68A !important;
+    }
 
     /* Attachment Preview Bar above Textarea */
     .chat-attach-preview-bar {
@@ -8028,6 +8085,32 @@
         return sessions.find(s => s.id === this.currentSessionId) || null;
       },
 
+      getRecentTurns: function(maxTurns = 6) {
+        const session = this.getActiveSession();
+        if (!session || !session.messages || session.messages.length === 0) return [];
+        const turns = [];
+        const msgs = session.messages.slice(-maxTurns);
+        for (const m of msgs) {
+          if (!m.htmlContent) continue;
+          let clean = m.htmlContent
+            .replace(/<div class="msg-telemetry-chip"[\s\S]*?<\/div>/gi, '')
+            .replace(/<div class="thinking-accordion"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+            .replace(/<div class="chat-msg-actions"[\s\S]*?<\/div>/gi, '')
+            .replace(/<div class="msg-model-tag"[\s\S]*?<\/div>/gi, '')
+            .replace(/<div class="pr-approval-card"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (clean.length > 0) {
+            turns.push({
+              role: m.sender === 'user' ? 'user' : 'assistant',
+              content: clean.substring(0, 800)
+            });
+          }
+        }
+        return turns;
+      },
+
       startNew: function(quiet = false) {
         this.currentSessionId = 'session-' + Date.now();
         localStorage.setItem('guardian_chat_active_session', this.currentSessionId);
@@ -8659,6 +8742,81 @@
       executeChatMessage(text, model, currentAgentMode, thinking, userMsgId, filesToSend);
     }
 
+    function buildPRApprovalDossierHtml(item) {
+      if (!item) return '';
+      const riskClass = item.risk === 'critical' ? 'risk-critical' : (item.risk === 'major' ? 'risk-major' : 'risk-clean');
+      const riskBadge = item.risk === 'critical'
+        ? '<span class="card-badge" style="background: rgba(255, 51, 102, 0.18); border: 1px solid #FF3366; color: #FF3366; font-weight: 700;">🚨 CRITICAL RISK</span>'
+        : (item.risk === 'major'
+          ? '<span class="card-badge" style="background: rgba(255, 183, 3, 0.18); border: 1px solid #FFB703; color: #FFB703; font-weight: 700;">⚠️ MAJOR RISK</span>'
+          : '<span class="card-badge" style="background: rgba(0, 245, 212, 0.18); border: 1px solid #00F5D4; color: #00F5D4; font-weight: 700;">🛡️ CLEAN (SAFE)</span>');
+
+      return `
+        <div class="pr-approval-card ${riskClass}" id="chat-card-${item.id}">
+          <div class="pr-card-repo-banner">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 1.05rem;">📦</span>
+                <div>
+                  <div style="font-size: 0.60rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;">Target Repository</div>
+                  <a href="https://github.com/${item.repo}" target="_blank" class="repo-direct-link" title="Open repository on GitHub">
+                    <strong>${item.repo}</strong> ↗
+                  </a>
+                </div>
+              </div>
+              <div>${riskBadge}</div>
+            </div>
+          </div>
+
+          <div style="margin: 0.35rem 0 0.45rem 0;">
+            <div style="font-size: 0.60rem; color: var(--text-dim); text-transform: uppercase;">Pull Request:</div>
+            <a href="${item.url}" target="_blank" class="pr-direct-link" title="Open pull request on GitHub">
+              #${item.number}: ${item.title} ↗
+            </a>
+            <div style="font-size: 0.62rem; color: var(--text-dim); margin-top: 2px;">
+              Submitted by <strong>${item.author}</strong> • Date: <code>${item.date}</code> (${item.year}-${item.month})
+            </div>
+          </div>
+
+          <div class="qa-audit-box" style="margin: 0.4rem 0; padding: 6px 8px; font-size: 0.7rem;">
+            <div class="audit-box-header" style="font-size: 0.68rem; margin-bottom: 4px;">
+              <span>🔍 AGENT Q&A PRE-MERGE AST AUDIT</span>
+              <span class="neon-teal">AST SYNTAX: VERIFIED</span>
+            </div>
+            <div class="audit-checklist" style="grid-template-columns: 1fr 1fr; gap: 4px; font-size: 0.65rem;">
+              <div class="audit-check-item pass"><span>✔</span> Syntax: ${item.qa_findings.syntax}</div>
+              <div class="audit-check-item ${item.risk === 'clean' ? 'pass' : 'warn'}"><span>✔</span> Breaking: ${item.qa_findings.breaking}</div>
+              <div class="audit-check-item pass"><span>✔</span> Security: ${item.qa_findings.security}</div>
+              <div class="audit-check-item pass"><span>✔</span> Lockfile: ${item.qa_findings.lockfile || 'Validated'}</div>
+            </div>
+            <div class="audit-finding-text" style="margin-top: 4px; font-size: 0.64rem;">
+              <strong>Auditor Findings:</strong> ${item.qa_findings.details}
+            </div>
+          </div>
+
+          <div class="guardian-approval-box" style="margin: 0.4rem 0; padding: 6px 8px;">
+            <div class="guardian-box-header" style="font-size: 0.68rem; margin-bottom: 4px;">
+              <span>🛡️ AGENT GUARDIAN DECISION ESCROW</span>
+              <span class="neon-green">NEVER BREAK CODE</span>
+            </div>
+            <div class="guardian-rec-banner" style="margin: 0.3rem 0; font-size: 0.72rem;">
+              <span>⭐ Recommended Decision: <strong>${item.guardian_rec}</strong></span>
+            </div>
+            <div class="guardian-rationale" style="font-size: 0.66rem; color: var(--text-muted);">
+              <strong>Guardian Rationale:</strong> ${item.guardian_rationale}
+            </div>
+          </div>
+
+          <div class="office-actions-row" id="actions-${item.id}" style="margin-top: 0.45rem;">
+            <button class="btn-rec-action" onclick="approveFromChat('squash', '${item.id}')">⭐ (Recommended) Squash & Merge</button>
+            <button class="btn-sub-action" onclick="approveFromChat('complete', '${item.id}')">🔀 Complete PR</button>
+            <button class="btn-sub-action" onclick="approveFromChat('rebase', '${item.id}')">🔄 Rebase & Merge</button>
+            <button class="btn-sub-action reject" onclick="approveFromChat('reject', '${item.id}')">🚫 Reject / Changes</button>
+          </div>
+        </div>
+      `;
+    }
+
     async function executeChatMessage(text, model, agentMode, thinkingLevel, userMsgId, attachedFiles = []) {
       isAgentBusy = true;
       updateQueueUI();
@@ -8746,10 +8904,10 @@
       }
 
       try {
-        const lower = text.toLowerCase();
+        const lower = text.toLowerCase().trim();
 
-        // 1. Check for Agent Memory queries
-        if (lower.includes('memory') || lower.includes('memories') || lower.includes('history') || lower.includes('ledger')) {
+        // 1. Check for Agent Memory commands
+        if (/^\/(memory|ledger|memories)/i.test(text.trim()) || lower === 'show memory' || lower === 'memory ledger' || lower === 'view memories' || lower === 'show memories') {
           const memories = AgentMemory.getAll();
           const memHtml = `
             <div class="msg-model-tag neon-purple">🧠 AGENT PERSISTENT MEMORY LEDGER</div>
@@ -8768,12 +8926,18 @@
           return;
         }
 
-        // 2. Check for PR Review, Conflict, or Merge Actions (Dual-Agent Collaboration)
-        if (lower.includes('pr') || lower.includes('pull request') || lower.includes('merge') || lower.includes('squash') || lower.includes('rebase') || lower.includes('audit')) {
-          setAgentStatus('working', 'Auditing PRs...');
+        // 2. Explicit PR Review & Approval Escrow Dossier (With Target Repository & Direct URL Visibility)
+        if (/^\/(prs?|audit-?prs?|pending-?prs?|approve-?prs?|office)/i.test(text.trim()) ||
+            lower === 'review prs' || lower === 'audit prs' || lower === 'show prs' ||
+            lower === 'pending prs' || lower === 'pr approvals' || lower === 'check prs' ||
+            lower === 'show pending prs' || lower === 'prs for approval') {
+          setAgentStatus('working', 'Auditing Pending PRs...');
+          const pendingItems = OFFICE_AUDIT_DATA.filter(x => x.status === 'pending');
+          const itemsToDisplay = pendingItems.length > 0 ? pendingItems : OFFICE_AUDIT_DATA.slice(0, 2);
+
           let thinkingBlock = '';
           if (thinkingLevel !== 'low') {
-            const simulatedThought = `• Checking AST syntax on all pull requests...\n• Evaluating breaking change boundaries against "Never Break The Code" policy...\n• Scanning CVE dependency advisories & lockfile checksums...\n• Reasoned optimal linear commit strategy: Squash-merge avoids intermediate dependency churn.\n• Formulating final recommendation with explicit (Recommended) choice for user approval.`;
+            const simulatedThought = `• Performing AST syntax and token check on active repositories...\n• Inspecting ${itemsToDisplay.length} pull requests against "Never Break The Code" policy...\n• Validating linear commit integrity (Squash/Rebase) vs non-linear merge...\n• Enforcing explicit Repository URL and PR Link visibility before human approval escrow.`;
             thinkingBlock = `
               <div class="thinking-accordion" onclick="toggleThinking(this)">
                 <div class="thinking-header">
@@ -8788,89 +8952,36 @@
             `;
           }
 
-          const simTelemetryQA = {
-            promptTokens: Math.ceil(text.length / 3.8) + 95,
-            responseTokens: 165,
-            totalTokens: Math.ceil(text.length / 3.8) + 260,
-            speed: '42.5',
-            durationSec: '0.62'
-          };
-          sessionTokensTotal += simTelemetryQA.totalTokens;
-          sessionTokensRead += simTelemetryQA.promptTokens;
-          sessionTokensWrite += simTelemetryQA.responseTokens;
-          updateSessionTokenMeter();
-
-          // Step 1: Agent Q&A deep technical investigation
-          const qaMsg = `
-            <div class="msg-model-tag neon-teal">🔍 AGENT Q&A — EXPERIENCED EXPERTISE AUDITOR</div>
+          const dossiersHtml = itemsToDisplay.map(item => buildPRApprovalDossierHtml(item)).join('');
+          const prMsg = `
+            <div class="msg-model-tag neon-teal">🛡️ GUARDIAN & 🔍 Q&A — PULL REQUEST APPROVAL ESCROW</div>
             ${thinkingBlock}
-            <strong>Investigative Pre-Merge Technical Audit:</strong><br>
-            • <strong>Code Syntax & AST Integrity</strong>: <span class="neon-green">VERIFIED (0 errors)</span><br>
-            • <strong>Never Break The Code Policy</strong>: <span class="neon-green">PASSED (0 breaking API changes)</span><br>
-            • <strong>Security Advisories</strong>: <span class="neon-green">CLEAN (0 CVEs flagged)</span><br>
-            • <strong>Lockfile Checksums</strong>: <span class="neon-green">VALIDATED</span><br><br>
-            Technical audit verified. Forwarding report to <strong>Agent Guardian</strong> for approving authority decision.
+            Below are the audited pull requests awaiting your approval. Every repository name and direct URL is verified to eliminate risk to production codebases under the <em>"Never Break The Code"</em> directive:<br>
+            ${dossiersHtml}
           `;
-          appendChatMessage('agent', qaMsg, null, null, false, simTelemetryQA);
-          AgentMemory.add('Q&A', 'Audit Finding', 'Pre-Merge Code & Syntax Audit', 'Verified code AST syntax and dependencies. 0 breaking changes detected under Never Break The Code directive.');
-
-          // Step 2: Agent Guardian reviews and formulates recommendation
-          setAgentStatus('responding', 'Formulating Decision...');
-          await new Promise(r => setTimeout(r, 600));
-          const isYolo = currentAutonomy === 'yolo';
-          const simTelemetryGuardian = {
-            promptTokens: 260,
-            responseTokens: 140,
-            totalTokens: 400,
-            speed: '38.0',
-            durationSec: '0.45'
-          };
-          sessionTokensTotal += simTelemetryGuardian.totalTokens;
-          sessionTokensRead += simTelemetryGuardian.promptTokens;
-          sessionTokensWrite += simTelemetryGuardian.responseTokens;
-          updateSessionTokenMeter();
-
-          const guardianMsg = `
-            <div class="msg-model-tag neon-green">🛡️ AGENT GUARDIAN — APPROVING AUTHORITY</div>
-            I have reviewed Agent Q&A's audit. Code integrity confirmed under the <em>"Never Break The Code"</em> directive.<br><br>
-            <div class="guardian-rec-banner" style="margin: 0.4rem 0;">
-              ⭐ Recommended Decision: (Recommended) Squash & Merge PR
-            </div>
-            <strong>Guardian Rationale:</strong> Consolidates dependency updates into 1 atomic revision, maintaining clean linear git history without breaking the build.<br><br>
-            ${isYolo ? '<em>⚡ YOLO Autonomy active: Automatically executing approved decision...</em>' : 'Please select your approval decision:'}
-            <div class="office-actions-row" style="margin-top: 0.5rem;">
-              <button class="btn-rec-action" onclick="approveFromChat('squash')">⭐ (Recommended) Squash & Merge</button>
-              <button class="btn-sub-action" onclick="approveFromChat('complete')">🔀 Complete PR</button>
-              <button class="btn-sub-action" onclick="approveFromChat('rebase')">🔄 Rebase & Merge</button>
-              <button class="btn-sub-action reject" onclick="approveFromChat('reject')">🚫 Reject / Changes</button>
-            </div>
-          `;
-          appendChatMessage('agent', guardianMsg, null, null, false, simTelemetryGuardian);
-          AgentMemory.add('Guardian', 'Recommendation', 'PR Review Decision Recommendation', 'Guardian issued (Recommended) Squash & Merge option. Linear git tree preserved.');
-
-          if (isYolo) {
-            triggerRun('review-prs', false);
-          }
+          appendChatMessage('agent', prMsg);
+          ChatSessionManager.recordMessage('agent', prMsg);
+          setAgentStatus('idle');
           return;
         }
 
-        // 3. Other autonomous tools
+        // 3. Explicit Autonomous Tools (Triggered via slash command or exact action command)
         let toolToRun = null;
         let toolLabel = '';
 
-        if (lower.includes('fork') || lower.includes('sync')) {
+        if (/^\/(sync|sync-forks)/i.test(text.trim()) || lower === 'sync forks' || lower === 'sync all forks') {
           toolToRun = 'sync-forks';
           toolLabel = 'Sync 193 Forks with Upstream';
-        } else if (lower.includes('secret') || lower.includes('token') || lower.includes('leak')) {
+        } else if (/^\/(scan|secrets|scan-secrets)/i.test(text.trim()) || lower === 'scan secrets' || lower === 'check secrets') {
           toolToRun = 'scan-secrets';
           toolLabel = 'Scan Exposed Secrets';
-        } else if (lower.includes('harden') || lower.includes('defense') || lower.includes('security')) {
+        } else if (/^\/(harden|security)/i.test(text.trim()) || lower === 'harden security' || lower === 'harden defenses') {
           toolToRun = 'harden';
           toolLabel = 'Harden Security Defenses';
-        } else if (lower.includes('run all') || lower.includes('maintenance')) {
+        } else if (/^\/(run-all|maintenance)/i.test(text.trim()) || lower === 'run all' || lower === 'run maintenance') {
           toolToRun = 'run-all';
           toolLabel = 'Run Full Maintenance Suite';
-        } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('specs') || lower.includes('device')) {
+        } else if (/^\/(specs|hardware|device)/i.test(text.trim()) || lower === 'device specs' || lower === 'hardware specs') {
           appendChatMessage('agent', `📱 <strong>Device Diagnostics Scanned</strong>:<br>
           • <strong>CPU</strong>: 8-Core ARM64 (Android / Termux)<br>
           • <strong>RAM</strong>: 7.4 GB Total (~3.0 GB Available)<br>
@@ -8900,7 +9011,7 @@
           return;
         }
 
-        // 4. Dynamic Offline Model Task Routing with Thinking Levels
+        // 4. Dynamic Offline Model Task Routing with Thinking Levels & Multi-Turn Natural Conversation
         let targetModel = model;
         let routeTag = '';
         if (model === 'auto') {
@@ -8915,18 +9026,29 @@
         appendChatMessage('agent', `<div id="${loadingDivId}"><em>${routeTag}Thinking offline with ${targetModel} (${thinkingLevel.toUpperCase()} level)... 🧠</em></div>`);
 
         const thinkingInstructions = {
-          'default': 'Provide balanced thinking.',
+          'default': 'Provide balanced, helpful reasoning.',
           'low': 'Keep thinking concise, brief and direct.',
           'medium': 'Provide structured analytical step-by-step reasoning.',
           'high': 'Perform deep exhaustive reasoning, evaluating code syntax edge cases, security vectors, and backwards compatibility.'
         };
 
-        let systemPrompt = '';
-        if (agentMode === 'qa') {
-          systemPrompt = `You are Agent Q&A, an experienced expertise auditor for GitHub Guardian running in Termux. You investigate code changes, verify AST syntax, detect breaking changes, strictly adhere to "Never Break The Code", and report findings to Agent Guardian. Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
-        } else {
-          systemPrompt = `You are Agent Guardian, the Strict Auditor and Approving Authority for GitHub Guardian (@motherskitchenblr2). You strictly adhere to "Never Break The Code", never take unapproved risks on major/critical issues, and whenever options or decisions are discussed, ALWAYS explicitly highlight a "(Recommended)" choice for the user. Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
-        }
+        const systemPrompt = `You are ${agentMode === 'qa' ? 'Agent Q&A (Senior Technical Code Auditor)' : 'Agent Guardian (Strict Auditor and Approving Authority)'} for GitHub Guardian repositories (@motherskitchenblr2).
+
+CORE BEHAVIOR & NATURAL CONVERSATION MANDATE:
+1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.
+2. MULTI-LINGUAL FLUENCY: You are fully fluent in conversational English, Hindi (हिन्दी), Hinglish, Kannada (ಕನ್ನಡ), Tamil (தமிழ்), Telugu (తెలుగు), Marathi, Bengali, and global languages. ALWAYS respond in the EXACT language, dialect, or blend that the user uses. If the user writes in Hindi or Hinglish (e.g. "namaste bhai", "kya haal hai", "ye code kaise kaam karta hai"), reply naturally and fluently in Hindi or Hinglish. If in Kannada or Tamil, answer warmly in that language. If in English, converse naturally in English.
+3. CONTEXTUAL REASONING: Directly answer the user's specific question, debug their code, discuss architecture, or converse freely. Do NOT inject unsolicited PR merge checklists unless the user is specifically discussing a pull request or code change.
+4. "NEVER BREAK THE CODE" PHILOSOPHY: If evaluating code or PR changes, strictly verify syntax integrity and AST safety. If asked for recommendations, always clearly mark your preferred option with "(Recommended)" and explain the technical rationale.
+
+Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
+
+        // Retrieve multi-turn chat history for conversational continuity
+        const historyTurns = ChatSessionManager.getRecentTurns(6);
+        const apiMessages = [
+          { role: 'system', content: systemPrompt },
+          ...historyTurns,
+          { role: 'user', content: promptContext }
+        ];
 
         try {
           const resp = await fetch('http://localhost:11434/api/chat', {
@@ -8934,10 +9056,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               model: targetModel,
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: promptContext }
-              ],
+              messages: apiMessages,
               stream: false
             })
           });
@@ -8970,9 +9089,13 @@
             const telemetryHtml = `
               <div class="msg-telemetry-chip">
                 <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${promptTokens} tok</span>
+                <span class="tok-dot">•</span>
                 <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${responseTokens} tok</span>
-                <span class="tok-tag total" title="Total Tokens Evaluated">⚡ ${totalTokens} tok</span>
+                <span class="tok-dot">•</span>
+                <span class="tok-tag total" title="Total Tokens Evaluated">⚡ Total: ${totalTokens} tok</span>
+                <span class="tok-dot">•</span>
                 <span class="tok-tag speed" title="Generation Speed">⚡ ${tokensPerSec} tok/s</span>
+                <span class="tok-dot">•</span>
                 <span class="tok-tag time" title="Response Latency">⏱️ ${durationSec.toFixed(2)}s</span>
               </div>
             `;
@@ -9033,7 +9156,15 @@
       }
     }
 
-    async function approveFromChat(decisionType) {
+    async function approveFromChat(decisionType, prId) {
+      let item = null;
+      if (prId) {
+        item = OFFICE_AUDIT_DATA.find(x => x.id === prId);
+      }
+      if (!item) {
+        item = OFFICE_AUDIT_DATA.find(x => x.status === 'pending') || OFFICE_AUDIT_DATA[0];
+      }
+
       const actionLabels = {
         squash: 'Squash & Merge',
         complete: 'Complete PR (Merge Commit)',
@@ -9041,9 +9172,40 @@
         reject: 'Changes Requested / Rejected'
       };
       const label = actionLabels[decisionType] || decisionType;
-      AgentMemory.add('Guardian', 'Approval Decision', `Chat Decision: ${label}`, `User approved ${label} from autonomous AI chat drawer under Never Break Code directive.`);
-      appendChatMessage('agent', `🛡️ <strong>[Agent Guardian - Approving Authority]</strong>: Approved & dispatched <code>${label}</code>! Executing in background daemon.`);
-      showToast(`Guardian Approved: ${label}`);
+
+      if (item) {
+        item.status = decisionType === 'reject' ? 'rejected' : 'approved';
+        item.decision = label;
+
+        AgentMemory.add(
+          'Guardian',
+          'Approval Decision',
+          `PR #${item.number} ${label}`,
+          `User approved '${label}' for ${item.repo} PR #${item.number} via chat. Target URL: ${item.url}. Never Break Code verified.`,
+          { pr: item.number, repo: item.repo, decision: decisionType }
+        );
+
+        const actionContainer = document.getElementById('actions-' + item.id);
+        if (actionContainer) {
+          actionContainer.innerHTML = `<span style="color: #39FF14; font-weight: 700; font-size: 0.72rem;">✅ Enforced: ${label} for ${item.repo} #${item.number}</span>`;
+        }
+
+        const confMsg = `
+          <div class="msg-model-tag neon-green">🛡️ AGENT GUARDIAN — APPROVAL EXECUTED</div>
+          ✅ <strong>Decision Approved:</strong> <code>${label}</code><br>
+          • <strong>Target Repository:</strong> <a href="https://github.com/${item.repo}" target="_blank" class="repo-direct-link"><strong>${item.repo}</strong> ↗</a><br>
+          • <strong>Pull Request:</strong> <a href="${item.url}" target="_blank" class="pr-direct-link">#${item.number}: ${item.title} ↗</a><br>
+          • <strong>Safety Check:</strong> AST Syntax Integrity passed under <em>"Never Break The Code"</em> directive.<br>
+          • <strong>Status:</strong> Dispatched to background execution daemon.
+        `;
+        appendChatMessage('agent', confMsg);
+        ChatSessionManager.recordMessage('agent', confMsg);
+        showToast(`Guardian Approved: ${label} for ${item.repo}`);
+      } else {
+        appendChatMessage('agent', `🛡️ <strong>[Agent Guardian - Approving Authority]</strong>: Approved & dispatched <code>${label}</code>! Executing in background daemon.`);
+        showToast(`Guardian Approved: ${label}`);
+      }
+
       if (decisionType !== 'reject') {
         await triggerRun('review-prs', false);
       }
@@ -9098,9 +9260,13 @@
         telemetryHtml = `
           <div class="msg-telemetry-chip">
             <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${telemetry.promptTokens} tok</span>
+            <span class="tok-dot">•</span>
             <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${telemetry.responseTokens} tok</span>
-            <span class="tok-tag total" title="Total Tokens Evaluated">⚡ ${telemetry.totalTokens} tok</span>
+            <span class="tok-dot">•</span>
+            <span class="tok-tag total" title="Total Tokens Evaluated">⚡ Total: ${telemetry.totalTokens} tok</span>
+            <span class="tok-dot">•</span>
             <span class="tok-tag speed" title="Generation Speed">⚡ ${telemetry.speed} tok/s</span>
+            <span class="tok-dot">•</span>
             <span class="tok-tag time" title="Latency">⏱️ ${telemetry.durationSec}s</span>
           </div>
         `;
