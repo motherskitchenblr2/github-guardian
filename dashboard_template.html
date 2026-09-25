@@ -704,6 +704,224 @@
       letter-spacing: 0.05em;
     }
 
+    /* Dedicated Full Terminal Console Pane */
+    .terminal-pane-header {
+      margin-bottom: 0.85rem;
+    }
+
+    .terminal-quick-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .terminal-bar-label {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+
+    .terminal-action-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .term-pill-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #E2E8F0;
+      font-size: 0.66rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .term-pill-btn:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .terminal-window.full-terminal {
+      display: flex;
+      flex-direction: column;
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+    }
+
+    .terminal-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .term-ctrl-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: 0.64rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      padding: 0.18rem 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
+    }
+
+    .term-ctrl-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .terminal-box.full-terminal-box {
+      min-height: 440px;
+      max-height: calc(72vh - 120px);
+      padding: 0.95rem;
+      font-size: 0.73rem;
+      line-height: 1.6;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #38BDF8;
+      background: #030712;
+      overflow-y: auto;
+      user-select: text;
+    }
+
+    .terminal-cli-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(10, 15, 26, 0.98);
+      padding: 0.55rem 0.75rem;
+    }
+
+    .term-prompt {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .term-cli-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      outline: none;
+      padding: 0.2rem 0;
+    }
+
+    .term-cli-input::placeholder {
+      color: var(--text-dim);
+      font-size: 0.68rem;
+    }
+
+    .term-cli-submit {
+      background: linear-gradient(135deg, #0284C7, #6366F1);
+      border: none;
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: all 0.2s;
+    }
+
+    .term-cli-submit:hover {
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    .terminal-telemetry-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .terminal-telemetry-meta {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .term-meta-item {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .term-meta-label {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .term-meta-value {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .term-meta-value.online {
+      color: var(--success);
+    }
+
+    .btn-open-terminal-tab {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38BDF8;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .btn-open-terminal-tab:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+    }
+
     /* Quick Action Buttons (Legacy & Standard) */
     .actions-grid {
       display: grid;
@@ -1361,12 +1579,14 @@
       background: none;
       border: none;
       color: var(--text-dim);
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 600;
       cursor: pointer;
-      padding: 4px 10px;
+      padding: 4px 4px;
       transition: all 0.2s;
       border-radius: 8px;
+      flex: 1;
+      max-width: 68px;
     }
 
     .nav-item:hover {
@@ -2016,11 +2236,17 @@
       </div>
 
       <!-- Autonomous Engine Live Telemetry Console Window -->
-      <div class="section-title" style="font-size: 0.95rem; margin-top: 1.25rem;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-        <span>Autonomous Engine Telemetry</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
+        <div class="section-title" style="font-size: 0.95rem; margin-bottom: 0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span>Live Daemon Telemetry</span>
+        </div>
+        <button class="btn-open-terminal-tab" onclick="switchNav('terminal')" title="Open dedicated Terminal tab">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span>Full Terminal Tab ↗</span>
+        </button>
       </div>
-      <div class="terminal-window">
+      <div class="terminal-window" style="margin-top: 0.5rem;">
         <div class="terminal-titlebar">
           <div class="terminal-dots">
             <span class="t-dot t-red"></span>
@@ -2123,7 +2349,105 @@
       </div>
     </div>
 
-    <!-- PANE 5: AI SUITE & HARDWARE ADVISOR -->
+    <!-- PANE 5: DEDICATED CYBER TERMINAL & TELEMETRY CONSOLE -->
+    <div class="pane" id="pane-terminal">
+      <div class="terminal-pane-header">
+        <div class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span>Guardian Cyber Terminal</span>
+        </div>
+        <p class="section-desc">Live daemon log stream, execution telemetry monitor, and interactive CLI controller.</p>
+      </div>
+
+      <!-- Quick Command Action Launcher Pills -->
+      <div class="terminal-quick-bar">
+        <span class="terminal-bar-label">DISPATCH:</span>
+        <div class="terminal-action-pills">
+          <button class="term-pill-btn" onclick="triggerRun('run-all')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Run All</span>
+          </button>
+          <button class="term-pill-btn" onclick="triggerRun('review-prs')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/></svg>
+            <span>Review PRs</span>
+          </button>
+          <button class="term-pill-btn" onclick="triggerRun('sync-forks')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Sync Forks</span>
+          </button>
+          <button class="term-pill-btn" onclick="triggerRun('scan-secrets')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Scan Secrets</span>
+          </button>
+          <button class="term-pill-btn" onclick="triggerRun('harden')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Harden</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dedicated Terminal Window -->
+      <div class="terminal-window full-terminal">
+        <div class="terminal-titlebar">
+          <div class="terminal-dots">
+            <span class="t-dot t-red" onclick="clearTerminalLogs()" title="Clear terminal buffer"></span>
+            <span class="t-dot t-yellow" onclick="toggleTerminalAutoScroll()" title="Toggle auto-scroll"></span>
+            <span class="t-dot t-green" onclick="refreshTerminalLogs()" title="Refresh telemetry stream"></span>
+            <span class="terminal-filename">motherskitchenblr2@termux:~/github-guardian $ tail -f daemon.log</span>
+          </div>
+          <div class="terminal-controls">
+            <button class="term-ctrl-btn" id="btn-autoscroll" onclick="toggleTerminalAutoScroll()" title="Toggle Auto-Scroll">
+              <span class="telemetry-pulse"></span>
+              <span id="autoscroll-label">AUTO-SCROLL: ON</span>
+            </button>
+            <button class="term-ctrl-btn" onclick="copyTerminalLogs()" title="Copy all logs">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+            <button class="term-ctrl-btn" onclick="clearTerminalLogs()" title="Clear console buffer">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              <span>Clear</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="terminal-box full-terminal-box" id="terminal-logs-pane">Connecting to Guardian daemon telemetry stream...</div>
+
+        <!-- Terminal Command Line Prompt Bar -->
+        <div class="terminal-cli-bar">
+          <div class="term-prompt">
+            <span style="color: var(--primary);">guardian@termux</span>:<span style="color: #818CF8;">~</span><span style="color: #10B981;">$</span>
+          </div>
+          <input type="text" class="term-cli-input" id="terminal-cli-input" placeholder="Type command: run-all, review-prs, sync-forks, scan-secrets, harden, clear..." onkeydown="if(event.key==='Enter') executeTerminalCommand()">
+          <button class="term-cli-submit" onclick="executeTerminalCommand()">
+            <span>Run</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Terminal Telemetry Stats Strip -->
+      <div class="terminal-telemetry-meta">
+        <div class="term-meta-item">
+          <span class="term-meta-label">STATUS</span>
+          <span class="term-meta-value online">● LIVE STREAMING</span>
+        </div>
+        <div class="term-meta-item">
+          <span class="term-meta-label">ENDPOINT</span>
+          <span class="term-meta-value">/api/logs (PORT 8765)</span>
+        </div>
+        <div class="term-meta-item">
+          <span class="term-meta-label">AUTONOMY</span>
+          <span class="term-meta-value" style="color: var(--primary);">FULL YOLO</span>
+        </div>
+        <div class="term-meta-item">
+          <span class="term-meta-label">REFRESH</span>
+          <span class="term-meta-value">POLL 2000ms</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANE 6: AI SUITE & HARDWARE ADVISOR -->
     <div class="pane" id="pane-ai">
       <div class="section-title">🧠 Multimodal AI Suite & Device Advisor</div>
       <p class="section-desc">Local offline models (0.5B to 4B GGUF) + Free Cloud Providers (Google AI Studio, Groq, OpenRouter, NVIDIA).</p>
@@ -2523,23 +2847,27 @@
 
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchNav('overview')">
+    <button class="nav-item active" data-nav="overview" onclick="switchNav('overview')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
       <span>Overview</span>
     </button>
-    <button class="nav-item" onclick="switchNav('prs')">
+    <button class="nav-item" data-nav="prs" onclick="switchNav('prs')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/><path d="M18 9a9 9 0 0 0-9 9"/></svg>
       <span>PRs</span>
     </button>
-    <button class="nav-item" onclick="switchNav('forks')">
+    <button class="nav-item" data-nav="forks" onclick="switchNav('forks')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
       <span>Forks</span>
     </button>
-    <button class="nav-item" onclick="switchNav('repos')">
+    <button class="nav-item" data-nav="repos" onclick="switchNav('repos')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       <span>Repos</span>
     </button>
-    <button class="nav-item" onclick="switchNav('ai')">
+    <button class="nav-item" data-nav="terminal" onclick="switchNav('terminal')">
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      <span>Terminal</span>
+    </button>
+    <button class="nav-item" data-nav="ai" onclick="switchNav('ai')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
       <span>AI Suite</span>
     </button>
@@ -2595,15 +2923,105 @@
       setTimeout(() => t.classList.remove('show'), 3200);
     }
 
+    let terminalAutoScroll = true;
+
+    function toggleTerminalAutoScroll() {
+      terminalAutoScroll = !terminalAutoScroll;
+      const lbl = document.getElementById('autoscroll-label');
+      if (lbl) lbl.innerText = terminalAutoScroll ? 'AUTO-SCROLL: ON' : 'AUTO-SCROLL: OFF';
+      const btn = document.getElementById('btn-autoscroll');
+      if (btn) btn.style.color = terminalAutoScroll ? 'var(--primary)' : 'var(--text-dim)';
+      showToast('Auto-scroll ' + (terminalAutoScroll ? 'enabled' : 'disabled'));
+    }
+
+    function copyTerminalLogs() {
+      const el = document.getElementById('terminal-logs-pane');
+      if (el) {
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          showToast('Terminal logs copied to clipboard!');
+        }).catch(() => {
+          showToast('Failed to copy logs');
+        });
+      }
+    }
+
+    function clearTerminalLogs() {
+      const el = document.getElementById('terminal-logs-pane');
+      if (el) el.innerText = 'Terminal cleared. Waiting for next telemetry event...';
+      const elMini = document.getElementById('daemon-logs');
+      if (elMini) elMini.innerText = 'Terminal cleared.';
+      showToast('Terminal output cleared');
+    }
+
+    function refreshTerminalLogs() {
+      showToast('Refreshing daemon telemetry...');
+      loadData();
+    }
+
+    function executeTerminalCommand() {
+      const input = document.getElementById('terminal-cli-input');
+      if (!input) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+      input.value = '';
+
+      const cmd = raw.toLowerCase();
+      const el = document.getElementById('terminal-logs-pane');
+      if (el) {
+        el.innerText += `\n\n[guardian@termux:~$] ${raw}\n`;
+        el.scrollTop = el.scrollHeight;
+      }
+
+      if (cmd === 'clear') {
+        clearTerminalLogs();
+      } else if (cmd === 'help') {
+        if (el) {
+          el.innerText += `Available CLI Commands:
+  • run-all      - Run master automated maintenance suite (PRs, Forks, Secrets, Hardening)
+  • review-prs   - Autonomous PR evaluation, squash-merge, and conflict resolution
+  • sync-forks   - Synchronize all 193 forked repos with upstream
+  • scan-secrets - Scan repositories for exposed credentials and tokens
+  • harden       - Enforce Dependabot alerts, automated fixes, and branch defenses
+  • clear        - Clear terminal buffer
+  • refresh      - Fetch latest telemetry stream\n`;
+          el.scrollTop = el.scrollHeight;
+        }
+      } else if (cmd === 'refresh') {
+        refreshTerminalLogs();
+      } else if (['run-all', 'all'].includes(cmd)) {
+        triggerRun('run-all');
+      } else if (['review-prs', 'prs', 'pr'].includes(cmd)) {
+        triggerRun('review-prs');
+      } else if (['sync-forks', 'forks', 'fork'].includes(cmd)) {
+        triggerRun('sync-forks');
+      } else if (['scan-secrets', 'secrets', 'sec'].includes(cmd)) {
+        triggerRun('scan-secrets');
+      } else if (['harden', 'sec-harden'].includes(cmd)) {
+        triggerRun('harden');
+      } else {
+        triggerRun(raw);
+      }
+    }
+
     function switchNav(name) {
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
       
-      const targetBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.innerText.toLowerCase().includes(name));
+      const targetBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => 
+        (b.getAttribute('data-nav') === name) || b.innerText.toLowerCase().includes(name)
+      );
       if (targetBtn) targetBtn.classList.add('active');
       const pane = document.getElementById('pane-' + name);
       if (pane) pane.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // If switching to terminal tab and auto-scroll is on, scroll console to bottom
+      if (name === 'terminal' && terminalAutoScroll) {
+        setTimeout(() => {
+          const tPane = document.getElementById('terminal-logs-pane');
+          if (tPane) tPane.scrollTop = tPane.scrollHeight;
+        }, 100);
+      }
     }
 
     function filterRepoVisibility(vis) {
@@ -3068,6 +3486,13 @@
           const logEl = document.getElementById('daemon-logs');
           if (logEl && logs) {
             logEl.innerText = logs;
+          }
+          const logFull = document.getElementById('terminal-logs-pane');
+          if (logFull && logs) {
+            logFull.innerText = logs;
+            if (terminalAutoScroll) {
+              logFull.scrollTop = logFull.scrollHeight;
+            }
           }
         }
       } catch (e) {
