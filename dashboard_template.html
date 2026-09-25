@@ -3534,6 +3534,291 @@
       font-size: 0.62rem;
     }
 
+    /* Hugging Face & Ollama Edge AI Model Hub Styles */
+    .hub-modal-box {
+      max-width: 660px !important;
+      max-height: 85vh !important;
+    }
+    .hub-tab-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      scrollbar-width: none;
+    }
+    .hub-tab-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .hub-tab-btn {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .hub-tab-btn:hover {
+      border-color: #F472B6;
+      color: #FFF;
+      background: rgba(236, 72, 153, 0.1);
+    }
+    .hub-tab-btn.active {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(168, 85, 247, 0.25));
+      border-color: #F472B6;
+      color: #FFF;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.3);
+    }
+    .hub-search-container {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(236, 72, 153, 0.25);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+    .hub-download-bar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .hub-url-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 7px 10px;
+      color: #FFF;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .hub-url-input:focus {
+      border-color: #F472B6;
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.3);
+    }
+    .hub-role-select {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 7px 8px;
+      color: #38BDF8;
+      font-size: 0.72rem;
+      font-weight: 600;
+      outline: none;
+    }
+    .hub-btn-download {
+      background: linear-gradient(135deg, #10B981, #059669);
+      border: 1px solid #34D399;
+      color: #FFF;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .hub-btn-download:hover {
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+      transform: translateY(-1px);
+    }
+    .hub-quick-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      align-items: center;
+    }
+    .hub-tag-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 0.64rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .hub-tag-pill:hover {
+      border-color: #38BDF8;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .hub-tag-pill.recommended {
+      border-color: rgba(236, 72, 153, 0.4);
+      color: #F472B6;
+    }
+    .hub-progress-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 10px;
+    }
+    .hub-prog-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      margin-bottom: 5px;
+      font-family: var(--font-mono);
+    }
+    .hub-prog-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+    .hub-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38BDF8, #F472B6, #34D399);
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+    .hub-models-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .hub-model-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px 12px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hub-model-card:hover {
+      border-color: rgba(236, 72, 153, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+    }
+    .hub-model-card.recommended {
+      border-left: 3px solid #F472B6;
+    }
+    .hub-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .hub-card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hub-card-badges {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .hub-card-desc {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .hub-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .hub-card-specs {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+    .hub-card-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .btn-hub-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      border-radius: 5px;
+      padding: 4px 9px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .btn-hub-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .btn-hub-action.wire {
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.12);
+    }
+    .btn-hub-action.wire:hover {
+      background: rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    }
+    .btn-hub-action.unwire {
+      border-color: rgba(245, 158, 11, 0.5);
+      color: #FBBF24;
+      background: rgba(245, 158, 11, 0.12);
+    }
+    .btn-hub-action.unwire:hover {
+      background: rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+    }
+    .btn-hub-action.delete {
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #F87171;
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .btn-hub-action.delete:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+    .btn-hub-action.download {
+      border-color: rgba(52, 211, 153, 0.5);
+      color: #34D399;
+      background: rgba(52, 211, 153, 0.12);
+    }
+    .btn-hub-action.download:hover {
+      background: rgba(52, 211, 153, 0.25);
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+    }
+    .visual-analysis-box {
+      background: rgba(236, 72, 153, 0.08);
+      border: 1px solid rgba(236, 72, 153, 0.35);
+      border-left: 3px solid #EC4899;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin: 6px 0;
+    }
+
     /* Print & A4 PDF Container */
     #printable-office-report {
       display: none;
@@ -4120,11 +4405,18 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
             <span>Ollama Models</span>
           </button>
-          <button class="term-pill-btn pill-green" onclick="pullAndWireModel('qwen2.5-coder:1.5b', 'coding')" title="Pull & Wire Recommended 1.5B Model">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Pull 1.5B</span>
+          <button class="term-pill-btn pill-pink" onclick="openModelHubModal('vision')" title="Hugging Face & Ollama Edge AI Model Hub">
+            <span>🤗 Model Hub</span>
           </button>
-          <button class="term-pill-btn pill-green" onclick="pullAndWireModel('deepseek-r1:1.5b', 'reasoning')" title="Pull & Wire DeepSeek R1 Reasoning Model">
+          <button class="term-pill-btn pill-pink" onclick="downloadOllamaModel('moondream', 'vision')" title="Download Moondream 1.8B Visual AI Model">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>Pull Moondream VL</span>
+          </button>
+          <button class="term-pill-btn pill-green" onclick="downloadOllamaModel('qwen2.5-coder:1.5b', 'coding')" title="Download Recommended 1.5B Coder Model">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Pull 1.5B Coder</span>
+          </button>
+          <button class="term-pill-btn pill-green" onclick="downloadOllamaModel('deepseek-r1:1.5b', 'reasoning')" title="Download DeepSeek R1 Reasoning Model">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
             <span>Pull DeepSeek R1</span>
           </button>
@@ -4238,6 +4530,7 @@
           </div>
           <div class="ollama-service-actions">
             <button class="ollama-service-btn" onclick="checkOllamaService(true)" title="Check Ollama HTTP service">🔄 Test</button>
+            <button class="ollama-service-btn" style="border-color: rgba(236,72,153,0.5); color: #F472B6; background: rgba(236,72,153,0.1);" onclick="openModelHubModal('vision')" title="Hugging Face & Ollama Edge AI Model Hub">🤗 Hub</button>
             <button class="ollama-service-btn primary" onclick="switchNav('terminal')" title="Open Cyber Terminal Console">💻 Terminal</button>
           </div>
         </div>
@@ -4246,65 +4539,80 @@
           <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">
             💡 Recommended Local Offline Models (Quantized / GGUF)
           </div>
-          <span style="font-size: 0.65rem; color: var(--text-dim);">One-Tap Download & Wire</span>
+          <span style="font-size: 0.65rem; color: var(--text-dim);">Download & Manual Wiring</span>
         </div>
 
         <div class="model-recommendation-list">
+          <!-- Model 0: Moondream 1.8B (Visual AI / Vision-Language) -->
+          <div class="model-rec-item recommended" id="card-rec-moondream">
+            <div class="model-rec-left">
+              <h4><span>👁️ moondream</span> <span class="card-badge badge-merged" style="border-color: #F472B6; color: #F472B6;">⭐ Top Edge VL</span></h4>
+              <p>830MB • Ultra-compact vision AI: OCR text extraction, UI inspection & error screenshots</p>
+            </div>
+            <div class="model-rec-actions" id="rec-actions-moondream">
+              <button class="pull-wire-btn" id="btn-pull-moondream" onclick="downloadOllamaModel('moondream', 'vision')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download</span>
+              </button>
+              <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull moondream')" title="Copy pull command">📋</button>
+            </div>
+          </div>
+
           <!-- Model 1: Qwen 2.5 Coder 1.5B (Recommended) -->
-          <div class="model-rec-item recommended">
+          <div class="model-rec-item recommended" id="card-rec-qwen2-5-coder-1-5b">
             <div class="model-rec-left">
               <h4><span>⭐ qwen2.5-coder:1.5b</span> <span class="card-badge badge-merged">Recommended</span></h4>
               <p>986MB • Supreme basic snippets, PR patches, conflict rectifications & syntax fixes</p>
             </div>
-            <div class="model-rec-actions">
-              <button class="pull-wire-btn" id="btn-pull-qwen2-5-coder-1-5b" onclick="pullAndWireModel('qwen2.5-coder:1.5b', 'coding')">
+            <div class="model-rec-actions" id="rec-actions-qwen2-5-coder-1-5b">
+              <button class="pull-wire-btn" id="btn-pull-qwen2-5-coder-1-5b" onclick="downloadOllamaModel('qwen2.5-coder:1.5b', 'coding')">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Pull & Wire</span>
+                <span>Download</span>
               </button>
               <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull qwen2.5-coder:1.5b')" title="Copy pull command">📋</button>
             </div>
           </div>
 
           <!-- Model 2: DeepSeek R1 1.5B (Reasoning) -->
-          <div class="model-rec-item">
+          <div class="model-rec-item" id="card-rec-deepseek-r1-1-5b">
             <div class="model-rec-left">
               <h4><span>🧠 deepseek-r1:1.5b</span> <span class="card-badge badge-ai">Reasoning</span></h4>
               <p>1.1GB • Deep reasoning for multi-repo logic and PR merge strategies</p>
             </div>
-            <div class="model-rec-actions">
-              <button class="pull-wire-btn" id="btn-pull-deepseek-r1-1-5b" onclick="pullAndWireModel('deepseek-r1:1.5b', 'reasoning')">
+            <div class="model-rec-actions" id="rec-actions-deepseek-r1-1-5b">
+              <button class="pull-wire-btn" id="btn-pull-deepseek-r1-1-5b" onclick="downloadOllamaModel('deepseek-r1:1.5b', 'reasoning')">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Pull & Wire</span>
+                <span>Download</span>
               </button>
               <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull deepseek-r1:1.5b')" title="Copy pull command">📋</button>
             </div>
           </div>
 
           <!-- Model 3: Qwen 2.5 Coder 0.5B (Ultra-Light) -->
-          <div class="model-rec-item">
+          <div class="model-rec-item" id="card-rec-qwen2-5-coder-0-5b">
             <div class="model-rec-left">
               <h4><span>⚡ qwen2.5-coder:0.5b</span> <span class="card-badge badge-public">Ultra-Light</span></h4>
               <p>390MB • Instant execution, lowest battery & RAM footprint on mobile</p>
             </div>
-            <div class="model-rec-actions">
-              <button class="pull-wire-btn" id="btn-pull-qwen2-5-coder-0-5b" onclick="pullAndWireModel('qwen2.5-coder:0.5b', 'coding')">
+            <div class="model-rec-actions" id="rec-actions-qwen2-5-coder-0-5b">
+              <button class="pull-wire-btn" id="btn-pull-qwen2-5-coder-0-5b" onclick="downloadOllamaModel('qwen2.5-coder:0.5b', 'coding')">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Pull & Wire</span>
+                <span>Download</span>
               </button>
               <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull qwen2.5-coder:0.5b')" title="Copy pull command">📋</button>
             </div>
           </div>
 
           <!-- Model 4: SmolLM2 360M (Fast Micro Chat) -->
-          <div class="model-rec-item">
+          <div class="model-rec-item" id="card-rec-smollm2-360m">
             <div class="model-rec-left">
               <h4><span>💬 smollm2:360m</span> <span class="card-badge badge-rebased">Micro-Agent</span></h4>
               <p>260MB • Ultra-fast responses, minimal footprint for conversational control</p>
             </div>
-            <div class="model-rec-actions">
-              <button class="pull-wire-btn" id="btn-pull-smollm2-360m" onclick="pullAndWireModel('smollm2:360m', 'chat')">
+            <div class="model-rec-actions" id="rec-actions-smollm2-360m">
+              <button class="pull-wire-btn" id="btn-pull-smollm2-360m" onclick="downloadOllamaModel('smollm2:360m', 'chat')">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>Pull & Wire</span>
+                <span>Download</span>
               </button>
               <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull smollm2:360m')" title="Copy pull command">📋</button>
             </div>
@@ -4404,6 +4712,16 @@
             <option value="groq:mixtral-8x7b-32768">Groq: Mixtral 8x7B (MoE)</option>
             <option value="google:gemini-2.0-flash">Google: Gemini 2.0 Flash</option>
             <option value="local:smollm2:360m">Local Ollama: SmolLM2 360M</option>
+          </select>
+        </div>
+
+        <div class="config-field">
+          <label class="config-label">Visual AI Model (Vision-Language / OCR / Screenshots)</label>
+          <select class="config-select" id="cfg-vision-model" onchange="onVisionModelSelectChange(this.value)">
+            <option value="moondream" selected>Local Ollama: moondream (1.8B · ~830MB · Recommended)</option>
+            <option value="qwen2.5-vl:3b">Local Ollama: qwen2.5-vl:3b (3B · ~1.9GB)</option>
+            <option value="google:gemini-2.0-flash">Google AI Studio: Gemini 2.0 Flash (Multimodal)</option>
+            <option value="auto">⚡ Auto-detect Local / Cloud Vision</option>
           </select>
         </div>
       </div>
@@ -4618,6 +4936,9 @@
           </div>
         </div>
         <div class="subbar-right">
+          <button class="subbar-btn" onclick="openModelHubModal('vision')" title="Hugging Face & Ollama Edge AI Model Hub">
+            <span style="color: #F472B6;">🤗 Hub</span>
+          </button>
           <button class="subbar-btn" id="btn-toggle-todo" onclick="toggleTodoPane()" title="Toggle Tiny TODO Checklist">
             <span>📋 TODO</span>
             <span class="subbar-badge" id="todo-count-badge">0</span>
@@ -4654,6 +4975,7 @@
             <option value="deepseek-r1:1.5b">🧠 DeepSeek</option>
             <option value="qwen2.5-coder:1.5b">💻 Qwen 2.5</option>
             <option value="smollm2:360m">💬 SmolLM2</option>
+            <option value="moondream">👁️ Moondream</option>
             <option value="google:gemini-2.0-flash">⚡ Gemini</option>
             <option value="groq:llama-3.3-70b">🚀 Groq</option>
           </select>
@@ -5057,7 +5379,7 @@
         checkOllamaModelsInTerminal();
       } else if (cmd.startsWith('ollama pull ')) {
         const targetModel = raw.replace(/^ollama\s+pull\s+/i, '').trim();
-        if (targetModel) pullAndWireModel(targetModel, targetModel.includes('r1') ? 'reasoning' : 'coding');
+        if (targetModel) downloadOllamaModel(targetModel, targetModel.includes('r1') ? 'reasoning' : targetModel.includes('moondream') || targetModel.includes('vl') ? 'vision' : 'coding');
       } else if (cmd === 'ollama status' || cmd === 'ollama') {
         checkOllamaStatusInTerminal();
       } else if (cmd.startsWith('test ai') || cmd.startsWith('ai ') || cmd.startsWith('ask ')) {
@@ -5213,14 +5535,26 @@
       showToast(`Agent Persona: ${mode === 'collab' ? 'Coordinated (Q&A + Guardian)' : (mode === 'guardian' ? 'Guardian (Approver)' : 'Q&A (Auditor)')}`);
     }
 
-    function routeModelForPrompt(text) {
+    function routeModelForPrompt(text, hasAttachedImages = false) {
       const lower = text.toLowerCase();
+      // 0. Visual AI (VL) / OCR / Diagram / Screenshot Analysis
+      if (hasAttachedImages || lower.includes('image') || lower.includes('screenshot') || lower.includes('diagram') ||
+          lower.includes('ocr') || lower.includes('photo') || lower.includes('visual') ||
+          lower.includes('mockup') || lower.includes('ui mockup') || lower.includes('picture')) {
+        const vModel = getWiredVisionModel() || 'moondream';
+        return {
+          model: vModel,
+          role: 'Visual AI & OCR Inspector (Edge VL)',
+          category: 'vision'
+        };
+      }
       // 1. Coding / Patches / Syntax / Conflict Rectification
       if (lower.includes('code') || lower.includes('syntax') || lower.includes('conflict') || lower.includes('patch') ||
           lower.includes('bug') || lower.includes('fix') || lower.includes('refactor') || lower.includes('function') ||
           lower.includes('typescript') || lower.includes('python') || lower.includes('commit') || lower.includes('file')) {
+        const cModel = getWiredCodingModel() || 'qwen2.5-coder:1.5b';
         return {
-          model: 'qwen2.5-coder:1.5b',
+          model: cModel,
           role: 'Coding Specialist (Offline ARM64)',
           category: 'coding'
         };
@@ -5229,15 +5563,17 @@
       if (lower.includes('reason') || lower.includes('why') || lower.includes('architect') || lower.includes('logic') ||
           lower.includes('strategy') || lower.includes('decision') || lower.includes('squash vs rebase') ||
           lower.includes('evaluate') || lower.includes('plan') || lower.includes('analyze') || lower.includes('compare')) {
+        const rModel = getWiredReasoningModel() || 'deepseek-r1:1.5b';
         return {
-          model: 'deepseek-r1:1.5b',
+          model: rModel,
           role: 'Reasoning & Architecture (Offline ARM64)',
           category: 'reasoning'
         };
       }
       // 3. Discussion & Understanding / General Interaction
+      const dModel = getWiredChatModel() || 'smollm2:360m';
       return {
-        model: 'smollm2:360m',
+        model: dModel,
         role: 'Discussion & Comprehension (Offline ARM64)',
         category: 'discussion'
       };
@@ -5961,22 +6297,267 @@
       });
     }
 
-    // Active Ollama Model Pull & System Auto-Wiring Engine
-    async function pullAndWireModel(modelName, category = 'coding') {
-      switchNav('terminal');
-      const term = document.getElementById('terminal-logs-pane');
+    // ============================================================
+    // HUGGING FACE & OLLAMA MODEL HUB ENGINE (NO AUTO-WIRING POLICY)
+    // ============================================================
+    let lastKnownOllamaModels = [];
+    let currentHubTab = 'vision';
+    let isHubDownloading = false;
+
+    // Curated catalog of small-size edge models for mobile/edge ARM64 (~7.4GB RAM)
+    const MODEL_HUB_CATALOG = {
+      vision: [
+        {
+          name: 'moondream',
+          tag: 'moondream',
+          title: '⭐ moondream (1.8B · ~830MB)',
+          subtitle: 'Smartest Ultra-Compact Edge Vision-Language Model',
+          desc: 'Specialized for mobile ARM64 edge hardware. Performs verbatim OCR text extraction, UI inspection, diagram/chart interpretation, and error screenshot analysis with lowest RAM footprint (~1.2GB peak).',
+          badges: ['⭐ Top Edge VL', 'OCR Verbatim', 'Mobile ARM64'],
+          role: 'vision',
+          specs: '1.8B Params • ~830MB GGUF • ~1.2GB RAM • Vision-Language'
+        },
+        {
+          name: 'qwen2.5-vl:3b',
+          tag: 'qwen2.5-vl:3b',
+          title: 'qwen2.5-vl:3b (3B · ~1.9GB)',
+          subtitle: 'High-Precision Multilingual Document & Diagram Model',
+          desc: 'Exceptional multilingual OCR accuracy. Reads dense code snippets directly from screenshots, scanned PDF tables, and architectural flowcharts with high visual precision.',
+          badges: ['Document OCR', 'Code Screenshot', '3B Params'],
+          role: 'vision',
+          specs: '3B Params • ~1.9GB GGUF • ~2.6GB RAM • Multimodal'
+        },
+        {
+          name: 'minicpm-v:8b',
+          tag: 'minicpm-v:8b',
+          title: 'minicpm-v:8b (8B · ~5.5GB)',
+          subtitle: 'Advanced Multimodal Reasoning Suite',
+          desc: 'GPT-4V tier visual reasoning and complex system schematics parsing. Recommended for high-RAM devices and workstation nodes.',
+          badges: ['Deep Multimodal', '8GB+ RAM Node'],
+          role: 'vision',
+          specs: '8B Params • ~5.5GB GGUF • ~6.2GB RAM • Workstation'
+        },
+        {
+          name: 'llama3.2-vision:11b',
+          tag: 'llama3.2-vision:11b',
+          title: 'llama3.2-vision:11b (11B · ~7.9GB)',
+          subtitle: 'Meta Flagship Open-Source Vision Intelligence',
+          desc: 'Comprehensive visual understanding and document intelligence for high-capacity edge clusters and desktop servers.',
+          badges: ['Meta Flagship', 'Desktop / Server'],
+          role: 'vision',
+          specs: '11B Params • ~7.9GB GGUF • ~8.5GB RAM • Cluster'
+        }
+      ],
+      coder: [
+        {
+          name: 'qwen2.5-coder:1.5b',
+          tag: 'qwen2.5-coder:1.5b',
+          title: '⭐ qwen2.5-coder:1.5b (1.5B · ~986MB)',
+          subtitle: 'Premier Edge Code Synthesis & Conflict Resolver',
+          desc: 'Supreme basic snippets, PR patches, conflict rectifications & AST syntax fixes under the "Never Break The Code" policy. Optimal balance of speed and precision.',
+          badges: ['⭐ Recommended Coder', 'Fast AST', '986MB'],
+          role: 'coding',
+          specs: '1.5B Params • ~986MB GGUF • Q4_K_M • Code Synthesis'
+        },
+        {
+          name: 'qwen2.5-coder:0.5b',
+          tag: 'qwen2.5-coder:0.5b',
+          title: 'qwen2.5-coder:0.5b (0.5B · ~390MB)',
+          subtitle: 'Ultra-Lightweight Micro Coder',
+          desc: 'Instant execution, lowest battery & RAM footprint on mobile. Perfect for quick one-line syntax corrections and rapid AST validation on constrained batteries.',
+          badges: ['Ultra-Light', 'Instant Execution', '390MB'],
+          role: 'coding',
+          specs: '0.5B Params • ~390MB GGUF • Q4_K_M • Low Battery'
+        },
+        {
+          name: 'deepseek-coder:1.3b',
+          tag: 'deepseek-coder:1.3b',
+          title: 'deepseek-coder:1.3b (1.3B · ~776MB)',
+          subtitle: 'DeepSeek Code Intelligence Specialist',
+          desc: 'Trained on 2T tokens of code and natural language. Specialized in patch debugging, security audit checks, and language syntax verification.',
+          badges: ['Security Audit', 'Code LLM', '776MB'],
+          role: 'coding',
+          specs: '1.3B Params • ~776MB GGUF • Q4_K_M • Security'
+        },
+        {
+          name: 'starcoder2:3b',
+          tag: 'starcoder2:3b',
+          title: 'starcoder2:3b (3B · ~1.7GB)',
+          subtitle: 'Multi-Language BigCode Synthesis',
+          desc: 'Comprehensive code generation, bug fixing, and repository repair across 600+ programming languages from BigCode.',
+          badges: ['600+ Languages', 'BigCode', '1.7GB'],
+          role: 'coding',
+          specs: '3B Params • ~1.7GB GGUF • Q4_K_M • Multi-Lang'
+        }
+      ],
+      reasoning: [
+        {
+          name: 'deepseek-r1:1.5b',
+          tag: 'deepseek-r1:1.5b',
+          title: '⭐ deepseek-r1:1.5b (1.5B · ~1.1GB)',
+          subtitle: 'Algorithmic Chain-of-Thought & PR Merge Reasoning',
+          desc: 'Deep mathematical and algorithmic chain-of-thought for PR merge strategies, architectural reviews, risk assessment, and decision formulation for Guardian.',
+          badges: ['⭐ Recommended Reasoning', 'CoT Thinking', '1.1GB'],
+          role: 'reasoning',
+          specs: '1.5B Params • ~1.1GB GGUF • Q4_K_M • Reasoning'
+        },
+        {
+          name: 'smollm2:360m',
+          tag: 'smollm2:360m',
+          title: 'smollm2:360m (360M · ~260MB)',
+          subtitle: 'Micro-Agent Rapid Conversation',
+          desc: 'Ultra-fast conversational control, negligible battery draw, and instant response for interactive Q&A and status reporting.',
+          badges: ['Micro-Agent', 'Instant Response', '260MB'],
+          role: 'chat',
+          specs: '360M Params • ~260MB GGUF • Q4_K_M • Discussion'
+        },
+        {
+          name: 'gemma2:2b',
+          tag: 'gemma2:2b',
+          title: 'gemma2:2b (2.6B · ~1.6GB)',
+          subtitle: 'Google Gemma 2 Dialogue & Instructions',
+          desc: 'High-quality dialogue, instruction following, and nuanced semantic understanding based on Google Gemini architecture.',
+          badges: ['Google Gemma', 'High Quality', '1.6GB'],
+          role: 'chat',
+          specs: '2.6B Params • ~1.6GB GGUF • Q4_K_M • Dialogue'
+        },
+        {
+          name: 'llama3.2:1b',
+          tag: 'llama3.2:1b',
+          title: 'llama3.2:1b (1B · ~1.3GB)',
+          subtitle: 'Meta Lightweight General Intelligence',
+          desc: 'General reasoning, multi-turn conversation, and summarization with fast throughput on ARM64 processors.',
+          badges: ['Meta LLaMA', 'General Purpose', '1.3GB'],
+          role: 'chat',
+          specs: '1B Params • ~1.3GB GGUF • Q4_K_M • Summarization'
+        }
+      ]
+    };
+
+    function getWiredModels() {
+      try {
+        const raw = localStorage.getItem('guardian_wired_models');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      // Initial default wired models
+      const initial = {
+        'qwen2.5-coder:1.5b': 'coding',
+        'deepseek-r1:1.5b': 'reasoning',
+        'smollm2:360m': 'chat'
+      };
+      localStorage.setItem('guardian_wired_models', JSON.stringify(initial));
+      return initial;
+    }
+
+    function isModelWired(modelName) {
+      const wired = getWiredModels();
+      return !!(wired[modelName] || wired[modelName.split(':')[0]] || Object.keys(wired).some(k => k === modelName || k.startsWith(modelName)));
+    }
+
+    function getModelWiredRole(modelName) {
+      const wired = getWiredModels();
+      if (wired[modelName]) return wired[modelName];
+      for (const k of Object.keys(wired)) {
+        if (k === modelName || k.startsWith(modelName) || modelName.startsWith(k)) return wired[k];
+      }
+      return null;
+    }
+
+    function getWiredVisionModel() {
+      const wired = getWiredModels();
+      for (const [m, role] of Object.entries(wired)) {
+        if (role === 'vision') return m;
+      }
+      const stored = localStorage.getItem('guardian_vision_model');
+      if (stored && stored !== 'auto' && stored !== 'none') return stored;
+      // Fallback: check if moondream or any VL model is installed
+      if (lastKnownOllamaModels.some(m => m.name.includes('moondream'))) return 'moondream';
+      if (lastKnownOllamaModels.some(m => m.name.includes('vl') || m.name.includes('vision'))) {
+        return lastKnownOllamaModels.find(m => m.name.includes('vl') || m.name.includes('vision')).name;
+      }
+      return null;
+    }
+
+    function getWiredCodingModel() {
+      const wired = getWiredModels();
+      for (const [m, role] of Object.entries(wired)) {
+        if (role === 'coding') return m;
+      }
+      return localStorage.getItem('guardian_coding_model') || 'qwen2.5-coder:1.5b';
+    }
+
+    function getWiredReasoningModel() {
+      const wired = getWiredModels();
+      for (const [m, role] of Object.entries(wired)) {
+        if (role === 'reasoning') return m;
+      }
+      return localStorage.getItem('guardian_reasoning_model') || 'deepseek-r1:1.5b';
+    }
+
+    function getWiredChatModel() {
+      const wired = getWiredModels();
+      for (const [m, role] of Object.entries(wired)) {
+        if (role === 'chat' || role === 'discussion') return m;
+      }
+      return localStorage.getItem('guardian_chat_model') || 'smollm2:360m';
+    }
+
+    function normalizeModelTagOrUrl(raw) {
+      let s = (raw || '').trim();
+      if (!s) return '';
+      s = s.replace(/^["'`]|["'`]$/g, '');
+      const hfMatch = s.match(/(?:https?:\/\/)?(?:www\.)?huggingface\.co\/([^\/\s]+)\/([^\/\s?#]+)(?:\/blob\/[^\/\s]+\/([^\/\s?#]+))?/i);
+      if (hfMatch) {
+        const author = hfMatch[1];
+        const repo = hfMatch[2];
+        const file = hfMatch[3];
+        if (file && file.toLowerCase().endsWith('.gguf')) {
+          const quantMatch = file.match(/:?([A-Za-z0-9_]+)\.gguf$/i);
+          const tag = quantMatch ? quantMatch[1] : 'latest';
+          return `hf.co/${author}/${repo}:${tag}`;
+        }
+        return `hf.co/${author}/${repo}`;
+      }
+      return s;
+    }
+
+    // Active Ollama Model Download Engine (STRICT: NO AUTO-WIRING)
+    async function downloadOllamaModel(rawModelName, category = 'coding', fromModal = false) {
+      const modelName = normalizeModelTagOrUrl(rawModelName);
+      if (!modelName) {
+        showToast('Please specify a valid model tag or Hugging Face URL');
+        return;
+      }
+
+      if (!fromModal) switchNav('terminal');
       const appendLog = appendTerminalLog;
 
       appendLog(`\n======================================================`);
       appendLog(`[guardian@termux:~$] ollama pull ${modelName}`);
       appendLog(`Initiating download via local daemon at http://localhost:11434...`);
-      showToast(`Initiating pull for ${modelName}...`);
+      appendLog(`⚠️ POLICY: Auto-wiring is OFF. Model will remain unwired until user confirms.`);
+      showToast(`Initiating download for ${modelName}...`);
 
+      isHubDownloading = true;
+
+      // Update button on overview card if present
       const btnId = `btn-pull-${modelName.replace(/[:.]/g, '-')}`;
       const btn = document.getElementById(btnId);
       if (btn) {
         btn.className = 'pull-wire-btn pulling';
-        btn.innerHTML = `<span>⏳ Pulling...</span>`;
+        btn.innerHTML = `<span>⏳ Downloading...</span>`;
+      }
+
+      // Update progress box in Model Hub modal if open
+      const progBox = document.getElementById('hub-download-progress-box');
+      const progFill = document.getElementById('hub-prog-fill');
+      const progStatus = document.getElementById('hub-prog-status');
+      const progMeta = document.getElementById('hub-prog-meta');
+      if (progBox) {
+        progBox.style.display = 'block';
+        if (progStatus) progStatus.innerText = `Downloading ${modelName}...`;
+        if (progFill) progFill.style.width = '2%';
+        if (progMeta) progMeta.innerText = 'Connecting to Ollama store...';
       }
 
       try {
@@ -6011,6 +6592,10 @@
                   const pct = Math.floor((data.completed / data.total) * 100);
                   const mbComp = (data.completed / (1024 * 1024)).toFixed(1);
                   const mbTotal = (data.total / (1024 * 1024)).toFixed(1);
+
+                  if (progFill) progFill.style.width = `${pct}%`;
+                  if (progMeta) progMeta.innerText = `${pct}% (${mbComp}MB / ${mbTotal}MB) • ${data.status}`;
+
                   if (pct !== lastPct && (pct % 5 === 0 || pct === 100)) {
                     lastPct = pct;
                     const barLen = 22;
@@ -6019,54 +6604,89 @@
                     appendLog(`  [${bar}] ${pct}% (${mbComp}MB / ${mbTotal}MB) - ${data.status}`);
                   }
                 } else if (!data.completed) {
+                  if (progMeta) progMeta.innerText = `● ${data.status}`;
                   appendLog(`  ● ${data.status}`);
                 }
               }
             } catch (e) {
-              // Skip chunk parse glitch
+              // Parse glitch ignored
             }
           }
         }
 
-        appendLog(`✔ [SUCCESS] Model ${modelName} downloaded and verified in local Ollama store.`);
-        appendLog(`⚡ [AUTO-WIRING] Configuring Guardian router to use ${modelName}...`);
-
-        // Wire model into all dropdowns and persistent settings
-        wireModelIntoSystem(modelName, category);
-
-        appendLog(`✔ [WIRED] ${modelName} is now configured as your active offline ${category} engine!`);
-        appendLog(`  • Code patches & conflict resolver connected`);
-        appendLog(`  • Autonomous agent chat drawer updated`);
-        appendLog(`  • Preferences saved to localStorage`);
+        isHubDownloading = false;
+        appendLog(`✔ [DOWNLOAD COMPLETE] Model ${modelName} downloaded & verified.`);
+        appendLog(`⚠️ [NO AUTO-WIRING POLICY] Model is UNWIRED.`);
+        appendLog(`  Click [🔌 Wire to Router] on the model card to assign it to Guardian.`);
         appendLog(`======================================================\n`);
 
-        if (btn) {
-          btn.className = 'pull-wire-btn wired';
-          btn.innerHTML = `<span>✔ Active & Wired</span>`;
+        // Update progress box in Hub modal with explicit Wire button
+        if (progBox) {
+          if (progFill) progFill.style.width = '100%';
+          if (progStatus) {
+            progStatus.innerHTML = `<span style="color: var(--success); font-weight: 800;">✔ Downloaded (Unwired): ${modelName}</span>`;
+          }
+          if (progMeta) {
+            progMeta.innerHTML = `
+              <div style="margin-top: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                <span style="color: var(--warning); font-size: 0.68rem;">Auto-wiring disabled. Click Wire to activate:</span>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-hub-action wire" onclick="manualWireModel('${modelName}', '${category}')">
+                    <span>🔌 Wire to Router</span>
+                  </button>
+                  <button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${modelName}')">
+                    <span>🗑️ Remove</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          }
         }
-        showToast(`🎉 ${modelName} wired as active offline model!`);
-        checkOllamaService(false);
+
+        showToast(`🎉 ${modelName} downloaded! Click "Wire to Router" to activate.`);
+
+        // Refresh installed models list and recommendations
+        await checkOllamaService(false);
+        if (document.getElementById('guardian-modal-container')?.style.display === 'block') {
+          renderModelHubModal();
+        }
       } catch (err) {
-        console.error('Ollama pull failed:', err);
-        appendLog(`\n✕ [ERROR] Could not pull ${modelName}: ${err.message}`);
+        isHubDownloading = false;
+        console.error('Ollama download failed:', err);
+        appendLog(`\n✕ [ERROR] Could not download ${modelName}: ${err.message}`);
         appendLog(`\n💡 How to resolve in Termux:`);
         appendLog(`  1. Ensure Ollama daemon is running: 'ollama serve &'`);
         appendLog(`  2. Test daemon health: 'ollama status'`);
         appendLog(`  3. Or run pull directly in Termux shell: 'ollama pull ${modelName}'`);
         appendLog(`======================================================\n`);
+
         if (btn) {
           btn.className = 'pull-wire-btn';
-          btn.innerHTML = `<span>⬇️ Retry Pull & Wire</span>`;
+          btn.innerHTML = `<span>⬇️ Retry</span>`;
         }
-        showToast(`Pull failed: ${err.message}`);
+        if (progBox) {
+          if (progStatus) progStatus.innerHTML = `<span style="color: var(--danger);">✕ Download Failed: ${err.message}</span>`;
+          if (progMeta) progMeta.innerText = 'Ensure Ollama daemon is running and storage is sufficient.';
+        }
+        showToast(`Download failed: ${err.message}`);
       }
     }
 
-    function wireModelIntoSystem(modelName, category = 'coding') {
-      const isCoder = modelName.includes('coder') || category === 'coding';
-      const isReasoning = modelName.includes('r1') || category === 'reasoning';
+    // Alias for legacy calls
+    const pullAndWireModel = downloadOllamaModel;
 
-      // 1. Coding model select
+    // Manual Wiring Engine (Explicit User Action Required)
+    function manualWireModel(modelName, category = 'coding') {
+      const wired = getWiredModels();
+      wired[modelName] = category;
+      localStorage.setItem('guardian_wired_models', JSON.stringify(wired));
+
+      const isCoder = category === 'coding' || modelName.includes('coder');
+      const isReasoning = category === 'reasoning' || modelName.includes('r1');
+      const isVision = category === 'vision' || modelName.includes('moondream') || modelName.includes('vl');
+      const isChat = category === 'chat' || modelName.includes('smollm') || modelName.includes('gemma');
+
+      // 1. Coding select
       const codingSelect = document.getElementById('cfg-coding-model');
       if (codingSelect) {
         let opt = Array.from(codingSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
@@ -6080,7 +6700,7 @@
         }
       }
 
-      // 2. Reasoning model select
+      // 2. Reasoning select
       const reasoningSelect = document.getElementById('cfg-reasoning-model');
       if (reasoningSelect) {
         let opt = Array.from(reasoningSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
@@ -6094,7 +6714,21 @@
         }
       }
 
-      // 3. Chat model select
+      // 3. Vision select
+      const visionSelect = document.getElementById('cfg-vision-model');
+      if (visionSelect) {
+        let opt = Array.from(visionSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
+        if (!opt) {
+          opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
+          visionSelect.add(opt, 0);
+        }
+        if (isVision) {
+          visionSelect.value = opt.value;
+          localStorage.setItem('guardian_vision_model', opt.value);
+        }
+      }
+
+      // 4. Chat select
       const chatSelect = document.getElementById('cfg-chat-model');
       if (chatSelect) {
         let opt = Array.from(chatSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
@@ -6102,29 +6736,406 @@
           opt = new Option(`Local Ollama: ${modelName} (Active)`, modelName);
           chatSelect.add(opt, 0);
         }
-        if (category === 'chat') {
+        if (isChat) {
           chatSelect.value = opt.value;
           localStorage.setItem('guardian_chat_model', opt.value);
         }
       }
 
-      // 4. Agent Drawer active model select
+      // 5. Drawer active model select
       const drawerSelect = document.getElementById('active-model-select');
       if (drawerSelect) {
         let opt = Array.from(drawerSelect.options).find(o => o.value === modelName || o.value.includes(modelName));
+        const roleIcon = isVision ? '👁️' : isCoder ? '💻' : isReasoning ? '🧠' : '💬';
         if (!opt) {
-          opt = new Option(`💻 ${modelName.split(':')[0]}`, modelName);
+          opt = new Option(`${roleIcon} ${modelName.split(':')[0]}`, modelName);
           drawerSelect.add(opt, 1);
         }
         drawerSelect.value = opt.value;
         localStorage.setItem('guardian_active_model', opt.value);
       }
 
-      // 5. Ensure Ollama host endpoint is set
+      // 6. Ensure Ollama host endpoint is set
       const hostInput = document.getElementById('key-ollama');
       if (hostInput && !hostInput.value) {
         hostInput.value = 'http://localhost:11434';
       }
+
+      showToast(`🔌 Wired ${modelName} as active ${category.toUpperCase()} engine!`);
+      renderRecommendationCards();
+      if (document.getElementById('guardian-modal-container')?.style.display === 'block') {
+        renderModelHubModal();
+      }
+    }
+
+    // Manual Unwiring Engine (Disconnects from Router without Deleting File)
+    function manualUnwireModel(modelName, quiet = false) {
+      const wired = getWiredModels();
+      delete wired[modelName];
+      // Clean partial keys
+      for (const k of Object.keys(wired)) {
+        if (k === modelName || k.startsWith(modelName) || modelName.startsWith(k)) {
+          delete wired[k];
+        }
+      }
+      localStorage.setItem('guardian_wired_models', JSON.stringify(wired));
+
+      // Remove from active-model-select if present
+      const drawerSelect = document.getElementById('active-model-select');
+      if (drawerSelect) {
+        const idx = Array.from(drawerSelect.options).findIndex(o => o.value === modelName || o.value.includes(modelName));
+        if (idx !== -1) {
+          if (drawerSelect.selectedIndex === idx) {
+            drawerSelect.value = 'auto';
+            localStorage.setItem('guardian_active_model', 'auto');
+          }
+          drawerSelect.remove(idx);
+        }
+      }
+
+      if (!quiet) showToast(`🔌 Unwired ${modelName} from system router.`);
+      renderRecommendationCards();
+      if (document.getElementById('guardian-modal-container')?.style.display === 'block') {
+        renderModelHubModal();
+      }
+    }
+
+    // Delete Model from Device Storage
+    async function deleteLocalOllamaModel(modelName) {
+      if (!confirm(`Are you sure you want to delete "${modelName}" from device storage? This will remove all model files from Ollama and free disk space.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:11434/api/delete', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: modelName })
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        manualUnwireModel(modelName, true);
+        await checkOllamaService(false);
+        showToast(`🗑️ Model ${modelName} removed from device storage.`);
+        renderRecommendationCards();
+        if (document.getElementById('guardian-modal-container')?.style.display === 'block') {
+          renderModelHubModal();
+        }
+      } catch (err) {
+        console.error('Delete model error:', err);
+        showToast(`Could not delete model: ${err.message}`);
+      }
+    }
+
+    // Dynamic Overview Recommendation Card Renderer
+    function renderRecommendationCards() {
+      const cards = [
+        { id: 'moondream', tag: 'moondream', role: 'vision' },
+        { id: 'qwen2-5-coder-1-5b', tag: 'qwen2.5-coder:1.5b', role: 'coding' },
+        { id: 'deepseek-r1-1-5b', tag: 'deepseek-r1:1.5b', role: 'reasoning' },
+        { id: 'qwen2-5-coder-0-5b', tag: 'qwen2.5-coder:0.5b', role: 'coding' },
+        { id: 'smollm2-360m', tag: 'smollm2:360m', role: 'chat' }
+      ];
+
+      cards.forEach(c => {
+        const container = document.getElementById(`rec-actions-${c.id}`);
+        if (!container) return;
+
+        const isInstalled = lastKnownOllamaModels.some(m => m.name === c.tag || m.name.startsWith(c.tag.split(':')[0]));
+        const isWired = isModelWired(c.tag);
+
+        if (!isInstalled) {
+          container.innerHTML = `
+            <button class="pull-wire-btn" id="btn-pull-${c.tag.replace(/[:.]/g, '-')}" onclick="downloadOllamaModel('${c.tag}', '${c.role}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download</span>
+            </button>
+            <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull ${c.tag}')" title="Copy pull command">📋</button>
+          `;
+        } else if (isWired) {
+          container.innerHTML = `
+            <button class="pull-wire-btn wired" onclick="manualUnwireModel('${c.tag}')" title="Click to Unwire from router">
+              <span>⚡ Wired (${c.role})</span>
+            </button>
+            <button class="copy-cmd-btn" style="color: var(--danger);" onclick="deleteLocalOllamaModel('${c.tag}')" title="Delete from storage">🗑️</button>
+          `;
+        } else {
+          container.innerHTML = `
+            <button class="pull-wire-btn" style="background: rgba(56,189,248,0.15); border-color: #38BDF8; color: #38BDF8;" onclick="manualWireModel('${c.tag}', '${c.role}')" title="Wire to active router">
+              <span>🔌 Wire</span>
+            </button>
+            <button class="copy-cmd-btn" style="color: var(--danger);" onclick="deleteLocalOllamaModel('${c.tag}')" title="Delete from storage">🗑️</button>
+          `;
+        }
+      });
+    }
+
+    // Model Hub Modal Controller
+    function openModelHubModal(initialTab = 'vision') {
+      currentHubTab = initialTab;
+      const container = document.getElementById('guardian-modal-container');
+      if (!container) return;
+
+      renderModelHubModal();
+      container.style.display = 'block';
+
+      // Refresh installed models in background
+      checkOllamaService(false);
+    }
+
+    function switchHubTab(tabName) {
+      currentHubTab = tabName;
+      renderModelHubModal();
+    }
+
+    function setHubInput(tag, role) {
+      const input = document.getElementById('hub-model-input');
+      const roleSel = document.getElementById('hub-model-role');
+      if (input) input.value = tag;
+      if (roleSel) roleSel.value = role;
+    }
+
+    function startHubModelDownload() {
+      const input = document.getElementById('hub-model-input');
+      const roleSel = document.getElementById('hub-model-role');
+      const raw = input?.value.trim();
+      const role = roleSel?.value || 'coding';
+
+      if (!raw) {
+        showToast('Please paste a Hugging Face repo URL or Ollama model tag');
+        return;
+      }
+
+      downloadOllamaModel(raw, role, true);
+    }
+
+    function onVisionModelSelectChange(val) {
+      localStorage.setItem('guardian_vision_model', val);
+      if (val !== 'auto' && val !== 'none' && !val.startsWith('google:')) {
+        manualWireModel(val, 'vision');
+      }
+      showToast(`Visual AI model set to: ${val}`);
+    }
+
+    function renderModelHubModal() {
+      const container = document.getElementById('guardian-modal-container');
+      if (!container) return;
+
+      const installedCount = lastKnownOllamaModels.length;
+
+      let tabContentHtml = '';
+
+      if (currentHubTab === 'installed') {
+        if (lastKnownOllamaModels.length === 0) {
+          tabContentHtml = `
+            <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem;">💾</div>
+              <strong>No Models Installed Yet</strong><br>
+              <span style="font-size: 0.72rem;">Browse the tabs above or paste any Hugging Face GGUF URL to download.</span>
+            </div>
+          `;
+        } else {
+          tabContentHtml = `
+            <div class="hub-models-list">
+              ${lastKnownOllamaModels.map(m => {
+                const isWired = isModelWired(m.name);
+                const role = getModelWiredRole(m.name) || 'coding';
+                const sizeMb = ((m.size || 0) / (1024 * 1024)).toFixed(0);
+                const sizeGb = ((m.size || 0) / (1024 * 1024 * 1024)).toFixed(2);
+                const displaySize = sizeMb > 1000 ? `${sizeGb} GB` : `${sizeMb} MB`;
+                const paramSize = m.details?.parameter_size || 'Unknown';
+                const quant = m.details?.quantization_level || 'GGUF';
+
+                return `
+                  <div class="hub-model-card">
+                    <div class="hub-card-header">
+                      <div class="hub-card-title">
+                        <span>💾</span>
+                        <span>${m.name}</span>
+                      </div>
+                      <div class="hub-card-badges">
+                        <span class="card-badge ${isWired ? 'badge-merged' : 'badge-public'}" style="${isWired ? '' : 'border-color: #64748B; color: #94A3B8;'}">
+                          ${isWired ? `⚡ Wired: ${role.toUpperCase()}` : '⚪ Unwired'}
+                        </span>
+                        <span class="card-badge badge-ai">${quant}</span>
+                      </div>
+                    </div>
+                    <div class="hub-card-desc">
+                      Installed in local Ollama daemon storage. Parameter size: <strong>${paramSize}</strong>.
+                    </div>
+                    <div class="hub-card-footer">
+                      <span class="hub-card-specs">${displaySize} • Modified ${m.modified_at ? new Date(m.modified_at).toLocaleDateString() : 'recent'}</span>
+                      <div class="hub-card-actions">
+                        ${isWired ? `
+                          <button class="btn-hub-action unwire" onclick="manualUnwireModel('${m.name}')">
+                            <span>🔌 Unwire</span>
+                          </button>
+                        ` : `
+                          <select class="hub-role-select" id="role-select-${m.name.replace(/[:.]/g, '-')}" style="padding: 3px 6px; font-size: 0.65rem;">
+                            <option value="vision" ${m.name.includes('moondream') || m.name.includes('vl') ? 'selected' : ''}>👁️ Vision</option>
+                            <option value="coding" ${m.name.includes('coder') ? 'selected' : ''}>💻 Coding</option>
+                            <option value="reasoning" ${m.name.includes('r1') ? 'selected' : ''}>🧠 Reasoning</option>
+                            <option value="chat" ${m.name.includes('smollm') ? 'selected' : ''}>💬 Chat</option>
+                          </select>
+                          <button class="btn-hub-action wire" onclick="manualWireModel('${m.name}', document.getElementById('role-select-${m.name.replace(/[:.]/g, '-')}')?.value || 'coding')">
+                            <span>🔌 Wire to Router</span>
+                          </button>
+                        `}
+                        <button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${m.name}')">
+                          <span>🗑️ Remove</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+      } else {
+        const catalogList = MODEL_HUB_CATALOG[currentHubTab] || [];
+        const isVisionTab = currentHubTab === 'vision';
+
+        tabContentHtml = `
+          ${isVisionTab ? `
+            <div style="background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.3); border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; font-size: 0.72rem; line-height: 1.4;">
+              <strong style="color: #F472B6;">👁️ How Visual AI (VL) Works with Agent Guardian:</strong><br>
+              Visual models inspect uploaded images, UI mockups, documents, and terminal screenshots. They extract verbatim text (OCR) and layout details so <strong>Agent Guardian</strong> & <strong>Agent Q&A</strong> can plan patches, audit design decisions, and review PRs without breaking code!
+            </div>
+          ` : ''}
+
+          <div class="hub-models-list">
+            ${catalogList.map(item => {
+              const isInstalled = lastKnownOllamaModels.some(m => m.name === item.tag || m.name.startsWith(item.tag.split(':')[0]));
+              const isWired = isModelWired(item.tag);
+
+              return `
+                <div class="hub-model-card ${item.badges.some(b => b.includes('Recommended') || b.includes('Top')) ? 'recommended' : ''}">
+                  <div class="hub-card-header">
+                    <div class="hub-card-title">
+                      <span>${isVisionTab ? '👁️' : currentHubTab === 'coder' ? '💻' : '🧠'}</span>
+                      <span>${item.title}</span>
+                    </div>
+                    <div class="hub-card-badges">
+                      ${item.badges.map(b => `<span class="card-badge ${b.includes('Recommended') || b.includes('Top') ? 'badge-merged' : 'badge-ai'}" style="${b.includes('Top') ? 'border-color: #F472B6; color: #F472B6;' : ''}">${b}</span>`).join('')}
+                    </div>
+                  </div>
+                  <div class="hub-card-desc">
+                    ${item.desc}
+                  </div>
+                  <div class="hub-card-footer">
+                    <span class="hub-card-specs">${item.specs}</span>
+                    <div class="hub-card-actions">
+                      ${!isInstalled ? `
+                        <button class="btn-hub-action download" onclick="downloadOllamaModel('${item.tag}', '${item.role}', true)">
+                          <span>⬇️ Download Model</span>
+                        </button>
+                        <button class="copy-cmd-btn" onclick="copyOllamaCmd('ollama pull ${item.tag}')" title="Copy pull command">📋</button>
+                      ` : isWired ? `
+                        <button class="btn-hub-action unwire" onclick="manualUnwireModel('${item.tag}')" title="Disconnect from router without deleting">
+                          <span>⚡ Wired (${item.role})</span>
+                        </button>
+                        <button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${item.tag}')" title="Delete from disk">
+                          <span>🗑️ Remove</span>
+                        </button>
+                      ` : `
+                        <button class="btn-hub-action wire" onclick="manualWireModel('${item.tag}', '${item.role}')" title="Wire into system router">
+                          <span>🔌 Wire to Router</span>
+                        </button>
+                        <button class="btn-hub-action delete" onclick="deleteLocalOllamaModel('${item.tag}')" title="Delete from disk">
+                          <span>🗑️ Remove</span>
+                        </button>
+                      `}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="guardian-modal-overlay" onclick="if(event.target===this)closeModals()">
+          <div class="guardian-modal-box hub-modal-box">
+            <div class="guardian-modal-header" style="border-bottom-color: rgba(236,72,153,0.3);">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.2rem;">🤗</span>
+                <div>
+                  <div style="font-size: 0.92rem; font-weight: 800; color: #FFF;">Hugging Face & Ollama Edge AI Model Hub</div>
+                  <div style="font-size: 0.65rem; color: var(--text-dim); font-weight: 500;">
+                    Curated Small-Size Models for ARM64 Edge Devices (~7.4GB RAM) • <strong>No Auto-Wiring Policy</strong>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-close-drawer" onclick="closeModals()">✕</button>
+            </div>
+
+            <div class="guardian-modal-body">
+              <!-- Direct Download / Hugging Face Input Bar -->
+              <div class="hub-search-container">
+                <div style="font-size: 0.68rem; font-weight: 700; color: #F472B6; margin-bottom: 6px;">
+                  ⬇️ DIRECT DOWNLOAD (HUGGING FACE GGUF OR OLLAMA TAG)
+                </div>
+                <div class="hub-download-bar">
+                  <input type="text" class="hub-url-input" id="hub-model-input" placeholder="Paste HuggingFace URL (e.g. hf.co/author/repo) or tag (e.g. moondream)...">
+                  <select class="hub-role-select" id="hub-model-role" title="Target Routing Role">
+                    <option value="vision" ${currentHubTab === 'vision' ? 'selected' : ''}>👁️ Vision</option>
+                    <option value="coding" ${currentHubTab === 'coder' ? 'selected' : ''}>💻 Coding</option>
+                    <option value="reasoning" ${currentHubTab === 'reasoning' ? 'selected' : ''}>🧠 Reasoning</option>
+                    <option value="chat">💬 Chat</option>
+                  </select>
+                  <button class="hub-btn-download" onclick="startHubModelDownload()">
+                    <span>⬇️ Download</span>
+                  </button>
+                </div>
+                <div class="hub-quick-tags">
+                  <span style="font-size: 0.64rem; color: var(--text-dim);">Quick Tags:</span>
+                  <span class="hub-tag-pill recommended" onclick="setHubInput('moondream', 'vision')">👁️ moondream (830MB)</span>
+                  <span class="hub-tag-pill" onclick="setHubInput('qwen2.5-vl:3b', 'vision')">👁️ qwen2.5-vl:3b</span>
+                  <span class="hub-tag-pill recommended" onclick="setHubInput('qwen2.5-coder:1.5b', 'coding')">💻 qwen2.5-coder:1.5b</span>
+                  <span class="hub-tag-pill recommended" onclick="setHubInput('deepseek-r1:1.5b', 'reasoning')">🧠 deepseek-r1:1.5b</span>
+                  <span class="hub-tag-pill" onclick="setHubInput('smollm2:360m', 'chat')">💬 smollm2:360m</span>
+                  <span class="hub-tag-pill" onclick="setHubInput('gemma2:2b', 'chat')">💬 gemma2:2b</span>
+                </div>
+
+                <!-- Live Progress Box -->
+                <div class="hub-progress-box" id="hub-download-progress-box" style="display: ${isHubDownloading ? 'block' : 'none'};">
+                  <div class="hub-prog-header">
+                    <span id="hub-prog-status" style="color: #38BDF8; font-weight: 700;">Downloading Model...</span>
+                    <span id="hub-prog-meta" style="color: var(--text-dim);">0% (0 MB / 0 MB)</span>
+                  </div>
+                  <div class="hub-prog-bar">
+                    <div class="hub-prog-fill" id="hub-prog-fill"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hub Tab Bar -->
+              <div class="hub-tab-bar">
+                <button class="hub-tab-btn ${currentHubTab === 'vision' ? 'active' : ''}" onclick="switchHubTab('vision')">
+                  <span>👁️ Visual AI (VL)</span>
+                </button>
+                <button class="hub-tab-btn ${currentHubTab === 'coder' ? 'active' : ''}" onclick="switchHubTab('coder')">
+                  <span>💻 Small Coder</span>
+                </button>
+                <button class="hub-tab-btn ${currentHubTab === 'reasoning' ? 'active' : ''}" onclick="switchHubTab('reasoning')">
+                  <span>💬 Reasoning & Chat</span>
+                </button>
+                <button class="hub-tab-btn ${currentHubTab === 'installed' ? 'active' : ''}" onclick="switchHubTab('installed')">
+                  <span>💾 Installed On Device (${installedCount})</span>
+                </button>
+              </div>
+
+              <!-- Tab Content Area -->
+              ${tabContentHtml}
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     async function checkOllamaService(notify = false) {
@@ -6137,6 +7148,7 @@
         if (res.ok) {
           const data = await res.json();
           const models = data.models || [];
+          lastKnownOllamaModels = models;
           const count = models.length;
 
           if (dot) {
@@ -6145,10 +7157,10 @@
           }
           if (text) {
             if (count > 0) {
-              const names = models.map(m => m.name.split(':')[0]).slice(0, 3).join(', ');
-              text.innerHTML = `Ollama Online (port 11434): <strong style="color: var(--success);">${count} Model${count > 1 ? 's' : ''} Installed</strong> (${names}${count > 3 ? '...' : ''})`;
+              const names = models.map(m => m.name.split(':')[0]).slice(0, 4).join(', ');
+              text.innerHTML = `Ollama Online (port 11434): <strong style="color: var(--success);">${count} Model${count > 1 ? 's' : ''} Installed</strong> (${names}${count > 4 ? '...' : ''})`;
             } else {
-              text.innerHTML = `Ollama Online (port 11434): <span style="color: var(--warning); font-weight: 700;">Daemon Ready</span> • Tap "Pull & Wire" below`;
+              text.innerHTML = `Ollama Online (port 11434): <span style="color: var(--warning); font-weight: 700;">Daemon Ready</span> • Tap "Hub" or "Download" below`;
             }
           }
           if (hwOllama) {
@@ -6156,16 +7168,8 @@
             hwOllama.style.color = 'var(--success)';
           }
 
-          // Mark installed models with active chips
-          models.forEach(m => {
-            const cleanName = m.name;
-            const btn = document.getElementById(`btn-pull-${cleanName.replace(/[:.]/g, '-')}`);
-            if (btn) {
-              btn.className = 'pull-wire-btn wired';
-              btn.innerHTML = `<span>✔ Installed & Wired</span>`;
-            }
-            wireModelIntoSystem(cleanName, cleanName.includes('r1') ? 'reasoning' : 'coding');
-          });
+          // STRICT: NEVER AUTO-WIRE HERE! Just update UI state
+          renderRecommendationCards();
 
           if (notify) showToast(`✔ Ollama is online with ${count} local model${count > 1 ? 's' : ''}!`);
           return true;
@@ -7679,6 +8683,68 @@
         promptContext = text + fileTextBlock;
       }
 
+      // 0. Multimodal Visual AI (VL) Inspection Pipeline
+      const imageFiles = (attachedFiles || []).filter(f =>
+        (f.dataUrl && f.dataUrl.startsWith('data:image/')) ||
+        (f.type && f.type.startsWith('image/')) ||
+        /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(f.name)
+      );
+
+      if (imageFiles.length > 0) {
+        const vModel = getWiredVisionModel();
+        if (vModel) {
+          setAgentStatus('reading', `👁️ Visual AI (${vModel}) inspecting ${imageFiles[0].name}...`);
+          try {
+            const rawBase64 = imageFiles[0].dataUrl.includes(',') ?
+              imageFiles[0].dataUrl.split(',')[1] : imageFiles[0].dataUrl;
+
+            const vPrompt = text.trim() ?
+              `Perform full OCR and visual inspection on this image/document in the context of the user request: "${text}". Extract all visible code, error messages, terminal logs, and UI components verbatim. Detail visual layout, highlight potential bugs or syntax issues, and provide structured insights for Agent Guardian & Q&A.` :
+              `Inspect this image/document in detail. Extract all text verbatim (OCR), transcribe code snippets or terminal logs, describe visual layout or diagrams, and summarize key findings for Agent Guardian & Q&A.`;
+
+            const vRes = await fetch('http://localhost:11434/api/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: vModel,
+                messages: [{ role: 'user', content: vPrompt, images: [rawBase64] }],
+                stream: false
+              })
+            });
+
+            if (vRes.ok) {
+              const vData = await vRes.json();
+              const visualAnalysis = vData.message?.content || 'No text extracted.';
+              const vCardHtml = `
+                <div class="msg-model-tag neon-pink">👁️ VISUAL AI (VL) INSPECTION — ${vModel.toUpperCase()}</div>
+                <div class="visual-analysis-box">
+                  <div style="font-weight: 700; color: #F472B6; margin-bottom: 4px; display: flex; align-items: center; gap: 5px;">
+                    <span>👁️</span><span>Document / Screenshot OCR & Visual Findings:</span>
+                  </div>
+                  <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #E2E8F0; white-space: pre-wrap; line-height: 1.45;">${visualAnalysis}</div>
+                </div>
+              `;
+              appendChatMessage('agent', vCardHtml);
+              ChatSessionManager.recordMessage('agent', vCardHtml);
+              AgentMemory.add('Visual-AI', 'OCR & Visual Inspection', 'Analyzed ' + imageFiles[0].name, visualAnalysis.substring(0, 300) + '...');
+              promptContext += `\n\n[VISUAL AI OCR & EXTRACTION FROM ${vModel.toUpperCase()} FOR ${imageFiles[0].name}]:\n${visualAnalysis}\n`;
+            }
+          } catch (vErr) {
+            console.warn('Visual AI model inspection error:', vErr);
+          }
+        } else {
+          // No local vision model wired yet
+          const noVCardHtml = `
+            <div class="msg-model-tag neon-pink">👁️ VISUAL ATTACHMENT DETECTED</div>
+            You attached <strong>${imageFiles[0].name}</strong>, but no local Visual AI (VL) model is wired yet to inspect images or documents offline.<br><br>
+            💡 <strong>Recommendation:</strong> Install <strong><code>moondream</code> (1.8B · ~830MB)</strong> — the premier ultra-compact edge vision model for mobile ARM64. It extracts verbatim OCR, analyzes UI mockups, and reads error screenshots.<br><br>
+            <button class="btn-hub-action download" onclick="openModelHubModal('vision')">🤗 Open Hub to Download Moondream</button>
+          `;
+          appendChatMessage('agent', noVCardHtml);
+          ChatSessionManager.recordMessage('agent', noVCardHtml);
+        }
+      }
+
       try {
         const lower = text.toLowerCase();
 
@@ -7838,7 +8904,7 @@
         let targetModel = model;
         let routeTag = '';
         if (model === 'auto') {
-          const route = routeModelForPrompt(text);
+          const route = routeModelForPrompt(text, imageFiles.length > 0);
           targetModel = route.model;
           routeTag = `<span class="neon-teal">🔄 Task Router:</span> Switched to <span class="neon-green"><strong>${route.model}</strong></span> for <em>${route.role}</em>.<br><br>`;
         } else {
