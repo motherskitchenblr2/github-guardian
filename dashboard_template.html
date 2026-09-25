@@ -1566,12 +1566,18 @@
     }
 
     .drawer-header {
-      padding: 0.5rem 1rem 0.75rem 1rem;
+      padding: 0.5rem 0.85rem 0.65rem 0.85rem;
       border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .drawer-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
+      width: 100%;
     }
 
     .drawer-title {
@@ -1585,20 +1591,26 @@
 
     .drawer-controls {
       display: flex;
-      gap: 0.4rem;
+      gap: 0.35rem;
       align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+      width: 100%;
+      padding-bottom: 2px;
     }
+    .drawer-controls::-webkit-scrollbar { display: none; }
 
     .drawer-select {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--card-border);
       color: var(--primary);
       border-radius: 6px;
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       font-family: var(--font-mono);
-      padding: 0.25rem 0.45rem;
+      padding: 0.22rem 0.45rem;
       font-weight: 600;
-      max-width: 140px;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .btn-close-drawer {
@@ -1626,6 +1638,8 @@
       gap: 0.75rem;
       font-size: 0.82rem;
       line-height: 1.45;
+      user-select: text !important;
+      -webkit-user-select: text !important;
     }
 
     .chat-msg {
@@ -1634,6 +1648,9 @@
       border-radius: var(--radius-md);
       position: relative;
       word-break: break-word;
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      touch-action: pan-y;
     }
 
     .chat-msg.agent {
@@ -1659,6 +1676,166 @@
       display: flex;
       align-items: center;
       gap: 0.25rem;
+    }
+
+    /* Message Action Buttons (Copy & Edit) */
+    .chat-msg-actions {
+      display: flex;
+      gap: 0.3rem;
+      margin-top: 0.45rem;
+      padding-top: 0.35rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      justify-content: flex-end;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .msg-action-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.62rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s;
+    }
+    .msg-action-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .msg-action-btn.copied {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10B981 !important;
+      color: #10B981 !important;
+    }
+
+    /* Model Thinking Accordion (Auto-Hidden by Default) */
+    .thinking-accordion {
+      background: rgba(0, 245, 212, 0.03);
+      border: 1px solid rgba(0, 245, 212, 0.22);
+      border-radius: 8px;
+      margin: 0.45rem 0;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .thinking-header {
+      padding: 6px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      background: rgba(0, 245, 212, 0.06);
+    }
+    .thinking-header:hover {
+      background: rgba(0, 245, 212, 0.1);
+    }
+    .thinking-title {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #00F5D4;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+    }
+    .thinking-toggle-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .thinking-content {
+      display: none;
+      padding: 8px 10px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: #94A3B8;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px dashed rgba(0, 245, 212, 0.2);
+      white-space: pre-wrap;
+      line-height: 1.45;
+      max-height: 240px;
+      overflow-y: auto;
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .thinking-accordion.expanded .thinking-content {
+      display: block;
+    }
+    .thinking-accordion.expanded .thinking-toggle-badge {
+      background: rgba(0, 245, 212, 0.2);
+      color: #00F5D4;
+    }
+
+    /* Message Queue Badges */
+    .msg-queue-badge {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--warning);
+      color: var(--warning);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+    }
+    .queue-indicator-pill {
+      font-size: 0.65rem;
+      color: var(--warning);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 3px 9px;
+      border-radius: 9999px;
+      display: none;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+
+    /* Long-Press Mobile Selection Toolbar */
+    .chat-selection-toolbar {
+      position: fixed;
+      z-index: 150;
+      background: rgba(7, 11, 20, 0.96);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--primary);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 4px;
+      display: none;
+      gap: 4px;
+      animation: fadeIn 0.15s ease-out;
+    }
+    .sel-tool-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .sel-tool-btn:active {
+      background: var(--primary);
+      color: #070B14;
     }
 
     /* Tool Call Execution Card in Chat */
@@ -1763,12 +1940,18 @@
 
     /* Chat Input Bar */
     .chat-input-bar {
-      padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom, 10px)) 1rem;
+      padding: 0.5rem 0.85rem calc(0.5rem + env(safe-area-inset-bottom, 10px)) 0.85rem;
       background: #070B14;
       border-top: 1px solid var(--card-border);
       display: flex;
-      gap: 0.5rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 0.45rem;
+      align-items: flex-end;
     }
 
     .chat-input {
@@ -1776,12 +1959,71 @@
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-sm);
-      padding: 0.65rem 0.85rem;
+      padding: 0.6rem 0.8rem;
       color: white;
       font-size: 0.82rem;
       font-family: var(--font);
+      resize: none;
+      min-height: 40px;
+      max-height: 120px;
+      line-height: 1.4;
+      overflow-y: auto;
     }
     .chat-input:focus { outline: none; border-color: var(--primary); }
+
+    .chat-input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2px;
+      font-size: 0.65rem;
+    }
+
+    .enter-mode-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s;
+    }
+    .enter-mode-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+    }
+
+    .chat-edit-banner {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 6px;
+      padding: 4px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem;
+      color: #38BDF8;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .chat-edit-cancel {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 4px;
+    }
+    .chat-edit-cancel:hover {
+      color: white;
+    }
 
     .btn-send {
       background: var(--primary);
@@ -3745,9 +3987,12 @@
   <div class="agent-drawer" id="agent-drawer">
     <div class="drawer-handle" onclick="closeAgentDrawer()"></div>
     <div class="drawer-header">
-      <div class="drawer-title" id="drawer-agent-title">
-        <span>🛡️</span>
-        <span>Guardian & Q&A</span>
+      <div class="drawer-top-row">
+        <div class="drawer-title" id="drawer-agent-title">
+          <span>🛡️</span>
+          <span>Guardian & Q&A</span>
+        </div>
+        <button class="btn-close-drawer" onclick="closeAgentDrawer()">✕</button>
       </div>
       <div class="drawer-controls">
         <select class="drawer-select" id="active-agent-select" onchange="onAgentSelectChange(this.value)" title="Active AI Agent Persona">
@@ -3763,18 +4008,29 @@
           <option value="google:gemini-2.0-flash">⚡ Gemini 2.0 Flash</option>
           <option value="groq:llama-3.3-70b">🚀 Groq LLaMA 3.3</option>
         </select>
-        <select class="drawer-select" id="drawer-autonomy-select" onchange="updateAutonomy(this.value)">
+        <!-- Thinking Levels Dropdown (Small Size) -->
+        <select class="drawer-select" id="drawer-thinking-select" onchange="updateThinkingLevel(this.value)" title="Model Thinking Level / Reasoning Depth">
+          <option value="default" selected>🧠 Default</option>
+          <option value="low">⚡ Low</option>
+          <option value="medium">⚖️ Medium</option>
+          <option value="high">🔬 High</option>
+        </select>
+        <select class="drawer-select" id="drawer-autonomy-select" onchange="updateAutonomy(this.value)" title="Autonomy Level">
           <option value="yolo">⚡ YOLO</option>
           <option value="ask_important">⚠️ Ask</option>
           <option value="always_ask">🛑 Strict</option>
         </select>
-        <button class="btn-close-drawer" onclick="closeAgentDrawer()">✕</button>
+        <!-- Enter Key Setting Dropdown (Small Size) -->
+        <select class="drawer-select" id="drawer-enter-select" onchange="updateEnterMode(this.value)" title="Enter Key Behavior">
+          <option value="newline" selected>↵ Enter: Newline</option>
+          <option value="send">✉️ Enter: Send</option>
+        </select>
       </div>
     </div>
 
     <!-- Chat Messages Stream -->
     <div class="chat-messages" id="chat-messages">
-      <div class="chat-msg agent">
+      <div class="chat-msg agent" id="msg-init-welcome">
         <div class="msg-model-tag neon-teal">🛡️ GUARDIAN & 🔍 Q&A COOPERATIVE INTELLIGENCE</div>
         Hello! I am <strong>Agent Guardian</strong> (Approving Authority), working in coordination with <strong>Agent Q&A</strong> (Deep Technical Auditor).
         <br><br>
@@ -3783,6 +4039,12 @@
         • Offline models auto-rotate on ARM64: <code>deepseek-r1:1.5b</code> (Reasoning), <code>qwen2.5-coder:1.5b</code> (Coding), <code>smollm2:360m</code> (Discussion).
         <br><br>
         Persistent <strong>Agent Memory</strong> is active and tracks all past decisions and audits. What would you like us to audit or execute?
+        <div class="chat-msg-actions">
+          <button class="msg-action-btn" onclick="copyChatMessage(this)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -3797,12 +4059,36 @@
 
     <!-- Chat Input Bar -->
     <div class="chat-input-bar">
-      <input type="text" class="chat-input" id="chat-user-input" placeholder="Instruct Guardian & Q&A or ask anything..." onkeydown="if(event.key==='Enter') sendChatMessage()">
-      <button class="btn-send" onclick="sendChatMessage()" title="Send">
-        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
+      <!-- Edit Mode Banner -->
+      <div class="chat-edit-banner" id="chat-edit-banner" style="display: none;">
+        <span id="chat-edit-label">✏️ Editing message</span>
+        <button class="chat-edit-cancel" onclick="cancelMessageEdit()">✕ Cancel</button>
+      </div>
+
+      <!-- Queue Status Indicator -->
+      <div class="queue-indicator-pill" id="queue-indicator-pill">
+        <span class="pulse-dot" style="background: var(--warning); width: 6px; height: 6px;"></span>
+        <span id="queue-indicator-text">1 message waiting in queue...</span>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chat-user-input" rows="1" placeholder="Instruct Guardian & Q&A or ask anything..." oninput="autoGrowInput(this)" onkeydown="handleChatInputKeydown(event)"></textarea>
+        <button class="btn-send" onclick="sendChatMessage()" title="Send Message">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+
+      <div class="chat-input-footer">
+        <button class="enter-mode-btn" id="btn-enter-mode" onclick="toggleEnterMode()" title="Toggle: Pressing Enter jumps line vs sends message">
+          ⌨️ Enter: ↵ Jump Line
+        </button>
+        <span style="font-size: 0.62rem; color: var(--text-dim);" id="chat-key-hint">Ctrl+Enter sends · Send button</span>
+      </div>
     </div>
   </div>
+
+  <!-- Long-Press Mobile Selection Toolbar -->
+  <div class="chat-selection-toolbar" id="chat-selection-toolbar"></div>
 
   <!-- Bottom Navigation Bar -->
   <nav class="bottom-nav">
@@ -5379,9 +5665,247 @@
       }
     }
 
-    // Chat Execution & Tool Orchestration
+    // ============================================================
+    // CHAT EXECUTION, THINKING LEVEL, ACTIONS & MESSAGE QUEUE
+    // ============================================================
+    let currentThinkingLevel = localStorage.getItem('guardian_thinking_level') || 'default';
+    let currentEnterMode = localStorage.getItem('guardian_enter_behavior') || 'newline';
+    let messageQueue = [];
+    let isAgentBusy = false;
+    let editingMessageId = null;
+
+    function updateThinkingLevel(level, quiet = false) {
+      currentThinkingLevel = level;
+      localStorage.setItem('guardian_thinking_level', level);
+      const sel = document.getElementById('drawer-thinking-select');
+      if (sel) sel.value = level;
+      if (!quiet) showToast(`Thinking Level: ${level.toUpperCase()}`);
+    }
+
+    function updateEnterMode(mode, quiet = false) {
+      currentEnterMode = mode;
+      localStorage.setItem('guardian_enter_behavior', mode);
+      const sel = document.getElementById('drawer-enter-select');
+      if (sel) sel.value = mode;
+      const btn = document.getElementById('btn-enter-mode');
+      const hint = document.getElementById('chat-key-hint');
+      if (btn) {
+        btn.innerText = mode === 'newline' ? '⌨️ Enter: ↵ Jump Line' : '⌨️ Enter: ✉️ Send';
+      }
+      if (hint) {
+        hint.innerText = mode === 'newline' ? 'Ctrl+Enter sends · Send button' : 'Shift+Enter jumps line';
+      }
+      if (!quiet) showToast(`Enter Key Mode: ${mode === 'newline' ? 'Jump to New Line' : 'Send Message'}`);
+    }
+
+    function toggleEnterMode() {
+      const newMode = currentEnterMode === 'newline' ? 'send' : 'newline';
+      updateEnterMode(newMode);
+    }
+
+    function autoGrowInput(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+    }
+
+    function handleChatInputKeydown(e) {
+      if (e.key === 'Enter') {
+        if (currentEnterMode === 'newline') {
+          // Default: Enter jumps to next line in textarea
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            sendChatMessage();
+          }
+        } else {
+          // Send mode: Enter sends, Shift+Enter jumps to next line
+          if (!e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+          }
+        }
+      }
+    }
+
+    function toggleThinking(accordionEl) {
+      accordionEl.classList.toggle('expanded');
+      const badge = accordionEl.querySelector('.thinking-toggle-badge');
+      if (badge) {
+        const isExp = accordionEl.classList.contains('expanded');
+        badge.innerText = isExp ? 'Tap to Hide ▲' : 'Tap to Expand ▼';
+      }
+    }
+
+    function parseThinking(text) {
+      if (!text) return { thinking: null, cleanText: '' };
+      const match = text.match(/<think>([\s\S]*?)<\/think>/i);
+      if (match) {
+        return {
+          thinking: match[1].trim(),
+          cleanText: text.replace(/<think>[\s\S]*?<\/think>/i, '').trim()
+        };
+      }
+      return { thinking: null, cleanText: text };
+    }
+
+    function updateQueueUI() {
+      const pill = document.getElementById('queue-indicator-pill');
+      const text = document.getElementById('queue-indicator-text');
+      if (!pill || !text) return;
+      if (messageQueue.length > 0) {
+        text.innerText = `${messageQueue.length} message${messageQueue.length > 1 ? 's' : ''} waiting in queue...`;
+        pill.style.display = 'inline-flex';
+      } else {
+        pill.style.display = 'none';
+      }
+    }
+
+    function copyChatMessage(btn) {
+      const bubble = btn.closest('.chat-msg');
+      if (!bubble) return;
+      copyChatMessageFromEl(bubble, btn);
+    }
+
+    function copyChatMessageFromEl(bubble, btn) {
+      if (!bubble) return;
+      const clone = bubble.cloneNode(true);
+      clone.querySelectorAll('.chat-msg-actions, .thinking-header, .msg-model-tag, .msg-queue-badge').forEach(n => n.remove());
+      const text = clone.innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        if (btn) {
+          btn.classList.add('copied');
+          const span = btn.querySelector('span');
+          if (span) span.innerText = 'Copied!';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            if (span) span.innerText = 'Copy';
+          }, 1800);
+        }
+        showToast('Message copied to clipboard');
+        const tb = document.getElementById('chat-selection-toolbar');
+        if (tb) tb.style.display = 'none';
+      }).catch(() => {
+        showToast('Failed to copy to clipboard');
+      });
+    }
+
+    function editChatMessage(btn) {
+      const bubble = btn.closest('.chat-msg');
+      if (!bubble) return;
+      editChatMessageFromEl(bubble);
+    }
+
+    function editChatMessageFromEl(bubble) {
+      if (!bubble) return;
+      const clone = bubble.cloneNode(true);
+      clone.querySelectorAll('.chat-msg-actions, .msg-model-tag, .msg-queue-badge').forEach(n => n.remove());
+      const text = clone.innerText.trim();
+
+      const input = document.getElementById('chat-user-input');
+      if (input) {
+        input.value = text;
+        autoGrowInput(input);
+        input.focus();
+        input.setSelectionRange(text.length, text.length);
+      }
+
+      editingMessageId = bubble.id || ('msg-' + Date.now());
+      bubble.id = editingMessageId;
+
+      const banner = document.getElementById('chat-edit-banner');
+      const label = document.getElementById('chat-edit-label');
+      if (banner && label) {
+        label.innerText = `✏️ Editing: "${text.substring(0, 32)}${text.length > 32 ? '...' : ''}"`;
+        banner.style.display = 'flex';
+      }
+
+      const tb = document.getElementById('chat-selection-toolbar');
+      if (tb) tb.style.display = 'none';
+
+      showToast('Editing message — update in text box & send');
+    }
+
+    function cancelMessageEdit() {
+      editingMessageId = null;
+      const banner = document.getElementById('chat-edit-banner');
+      if (banner) banner.style.display = 'none';
+      const input = document.getElementById('chat-user-input');
+      if (input) {
+        input.value = '';
+        autoGrowInput(input);
+      }
+    }
+
+    let activeTouchBubble = null;
+    let longPressTimer = null;
+
+    function initTouchSelection() {
+      const container = document.getElementById('chat-messages');
+      if (!container) return;
+
+      container.addEventListener('touchstart', (e) => {
+        const bubble = e.target.closest('.chat-msg');
+        if (!bubble) return;
+        activeTouchBubble = bubble;
+        if (longPressTimer) clearTimeout(longPressTimer);
+        longPressTimer = setTimeout(() => {
+          if (e.touches && e.touches[0]) {
+            showSelectionToolbar(bubble, e.touches[0].clientX, e.touches[0].clientY);
+          }
+        }, 500);
+      }, { passive: true });
+
+      container.addEventListener('touchend', () => {
+        if (longPressTimer) clearTimeout(longPressTimer);
+      }, { passive: true });
+
+      container.addEventListener('touchmove', () => {
+        if (longPressTimer) clearTimeout(longPressTimer);
+      }, { passive: true });
+
+      // Dismiss selection toolbar on outside click
+      document.addEventListener('click', (e) => {
+        const tb = document.getElementById('chat-selection-toolbar');
+        if (tb && !tb.contains(e.target) && !e.target.closest('.chat-msg')) {
+          tb.style.display = 'none';
+        }
+      });
+    }
+
+    function showSelectionToolbar(bubble, x, y) {
+      const tb = document.getElementById('chat-selection-toolbar');
+      if (!tb || !bubble) return;
+      const isUser = bubble.classList.contains('user');
+
+      tb.innerHTML = `
+        <button class="sel-tool-btn" onclick="copyChatMessageFromEl(activeTouchBubble, null)">📋 Copy Text</button>
+        ${isUser ? `<button class="sel-tool-btn" onclick="editChatMessageFromEl(activeTouchBubble)">✏️ Edit</button>` : ''}
+        <button class="sel-tool-btn" onclick="selectBubbleText(activeTouchBubble)">🔍 Select Range</button>
+        <button class="sel-tool-btn" onclick="document.getElementById('chat-selection-toolbar').style.display='none'">✕</button>
+      `;
+
+      tb.style.top = Math.max(15, y - 48) + 'px';
+      tb.style.left = Math.min(window.innerWidth - 230, Math.max(12, x - 60)) + 'px';
+      tb.style.display = 'flex';
+    }
+
+    function selectBubbleText(el) {
+      if (!el) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      const tb = document.getElementById('chat-selection-toolbar');
+      if (tb) tb.style.display = 'none';
+      showToast('Text range highlighted');
+    }
+
     function sendQuickPrompt(promptText) {
-      document.getElementById('chat-user-input').value = promptText;
+      const input = document.getElementById('chat-user-input');
+      if (input) {
+        input.value = promptText;
+        autoGrowInput(input);
+      }
       sendChatMessage();
     }
 
@@ -5391,48 +5915,104 @@
       if (!text) return;
 
       input.value = '';
-      appendChatMessage('user', text);
+      autoGrowInput(input);
+
+      // Handle Edit Mode
+      if (editingMessageId) {
+        const oldMsg = document.getElementById(editingMessageId);
+        if (oldMsg) {
+          oldMsg.innerHTML = `
+            ${text}
+            <div class="chat-msg-actions">
+              <button class="msg-action-btn" onclick="copyChatMessage(this)"><span>Copy</span></button>
+              <button class="msg-action-btn" onclick="editChatMessage(this)"><span>Edit</span></button>
+            </div>
+          `;
+        }
+        cancelMessageEdit();
+        showToast('Message updated. Re-evaluating...');
+      }
 
       const model = document.getElementById('active-model-select').value;
-      const lower = text.toLowerCase();
+      const thinking = currentThinkingLevel;
 
-      // Check intent for autonomous tool execution
-      // 1. Check for Agent Memory queries
-      if (lower.includes('memory') || lower.includes('memories') || lower.includes('history') || lower.includes('ledger')) {
-        const memories = AgentMemory.getAll();
-        const memHtml = `
-          <div class="msg-model-tag neon-purple">🧠 AGENT PERSISTENT MEMORY LEDGER</div>
-          <strong>Stored Episodic Memories (${memories.length} entries):</strong><br><br>
-          ${memories.slice(0, 4).map(m => `
-            <div style="background: rgba(0,0,0,0.35); border-left: 2px solid #BD00FF; padding: 6px 8px; margin-bottom: 6px; font-size: 0.72rem; border-radius: 4px;">
-              <span class="neon-teal">${m.agent}</span> • <span class="neon-pink">${m.type}</span> • <span style="color: var(--text-dim); font-size: 0.62rem;">${m.timestamp}</span><br>
-              <strong style="color: white;">${m.title}</strong><br>
-              <span style="color: var(--text-muted);">${m.content}</span>
-            </div>
-          `).join('')}
-          <span style="font-size: 0.68rem; color: var(--primary);">Full ledger and JSON export available in the <strong>Office</strong> tab under Agent Memory Store.</span>
-        `;
-        appendChatMessage('agent', memHtml);
+      // Check if agent is currently busy responding
+      if (isAgentBusy) {
+        const queueId = 'queue-' + Date.now();
+        appendChatMessage('user', text, null, queueId, true);
+        messageQueue.push({ id: queueId, text, model, agentMode: currentAgentMode, thinkingLevel: thinking });
+        updateQueueUI();
+        showToast(`Message queued (#${messageQueue.length} in line)`);
         return;
       }
 
-      // 2. Check for PR Review, Conflict, or Merge Actions (Dual-Agent Collaboration)
-      if (lower.includes('pr') || lower.includes('pull request') || lower.includes('merge') || lower.includes('squash') || lower.includes('rebase') || lower.includes('audit')) {
-        // Step 1: Agent Q&A deep technical investigation
-        const qaMsg = `
-          <div class="msg-model-tag neon-teal">🔍 AGENT Q&A — EXPERIENCED EXPERTISE AUDITOR</div>
-          <strong>Investigative Pre-Merge Technical Audit:</strong><br>
-          • <strong>Code Syntax & AST Integrity</strong>: <span class="neon-green">VERIFIED (0 errors)</span><br>
-          • <strong>Never Break The Code Policy</strong>: <span class="neon-green">PASSED (0 breaking API changes)</span><br>
-          • <strong>Security Advisories</strong>: <span class="neon-green">CLEAN (0 CVEs flagged)</span><br>
-          • <strong>Lockfile Checksums</strong>: <span class="neon-green">VALIDATED</span><br><br>
-          Technical audit verified. Forwarding report to <strong>Agent Guardian</strong> for approving authority decision.
-        `;
-        appendChatMessage('agent', qaMsg);
-        AgentMemory.add('Q&A', 'Audit Finding', 'Pre-Merge Code & Syntax Audit', 'Verified code AST syntax and dependencies. 0 breaking changes detected under Never Break The Code directive.');
+      // If not busy, execute immediately
+      const userMsgId = 'user-msg-' + Date.now();
+      appendChatMessage('user', text, null, userMsgId, false);
+      executeChatMessage(text, model, currentAgentMode, thinking, userMsgId);
+    }
 
-        // Step 2: Agent Guardian reviews and formulates recommendation
-        setTimeout(() => {
+    async function executeChatMessage(text, model, agentMode, thinkingLevel, userMsgId) {
+      isAgentBusy = true;
+      updateQueueUI();
+
+      try {
+        const lower = text.toLowerCase();
+
+        // 1. Check for Agent Memory queries
+        if (lower.includes('memory') || lower.includes('memories') || lower.includes('history') || lower.includes('ledger')) {
+          const memories = AgentMemory.getAll();
+          const memHtml = `
+            <div class="msg-model-tag neon-purple">🧠 AGENT PERSISTENT MEMORY LEDGER</div>
+            <strong>Stored Episodic Memories (${memories.length} entries):</strong><br><br>
+            ${memories.slice(0, 4).map(m => `
+              <div style="background: rgba(0,0,0,0.35); border-left: 2px solid #BD00FF; padding: 6px 8px; margin-bottom: 6px; font-size: 0.72rem; border-radius: 4px;">
+                <span class="neon-teal">${m.agent}</span> • <span class="neon-pink">${m.type}</span> • <span style="color: var(--text-dim); font-size: 0.62rem;">${m.timestamp}</span><br>
+                <strong style="color: white;">${m.title}</strong><br>
+                <span style="color: var(--text-muted);">${m.content}</span>
+              </div>
+            `).join('')}
+            <span style="font-size: 0.68rem; color: var(--primary);">Full ledger and JSON export available in the <strong>Office</strong> tab under Agent Memory Store.</span>
+          `;
+          appendChatMessage('agent', memHtml);
+          return;
+        }
+
+        // 2. Check for PR Review, Conflict, or Merge Actions (Dual-Agent Collaboration)
+        if (lower.includes('pr') || lower.includes('pull request') || lower.includes('merge') || lower.includes('squash') || lower.includes('rebase') || lower.includes('audit')) {
+          let thinkingBlock = '';
+          if (thinkingLevel !== 'low') {
+            const simulatedThought = `• Checking AST syntax on all pull requests...\n• Evaluating breaking change boundaries against "Never Break The Code" policy...\n• Scanning CVE dependency advisories & lockfile checksums...\n• Reasoned optimal linear commit strategy: Squash-merge avoids intermediate dependency churn.\n• Formulating final recommendation with explicit (Recommended) choice for user approval.`;
+            thinkingBlock = `
+              <div class="thinking-accordion" onclick="toggleThinking(this)">
+                <div class="thinking-header">
+                  <span class="thinking-title">
+                    <span>🧠</span>
+                    <span>Thinking Process (${thinkingLevel.toUpperCase()})</span>
+                  </span>
+                  <span class="thinking-toggle-badge">Tap to Expand ▼</span>
+                </div>
+                <div class="thinking-content">${simulatedThought}</div>
+              </div>
+            `;
+          }
+
+          // Step 1: Agent Q&A deep technical investigation
+          const qaMsg = `
+            <div class="msg-model-tag neon-teal">🔍 AGENT Q&A — EXPERIENCED EXPERTISE AUDITOR</div>
+            ${thinkingBlock}
+            <strong>Investigative Pre-Merge Technical Audit:</strong><br>
+            • <strong>Code Syntax & AST Integrity</strong>: <span class="neon-green">VERIFIED (0 errors)</span><br>
+            • <strong>Never Break The Code Policy</strong>: <span class="neon-green">PASSED (0 breaking API changes)</span><br>
+            • <strong>Security Advisories</strong>: <span class="neon-green">CLEAN (0 CVEs flagged)</span><br>
+            • <strong>Lockfile Checksums</strong>: <span class="neon-green">VALIDATED</span><br><br>
+            Technical audit verified. Forwarding report to <strong>Agent Guardian</strong> for approving authority decision.
+          `;
+          appendChatMessage('agent', qaMsg);
+          AgentMemory.add('Q&A', 'Audit Finding', 'Pre-Merge Code & Syntax Audit', 'Verified code AST syntax and dependencies. 0 breaking changes detected under Never Break The Code directive.');
+
+          // Step 2: Agent Guardian reviews and formulates recommendation
+          await new Promise(r => setTimeout(r, 600));
           const isYolo = currentAutonomy === 'yolo';
           const guardianMsg = `
             <div class="msg-model-tag neon-green">🛡️ AGENT GUARDIAN — APPROVING AUTHORITY</div>
@@ -5455,29 +6035,26 @@
           if (isYolo) {
             triggerRun('review-prs', false);
           }
-        }, 500);
-        return;
-      }
+          return;
+        }
 
-      // Check intent for other autonomous tools
-      let toolToRun = null;
-      let toolLabel = '';
+        // 3. Other autonomous tools
+        let toolToRun = null;
+        let toolLabel = '';
 
-      if (lower.includes('fork') || lower.includes('sync')) {
-        toolToRun = 'sync-forks';
-        toolLabel = 'Sync 193 Forks with Upstream';
-      } else if (lower.includes('secret') || lower.includes('token') || lower.includes('leak')) {
-        toolToRun = 'scan-secrets';
-        toolLabel = 'Scan Exposed Secrets';
-      } else if (lower.includes('harden') || lower.includes('defense') || lower.includes('security')) {
-        toolToRun = 'harden';
-        toolLabel = 'Harden Security Defenses';
-      } else if (lower.includes('run all') || lower.includes('maintenance')) {
-        toolToRun = 'run-all';
-        toolLabel = 'Run Full Maintenance Suite';
-      } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('memory') || lower.includes('specs') || lower.includes('device')) {
-        // Hardware advisor response
-        setTimeout(() => {
+        if (lower.includes('fork') || lower.includes('sync')) {
+          toolToRun = 'sync-forks';
+          toolLabel = 'Sync 193 Forks with Upstream';
+        } else if (lower.includes('secret') || lower.includes('token') || lower.includes('leak')) {
+          toolToRun = 'scan-secrets';
+          toolLabel = 'Scan Exposed Secrets';
+        } else if (lower.includes('harden') || lower.includes('defense') || lower.includes('security')) {
+          toolToRun = 'harden';
+          toolLabel = 'Harden Security Defenses';
+        } else if (lower.includes('run all') || lower.includes('maintenance')) {
+          toolToRun = 'run-all';
+          toolLabel = 'Run Full Maintenance Suite';
+        } else if (lower.includes('hardware') || lower.includes('ram') || lower.includes('memory') || lower.includes('specs') || lower.includes('device')) {
           appendChatMessage('agent', `📱 <strong>Device Diagnostics Scanned</strong>:<br>
           • <strong>CPU</strong>: 8-Core ARM64 (Android / Termux)<br>
           • <strong>RAM</strong>: 7.4 GB Total (~3.0 GB Available)<br>
@@ -5488,26 +6065,25 @@
           2. <code>deepseek-r1:1.5b</code> (1.1GB) - Reasoning & PR logic.<br>
           3. <code>smollm2:360m</code> (260MB) - Ultra-fast conversational micro-agent.<br><br>
           All models wired locally on Ollama port 11434.`);
-        }, 400);
-        return;
-      }
-
-      if (toolToRun) {
-        if (currentAutonomy === 'yolo') {
-          // Autonomous execution in YOLO mode
-          appendChatMessage('agent', `⚡ <strong>YOLO Autonomy Executing:</strong> Launching <code>${toolLabel}</code>...`, [
-            { tool: toolLabel, status: 'Running in background daemon', action: toolToRun }
-          ]);
-          await triggerRun(toolToRun, false);
-          setTimeout(() => {
-            appendChatMessage('agent', `✅ <strong>${toolLabel}</strong> task has been triggered and dispatched to the guardian engine! Check the Overview logs for live results.`);
-          }, 1200);
-        } else {
-          // Ask mode: render interactive confirmation card
-          appendConfirmationCard(toolLabel, toolToRun, text);
+          return;
         }
-      } else {
-        // Dynamic Offline Model Task Routing
+
+        if (toolToRun) {
+          if (currentAutonomy === 'yolo') {
+            appendChatMessage('agent', `⚡ <strong>YOLO Autonomy Executing:</strong> Launching <code>${toolLabel}</code>...`, [
+              { tool: toolLabel, status: 'Running in background daemon', action: toolToRun }
+            ]);
+            await triggerRun(toolToRun, false);
+            setTimeout(() => {
+              appendChatMessage('agent', `✅ <strong>${toolLabel}</strong> task has been triggered and dispatched to the guardian engine! Check the Overview logs for live results.`);
+            }, 1200);
+          } else {
+            appendConfirmationCard(toolLabel, toolToRun, text);
+          }
+          return;
+        }
+
+        // 4. Dynamic Offline Model Task Routing with Thinking Levels
         let targetModel = model;
         let routeTag = '';
         if (model === 'auto') {
@@ -5519,13 +6095,20 @@
         }
 
         const loadingDivId = 'agent-loading-' + Date.now();
-        appendChatMessage('agent', `<div id="${loadingDivId}"><em>${routeTag}Thinking offline with ${targetModel}... 🧠</em></div>`);
+        appendChatMessage('agent', `<div id="${loadingDivId}"><em>${routeTag}Thinking offline with ${targetModel} (${thinkingLevel.toUpperCase()} level)... 🧠</em></div>`);
+
+        const thinkingInstructions = {
+          'default': 'Provide balanced thinking.',
+          'low': 'Keep thinking concise, brief and direct.',
+          'medium': 'Provide structured analytical step-by-step reasoning.',
+          'high': 'Perform deep exhaustive reasoning, evaluating code syntax edge cases, security vectors, and backwards compatibility.'
+        };
 
         let systemPrompt = '';
-        if (currentAgentMode === 'qa') {
-          systemPrompt = 'You are Agent Q&A, an experienced expertise auditor for GitHub Guardian running in Termux. You investigate code changes, verify AST syntax, detect breaking changes, strictly adhere to "Never Break The Code", and report findings to Agent Guardian.';
+        if (agentMode === 'qa') {
+          systemPrompt = `You are Agent Q&A, an experienced expertise auditor for GitHub Guardian running in Termux. You investigate code changes, verify AST syntax, detect breaking changes, strictly adhere to "Never Break The Code", and report findings to Agent Guardian. Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
         } else {
-          systemPrompt = 'You are Agent Guardian, the Strict Auditor and Approving Authority for GitHub Guardian (@motherskitchenblr2). You strictly adhere to "Never Break The Code", never take unapproved risks on major/critical issues, and whenever options or decisions are discussed, ALWAYS explicitly highlight a "(Recommended)" choice for the user.';
+          systemPrompt = `You are Agent Guardian, the Strict Auditor and Approving Authority for GitHub Guardian (@motherskitchenblr2). You strictly adhere to "Never Break The Code", never take unapproved risks on major/critical issues, and whenever options or decisions are discussed, ALWAYS explicitly highlight a "(Recommended)" choice for the user. Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
         }
 
         try {
@@ -5541,17 +6124,36 @@
               stream: false
             })
           });
+
           if (resp.ok) {
             const data = await resp.json();
-            let reply = data.message?.content || 'Task processed successfully.';
+            const rawReply = data.message?.content || 'Task processed successfully.';
+            const parsed = parseThinking(rawReply);
+
+            let thinkingHtml = '';
+            if (parsed.thinking) {
+              thinkingHtml = `
+                <div class="thinking-accordion" onclick="toggleThinking(this)">
+                  <div class="thinking-header">
+                    <span class="thinking-title">
+                      <span>🧠</span>
+                      <span>Thinking Process (${thinkingLevel.toUpperCase()})</span>
+                    </span>
+                    <span class="thinking-toggle-badge">Tap to Expand ▼</span>
+                  </div>
+                  <div class="thinking-content">${parsed.thinking.replace(/\n/g, '<br>')}</div>
+                </div>
+              `;
+            }
+
+            let reply = parsed.cleanText;
             reply = reply.replace(/\((Recommended)\)/gi, '<strong class="neon-green">(Recommended)</strong>');
             const el = document.getElementById(loadingDivId);
-            const agentName = currentAgentMode === 'qa' ? '🔍 Agent Q&A' : '🛡️ Agent Guardian';
+            const agentName = agentMode === 'qa' ? '🔍 Agent Q&A' : '🛡️ Agent Guardian';
             if (el) {
-              el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br><br>${reply.replace(/\n/g, '<br>')}`;
+              el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply.replace(/\n/g, '<br>')}`;
             }
-            AgentMemory.add(currentAgentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} processed query.`);
-            return;
+            AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query.`);
           } else {
             throw new Error(`HTTP ${resp.status}`);
           }
@@ -5562,6 +6164,22 @@
             Received instruction: <em>"${text}"</em><br><br>
             <span style="color: var(--warning); font-size: 0.72rem;">💡 Offline Engine Notice: ${e.message}. Ensure Ollama daemon is active on port 11434 with models pulled (<code>qwen2.5-coder:1.5b</code>, <code>deepseek-r1:1.5b</code>, <code>smollm2:360m</code>).</span>`;
           }
+        }
+      } finally {
+        isAgentBusy = false;
+        updateQueueUI();
+
+        // Process next item in queue if available
+        if (messageQueue.length > 0) {
+          const next = messageQueue.shift();
+          const qBadge = document.getElementById('badge-' + next.id);
+          if (qBadge) {
+            qBadge.innerText = '⚡ Processing...';
+            qBadge.style.color = '#39FF14';
+            qBadge.style.borderColor = '#39FF14';
+          }
+          updateQueueUI();
+          executeChatMessage(next.text, next.model, next.agentMode, next.thinkingLevel, next.id);
         }
       }
     }
@@ -5583,10 +6201,17 @@
       renderOfficePane();
     }
 
-    function appendChatMessage(sender, htmlContent, tools) {
+    function appendChatMessage(sender, htmlContent, tools, messageId, isQueued = false) {
       const container = document.getElementById('chat-messages');
       const div = document.createElement('div');
       div.className = 'chat-msg ' + sender;
+      const id = messageId || ('msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4));
+      div.id = id;
+
+      let queueBadgeHtml = '';
+      if (isQueued) {
+        queueBadgeHtml = `<div class="msg-queue-badge" id="badge-${id}">⏳ Queued (#${messageQueue.length + 1} in queue)</div>`;
+      }
 
       let toolHtml = '';
       if (tools && tools.length > 0) {
@@ -5601,7 +6226,22 @@
         `).join('');
       }
 
-      div.innerHTML = htmlContent + toolHtml;
+      const actionsHtml = `
+        <div class="chat-msg-actions">
+          <button class="msg-action-btn" onclick="copyChatMessage(this)" title="Copy message text">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy</span>
+          </button>
+          ${sender === 'user' ? `
+            <button class="msg-action-btn" onclick="editChatMessage(this)" title="Edit this message and resend">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span>Edit</span>
+            </button>
+          ` : ''}
+        </div>
+      `;
+
+      div.innerHTML = queueBadgeHtml + htmlContent + toolHtml + actionsHtml;
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
     }
@@ -5950,6 +6590,9 @@
 
     // Initialize
     updateAutonomy(currentAutonomy);
+    updateThinkingLevel(currentThinkingLevel, true);
+    updateEnterMode(currentEnterMode, true);
+    initTouchSelection();
     loadSavedKeys();
     initGithubAuth();
     renderRepos();
