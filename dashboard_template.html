@@ -5505,6 +5505,7 @@
 
     <!-- Quick Prompt Pills -->
     <div class="quick-prompts">
+      <div class="prompt-pill" style="border-color: rgba(239,68,68,0.5); color: #F87171; background: rgba(239,68,68,0.08);" onclick="sendQuickPrompt('/scan-secrets Run secret-and-compliance-scanner on code diffs, env files, and dependencies')">🛡️ Compliance & Secrets</div>
       <div class="prompt-pill" style="border-color: rgba(168,85,247,0.5); color: #C084FC; background: rgba(168,85,247,0.08);" onclick="sendQuickPrompt('/perf Run performance-regression-check on PR diff and core loops')">⚡ Perf Regression</div>
       <div class="prompt-pill" style="border-color: rgba(245,158,11,0.5); color: #FBBF24; background: rgba(245,158,11,0.08);" onclick="sendQuickPrompt('/rollback Plan rollback-strategy-planner for breaking infrastructure and stateful updates')">⏪ Rollback Plan</div>
       <div class="prompt-pill" style="border-color: rgba(16,185,129,0.5); color: #34D399; background: rgba(16,185,129,0.08);" onclick="sendQuickPrompt('/smoke Run deployment-smoke-tester on target environment to confirm availability')">💨 Smoke Test</div>
@@ -6054,6 +6055,15 @@ Audit Summary:
             content: 'Skill active: Triggered for PRs/releases with heavy data processing, external API calls, core loops, or middleware. Inspects for nested loops, N+1 queries, missing caching, missing execution timeouts on network/DB/IO, massive allocations/memory leaks, verifies correct async/worker threading, and recommends resource optimizations.',
             timestamp: '2026-09-25 23:42:00 UTC',
             metadata: { priority: 'HIGH', category: 'skills', skill: 'performance-regression-check' }
+          },
+          {
+            id: 'mem_skill_secret_and_compliance_scanner',
+            agent: 'Guardian-Security',
+            type: 'Skill Registered',
+            title: 'Secret and Compliance Scanner Protocol',
+            content: 'Skill active: Triggered on every commit, PR, or release config before compilation. Scans diffs/templates/env samples for high-entropy strings, hardcoded credentials, private certs/SSH keys, known API keys (AWS, Stripe, OpenAI). Validates .gitignore/dockerignore, cross-references CVE vulnerability catalogs, halts compilation on secrets, masks logs, and raises critical blockers.',
+            timestamp: '2026-09-25 23:47:00 UTC',
+            metadata: { priority: 'MAXIMUM', category: 'security', skill: 'secret-and-compliance-scanner' }
           }
         ];
         this.save(defaults);
@@ -6162,18 +6172,20 @@ Audit Summary:
           category: 'vision'
         };
       }
-      // 1. Coding / Patches / Syntax / Conflict Rectification / Schema Migrations / Smoke & Performance Testing
+      // 1. Coding / Patches / Syntax / Conflict Rectification / Schema Migrations / Smoke, Performance & Security
       if (lower.includes('code') || lower.includes('syntax') || lower.includes('conflict') || lower.includes('patch') ||
           lower.includes('bug') || lower.includes('fix') || lower.includes('refactor') || lower.includes('function') ||
           lower.includes('typescript') || lower.includes('python') || lower.includes('commit') || lower.includes('file') ||
           lower.includes('migration') || lower.includes('migrate') || lower.includes('sql') || lower.includes('schema') ||
           lower.includes('smoke') || lower.includes('deploy') || lower.includes('health') || lower.includes('vital signs') ||
           lower.includes('endpoint') || lower.includes('perf') || lower.includes('bottleneck') || lower.includes('regression') ||
-          lower.includes('memory leak') || lower.includes('n+1') || lower.includes('timeout')) {
+          lower.includes('memory leak') || lower.includes('n+1') || lower.includes('timeout') ||
+          lower.includes('secret') || lower.includes('credential') || lower.includes('compliance') || lower.includes('cve') ||
+          lower.includes('high-entropy') || lower.includes('vulnerability')) {
         const cModel = getWiredCodingModel() || 'qwen2.5-coder:1.5b';
         return {
           model: cModel,
-          role: 'Coding & Performance Specialist (Offline ARM64)',
+          role: 'Coding, Security & Audit Specialist (Offline ARM64)',
           category: 'coding'
         };
       }
@@ -10459,6 +10471,27 @@ Audit Summary:
           AgentMemory.add('Q&A', 'Skill Invoked', 'performance-regression-check', 'Initiated performance regression and resource impact audit.');
         }
 
+        // 3.7 Skill: Secret and Compliance Scanner Trigger & Context Assembly
+        const isSecretComplianceIntent = /^\/(scan-secrets|secrets|compliance|secret-scanner|leak-check)/i.test(text.trim()) ||
+                                         lower.includes('secret-and-compliance-scanner') || lower.includes('secret scanner') ||
+                                         lower.includes('scan secrets') || lower.includes('high-entropy') ||
+                                         lower.includes('hardcoded credential') || lower.includes('cve') ||
+                                         lower.includes('api key format') || lower.includes('vulnerability database') ||
+                                         lower.includes('compliance scanner');
+
+        if (isSecretComplianceIntent) {
+          promptContext += `\n\n[SKILL INVOKED: secret-and-compliance-scanner]\n` +
+            `[TRIGGER EVENT]: Automated commit, PR, or release configuration pre-compilation audit.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. Scan all incoming code diffs, configuration blocks, text templates, and environment sample files.\n` +
+            `2. Check for high-entropy strings, hardcoded credentials, private certificates, SSH keys, or known API key formats (AWS, Stripe, OpenAI, etc.).\n` +
+            `3. Validate that .gitignore and dockerignore patterns are applied properly to block local environment variables from being tracked.\n` +
+            `4. Cross-reference changed dependencies against known vulnerability databases (like CVE catalogs) to catch high-severity exploits.\n` +
+            `5. If any secret or major vulnerability is uncovered, halt the process immediately, mask the secret in the output log, and raise a critical blocker ticket.\n`;
+
+          AgentMemory.add('Guardian-Security', 'Skill Invoked', 'secret-and-compliance-scanner', 'Triggered secret leak and compliance pre-compilation audit.');
+        }
+
         // 4. Dynamic Offline Model Task Routing with Thinking Levels & Multi-Turn Natural Conversation
         let targetModel = model;
         let routeTag = '';
@@ -10563,6 +10596,16 @@ SPECIALIZED SKILL — PERFORMANCE REGRESSION CHECK:
   3. Identify massive object allocations, unclosed streams, or global state mutations that could introduce memory leaks under high traffic.
   4. Evaluate if asynchronous patterns (Promises, async/await, worker threads) are leveraged correctly for non-blocking operations.
   5. Summarize the expected resource impact and recommend optimization tweaks or explicit profiling steps.
+
+SPECIALIZED SKILL — SECRET AND COMPLIANCE SCANNER:
+• Skill Name: secret-and-compliance-scanner
+• Description: Trigger this skill automatically on every commit, pull request, or release configuration update before code compilation.
+• Instructions:
+  1. Scan all incoming code diffs, configuration blocks, text templates, and environment sample files.
+  2. Check for high-entropy strings, hardcoded credentials, private certificates, SSH keys, or known API key formats (AWS, Stripe, OpenAI, etc.).
+  3. Validate that .gitignore and dockerignore patterns are applied properly to block local environment variables from being tracked.
+  4. Cross-reference changed dependencies against known vulnerability databases (like CVE catalogs) to catch high-severity exploits.
+  5. If any secret or major vulnerability is uncovered, halt the process immediately, mask the secret in the output log, and raise a critical blocker ticket.
 
 CORE BEHAVIOR & CONVERSATION POLICIES:
 1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.
