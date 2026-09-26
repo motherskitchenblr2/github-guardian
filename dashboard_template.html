@@ -228,10 +228,41 @@
     }
 
     .section-desc {
-      font-size: 0.76rem;
+      font-size: 0.73rem;
       color: var(--text-dim);
-      margin-bottom: 1rem;
-      line-height: 1.45;
+      margin-bottom: 0.65rem;
+      line-height: 1.4;
+    }
+
+    /* Sleek Micro Info Mark */
+    .info-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #94A3B8;
+      font-size: 0.58rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 6px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      line-height: 1;
+      text-transform: none;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .info-mark:hover, .info-mark:active {
+      background: rgba(0, 242, 254, 0.2);
+      border-color: #00F2FE;
+      color: #00F2FE;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.45);
+      transform: scale(1.15);
     }
 
     /* Overview Header & Telemetry Badge */
@@ -5515,9 +5546,10 @@
         <div>
           <div class="section-title">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-            <span>Guardian Operations Suite</span>
+            <span>Guardian Operations</span>
+            <span class="info-mark" onclick="showInfoMark('Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine')" title="Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine">i</span>
           </div>
-          <p class="section-desc">Autonomous PR Auto-Merge, Fork Synchronization & Threat Defense Engine.</p>
+          <p class="section-desc">Autonomous PR auto-merge, fork sync & threat defense.</p>
         </div>
         <div class="telemetry-pill">
           <span class="telemetry-pulse"></span>
@@ -5533,8 +5565,11 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             </div>
             <div>
-              <div class="gh-hero-title">GitHub Enterprise Integration</div>
-              <div class="gh-hero-caption">Autonomous PR Auto-Merge & Sync Engine</div>
+              <div class="gh-hero-title">
+                GitHub Enterprise
+                <span class="info-mark" onclick="showInfoMark('Autonomous PR Auto-Merge, Dependabot Rectifier & Fork Synchronization Engine')" title="Autonomous PR Auto-Merge, Dependabot Rectifier & Fork Synchronization Engine">i</span>
+              </div>
+              <div class="gh-hero-caption">Connected · Port 8765</div>
             </div>
           </div>
           <span class="card-badge badge-merged" id="overview-gh-badge">
@@ -5544,7 +5579,7 @@
         </div>
 
         <div class="gh-hero-auth-detail" id="overview-gh-desc">
-          Authenticated as <strong>@motherskitchenblr2</strong> • Scopes: <code>repo</code>, <code>workflow</code>, <code>security_events</code>
+          @motherskitchenblr2 · Authenticated
         </div>
 
         <div class="gh-hero-meta-row">
@@ -5697,11 +5732,12 @@
           <div class="sweeper-title-group">
             <span style="font-size: 1.1rem;">💓</span>
             <div>
-              <div style="font-weight: 800; font-size: 0.88rem; color: #10B981; letter-spacing: 0.3px;">
-                Autonomous Background Sweeper & Heartbeat Daemon
+              <div style="font-weight: 800; font-size: 0.88rem; color: #10B981; letter-spacing: 0.3px; display: flex; align-items: center;">
+                Autonomous Sweeper
+                <span class="info-mark" onclick="showInfoMark('Continuous background repo maintenance: PR squash, fork re-alignment, and threat patrol on a fixed heartbeat daemon')" title="Continuous background repo maintenance: PR squash, fork re-alignment, and threat patrol on a fixed heartbeat daemon">i</span>
               </div>
-              <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">
-                Continuous repo maintenance, automated PR squash, fork re-alignment & threat patrol
+              <div style="font-size: 0.65rem; color: var(--text-dim); font-family: var(--font-mono);">
+                Heartbeat maintenance daemon
               </div>
             </div>
           </div>
@@ -5838,19 +5874,17 @@
         <div class="office-title-row">
           <div class="office-title">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00F5D4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-3"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="9" y1="13" x2="9" y2="13.01"/><line x1="9" y1="17" x2="9" y2="17.01"/></svg>
-            <span>Executive Office & Approval Authority</span>
+            <span>Executive Office</span>
+            <span class="info-mark" onclick="showInfoMark('Autonomous notifications, deep AST syntax audits, and explicit approving authority. Major PR decisions mandate user confirmation.')" title="Autonomous notifications, deep AST syntax audits, and explicit approving authority. Major PR decisions mandate user confirmation.">i</span>
           </div>
           <span class="card-badge badge-merged" style="background: rgba(0, 245, 212, 0.15); border-color: #00F5D4; color: #00F5D4;">
             ● Strictly Audited
           </span>
         </div>
-        <p class="office-subdesc">
-          Autonomous notifications, deep AST syntax audits, and explicit approving authority. Major or Critical PR decisions mandate user confirmation; Agent Guardian always provides highlighted <strong>(Recommended)</strong> actions.
-        </p>
-        <div class="office-agent-badges">
-          <span class="agent-pill guardian">🛡️ Approving Authority: Guardian</span>
-          <span class="agent-pill qa">🔍 Deep Auditor: Agent Q&A</span>
-          <span class="agent-pill policy">🔒 Never Break The Code Active</span>
+        <div class="office-agent-badges" style="margin-top: 0.45rem;">
+          <span class="agent-pill guardian">🛡️ Guardian</span>
+          <span class="agent-pill qa">🔍 Q&A Auditor</span>
+          <span class="agent-pill policy">🔒 Zero Breakage</span>
         </div>
       </div>
 
@@ -5860,11 +5894,12 @@
           <div class="dag-title-group">
             <span style="font-size: 1.1rem;">🕸️</span>
             <div>
-              <div style="font-weight: 800; font-size: 0.88rem; color: #C084FC;">
-                Dynamic Multi-Agent DAG & Hand-Off Monitor
+              <div style="font-weight: 800; font-size: 0.88rem; color: #C084FC; display: flex; align-items: center;">
+                Multi-Agent DAG
+                <span class="info-mark" onclick="showInfoMark('Micro-agent sequential assembly line: Map ──► Chunk ──► Patch ──► Audit ──► Gatekeeper under token budgets')" title="Micro-agent sequential assembly line: Map ──► Chunk ──► Patch ──► Audit ──► Gatekeeper under token budgets">i</span>
               </div>
-              <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">
-                Micro-agent pipeline orchestration: Map ──► Chunk ──► Patch ──► Audit ──► Gatekeeper
+              <div style="font-size: 0.65rem; color: var(--text-dim); font-family: var(--font-mono);">
+                Sequential assembly line (5 stages)
               </div>
             </div>
           </div>
@@ -6026,16 +6061,14 @@
         <div class="agent-memory-header">
           <div class="agent-memory-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BD00FF" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/></svg>
-            <span>Agent Persistent Memory Store</span>
+            <span>Agent Memory Ledger</span>
+            <span class="info-mark" onclick="showInfoMark('Permanent episodic ledger: stores verified safety rules, previous PR approval decisions, and code audit outcomes across sessions')" title="Permanent episodic ledger: stores verified safety rules, previous PR approval decisions, and code audit outcomes across sessions">i</span>
           </div>
           <div style="display: flex; gap: 0.35rem;">
             <button class="btn-sub-action" onclick="exportAgentMemoryJSON()" title="Export memory JSON">📥 Export JSON</button>
             <button class="btn-sub-action" onclick="refreshAgentMemoryView()" title="Refresh memory ledger">🔄 Refresh</button>
           </div>
         </div>
-        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.55rem;">
-          Permanent episodic ledger for Agent Guardian & Agent Q&A. Stores verified safety rules, previous PR approval decisions, and code audit outcomes. These memories persist forever across browser sessions.
-        </p>
         <div id="agent-memory-ledger-list">
           <!-- Rendered dynamically -->
         </div>
@@ -6044,8 +6077,11 @@
 
     <!-- PANE 2: PULL REQUESTS & ACTIONS -->
     <div class="pane" id="pane-prs">
-      <div class="section-title">🔀 Pull Requests & Conflict Engine</div>
-      <p class="section-desc">Automated squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers.</p>
+      <div class="section-title">
+        <span>🔀 Pull Requests</span>
+        <span class="info-mark" onclick="showInfoMark('Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers')" title="Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers">i</span>
+      </div>
+      <p class="section-desc">Automated squash-merges & conflict resolution.</p>
       
       <div class="search-box">
         <input type="text" class="search-input" id="pr-search-input" placeholder="Search pull requests or repositories..." onkeyup="filterCards('prs-list', this.value)">
@@ -6056,7 +6092,8 @@
         <div class="diff-toolbar">
           <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
             <span style="font-weight: 800; font-size: 0.88rem; color: #00F2FE; display: flex; align-items: center; gap: 0.35rem;">
-              <span>⚔️</span> Visual Diff & Conflict Sandbox
+              <span>⚔️</span> Conflict Sandbox
+              <span class="info-mark" onclick="showInfoMark('Side-by-side AST Git conflict resolver and patch generator with active model auto-merge')" title="Side-by-side AST Git conflict resolver and patch generator with active model auto-merge">i</span>
             </span>
             <select class="diff-select" id="conflict-preset-select" onchange="ConflictSandboxManager.loadPreset(this.value)">
               <option value="secrets">shared/secrets.ts (AES-GCM-256 vs Bearer Auth)</option>
@@ -6129,11 +6166,12 @@
           <div class="canary-title-group">
             <span style="font-size: 1.15rem;">🐤</span>
             <div>
-              <div style="font-size: 0.92rem; font-weight: 800; color: #00F2FE; letter-spacing: 0.02em;">
-                Self-Healing CI & Canary Sandbox Runner
+              <div style="font-size: 0.92rem; font-weight: 800; color: #00F2FE; letter-spacing: 0.02em; display: flex; align-items: center;">
+                Canary Sandbox CI
+                <span class="info-mark" onclick="showInfoMark('4-Stage Pre-Flight CI Suite: AST Bracket Parity, Secret Sentinel, Dependency Integrity, and Sandboxed Dry-Run with Autonomous Self-Healing and Rollback')" title="4-Stage Pre-Flight CI Suite: AST Bracket Parity, Secret Sentinel, Dependency Integrity, and Sandboxed Dry-Run with Autonomous Self-Healing and Rollback">i</span>
               </div>
               <div style="font-size: 0.65rem; color: #94A3B8; font-family: var(--font-mono);">
-                Pre-Flight AST Verification • Secret Sentinel • Auto-Healing Heuristics • Revert Rollback Escrow
+                Pre-flight AST checks & self-healing
               </div>
             </div>
           </div>
@@ -6222,8 +6260,11 @@
 
     <!-- PANE 3: FORKS SYNCHRONIZATION -->
     <div class="pane" id="pane-forks">
-      <div class="section-title">🍴 Fork Synchronization Engine</div>
-      <p class="section-desc">Tracking 193 forked repositories against upstream main/master branches.</p>
+      <div class="section-title">
+        <span>🍴 Fork Synchronization</span>
+        <span class="info-mark" onclick="showInfoMark('Tracking 193 forked repositories against upstream main/master branches with automated fast-forward sync')" title="Tracking 193 forked repositories against upstream main/master branches with automated fast-forward sync">i</span>
+      </div>
+      <p class="section-desc">193 forks synced with upstream.</p>
 
       <div class="search-box">
         <input type="text" class="search-input" id="fork-search-input" placeholder="Search 193 forks..." onkeyup="filterCards('forks-list', this.value)">
@@ -6246,15 +6287,19 @@
 
     <!-- PANE 4: REPOSITORIES -->
     <div class="pane" id="pane-repos">
-      <div class="section-title">📁 All Owned Repositories</div>
-      <p class="section-desc">242 total repositories breakdown: Public (228) and Private (14) repositories.</p>
+      <div class="section-title">
+        <span>📁 Repositories</span>
+        <span class="info-mark" onclick="showInfoMark('242 total repositories breakdown: Public (228) and Private (14) repositories')" title="242 total repositories breakdown: Public (228) and Private (14) repositories">i</span>
+      </div>
+      <p class="section-desc">242 repositories (228 Public · 14 Private).</p>
 
       <!-- PHASE 4: LOCAL CODEBASE SEMANTIC RAG & VECTOR SEARCH -->
       <div class="rag-search-container" id="rag-search-container">
         <div class="rag-header">
           <div class="rag-title-group">
             <span style="font-size: 1.1rem;">🧠</span>
-            <span>Codebase Semantic RAG & Vector Search</span>
+            <span>Semantic Codebase Search</span>
+            <span class="info-mark" onclick="showInfoMark('BM25 semantic vector search index across local codebase symbols, secrets, and routes')" title="BM25 semantic vector search index across local codebase symbols, secrets, and routes">i</span>
           </div>
           <span class="rag-stats-pill" id="rag-stats-pill">
             Indexed: 12 Modules · 48 Chunks
@@ -6307,9 +6352,10 @@
       <div class="terminal-pane-header">
         <div class="section-title">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-          <span>Guardian Cyber Terminal</span>
+          <span>Cyber Terminal</span>
+          <span class="info-mark" onclick="showInfoMark('Live daemon log stream, execution telemetry monitor, and interactive CLI controller')" title="Live daemon log stream, execution telemetry monitor, and interactive CLI controller">i</span>
         </div>
-        <p class="section-desc">Live daemon log stream, execution telemetry monitor, and interactive CLI controller.</p>
+        <p class="section-desc">Daemon telemetry stream & CLI controller.</p>
       </div>
 
       <!-- Quick Command Action Launcher Pills -->
@@ -6429,15 +6475,21 @@
 
     <!-- PANE 6: AI SUITE & HARDWARE ADVISOR -->
     <div class="pane" id="pane-ai">
-      <div class="section-title">🧠 Multimodal AI Suite & Device Advisor</div>
-      <p class="section-desc">Local offline models (0.5B to 4B GGUF) + Free Cloud Providers (Google AI Studio, Groq, OpenRouter, NVIDIA).</p>
+      <div class="section-title">
+        <span>🧠 Multimodal AI Suite</span>
+        <span class="info-mark" title="Hybrid offline GGUF runtime on ARM64 and encrypted free cloud providers (Google, Groq, OpenRouter, NVIDIA)." onclick="showInfoMark('Hybrid offline GGUF models on ARM64 + free cloud providers (Google, Groq, OpenRouter, NVIDIA).'); event.stopPropagation();">i</span>
+      </div>
+      <p class="section-desc">Offline GGUF models & free cloud providers.</p>
 
       <!-- Hardware Advisor Card -->
       <div class="hardware-card">
         <div class="hw-header">
           <div>
-            <h3 style="font-size: 0.95rem; font-weight: 800; color: white;">📱 Device Hardware Capacity</h3>
-            <p style="font-size: 0.68rem; color: var(--text-muted);">Real-time system diagnostics & offline GGUF advisor</p>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin: 0;">📱 Device Capacity</h3>
+              <span class="info-mark" title="Live CPU, RAM and storage diagnostics for offline GGUF inference." onclick="showInfoMark('Live CPU, RAM and storage diagnostics for offline GGUF inference.'); event.stopPropagation();">i</span>
+            </div>
+            <p style="font-size: 0.68rem; color: var(--text-muted); margin: 0.15rem 0 0 0;">Real-time system diagnostics & GGUF telemetry</p>
           </div>
           <span class="hw-tier-badge" id="hw-tier">Compact (1.5B - 3B)</span>
         </div>
@@ -6476,16 +6528,16 @@
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
           <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">
-            💡 Recommended Local Offline Models (Quantized / GGUF)
+            💡 Recommended Local Models (GGUF)
           </div>
-          <span style="font-size: 0.65rem; color: var(--text-dim);">Download & Manual Wiring</span>
+          <span style="font-size: 0.65rem; color: var(--text-dim);">Offline Quantized</span>
         </div>
 
         <!-- Ollama Custom Model Tag Download Bar -->
         <div class="custom-pull-bar">
           <div style="font-size: 0.68rem; font-weight: 700; color: var(--primary); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>⬇️ PULL ANY OLLAMA MODEL BY TAG OR NAME</span>
-            <span style="font-size: 0.62rem; color: var(--text-dim);">e.g. starcoder2:3b, mistral, codellama, phi3</span>
+            <span>⬇️ PULL OLLAMA MODEL BY TAG</span>
+            <span style="font-size: 0.62rem; color: var(--text-dim);">e.g. starcoder2:3b, mistral, codellama</span>
           </div>
           <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
             <input type="text" class="custom-pull-input" id="ollama-custom-model-input" placeholder="Enter Ollama model tag (e.g. starcoder2:3b, mistral, codellama)..." onkeydown="if(event.key==='Enter')startCustomOllamaPull()">
@@ -6585,22 +6637,22 @@
 
       <!-- Hugging Face GGUF Suite & Edge Model Hub -->
       <div class="config-card" id="card-huggingface-suite" style="border-color: rgba(236,72,153,0.35); background: radial-gradient(circle at 10% 20%, rgba(236,72,153,0.06), transparent 45%), var(--card-bg); margin-top: 1rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 6px;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 1.25rem;">🤗</span>
             <div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; color: #FFF; margin: 0;">Hugging Face GGUF Offline Suite</h3>
-              <span style="font-size: 0.65rem; color: #F472B6; font-weight: 600;">ARM64 Quantized GGUF • Direct URL Downloads • Native Multi-Agent Routing</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3 style="font-size: 0.95rem; font-weight: 800; color: #FFF; margin: 0;">Hugging Face GGUF Suite</h3>
+                <span class="info-mark" title="Direct URL downloads for GGUF repos. Executes locally via native ARM64 quantization with zero cloud telemetry." onclick="showInfoMark('Paste any Hugging Face GGUF repo or URL to download and run locally on-device with zero cloud telemetry.'); event.stopPropagation();">i</span>
+              </div>
+              <span style="font-size: 0.65rem; color: #F472B6; font-weight: 600;">ARM64 Quantized • Direct URL Downloads</span>
             </div>
           </div>
           <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="ollama-service-btn" style="border-color: rgba(236,72,153,0.5); color: #F472B6; background: rgba(236,72,153,0.12);" onclick="openModelHubModal('huggingface')" title="Open Hugging Face GGUF Model Hub">🤗 HF Hub Modal</button>
+            <button class="ollama-service-btn" style="border-color: rgba(236,72,153,0.5); color: #F472B6; background: rgba(236,72,153,0.12);" onclick="openModelHubModal('huggingface')" title="Open Hugging Face GGUF Model Hub">🤗 HF Hub</button>
             <button class="ollama-service-btn" onclick="checkOllamaService(true)" title="Refresh Installed Models">🔄 Refresh</button>
           </div>
         </div>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.45;">
-          Directly paste any Hugging Face model repository or GGUF URL (e.g., <code>https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF</code>). Models execute locally on-device via native ARM64 quant processing with zero cloud telemetry, wired directly into Guardian's router with individual Wire, On/Off, and Remove controls.
-        </p>
 
         <!-- Hugging Face URL / Repo Download Bar -->
         <div class="custom-pull-bar hf-bar">
@@ -6652,20 +6704,19 @@
 
       <!-- Free Providers & API Keys Manager with AES-256 Encryption Vault -->
       <div class="config-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 8px;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 1.25rem;">🔑</span>
             <div>
-              <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin: 0;">Free Multimodal AI Providers & Secrets Vault</h3>
-              <div style="font-size: 0.68rem; color: var(--text-muted);">AES-256-GCM + PBKDF2 Client-Side Encryption with Live Indicator & Individual Controls</div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin: 0;">AI Providers & Secrets Vault</h3>
+                <span class="info-mark" title="End-to-end client-side encrypted at rest with AES-256-GCM + PBKDF2. Keys are never transmitted in plain text." onclick="showInfoMark('Client-side AES-256-GCM encryption with device-salt. Keys are never sent or logged in plain text.'); event.stopPropagation();">i</span>
+              </div>
+              <div style="font-size: 0.68rem; color: var(--text-muted);">AES-256-GCM client-side encryption</div>
             </div>
           </div>
-          <span class="card-badge badge-merged" id="vault-badge" style="font-size: 0.68rem; padding: 0.25rem 0.6rem;">🔒 AES-256-GCM Vault</span>
+          <span class="card-badge badge-merged" id="vault-badge" style="font-size: 0.68rem; padding: 0.25rem 0.6rem;">🔒 Encrypted</span>
         </div>
-
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.85rem;">
-          End-to-End client-side encrypted at rest with hardware/device-salt cryptography. Keys are never sent to external servers or logged in plain text. Configure individual providers with independent <strong>Integrate</strong>, <strong>On/Off</strong>, and <strong>Remove</strong> controls.
-        </p>
 
         <!-- Master Passphrase (Optional Layer) -->
         <div class="config-field" style="margin-bottom: 0.85rem;">
@@ -6680,7 +6731,7 @@
               <span class="provider-icon">🌐</span>
               <div>
                 <span class="provider-title">OpenRouter</span>
-                <span class="provider-badge-desc">· Free Tier: DeepSeek-R1, LLaMA-3.3 70B, Qwen 2.5 Coder</span>
+                <span class="provider-badge-desc">· Free Tier Models</span>
               </div>
             </div>
             <span class="provider-status-pill idle" id="status-pill-openrouter">
@@ -6711,7 +6762,7 @@
               <span class="provider-icon">✨</span>
               <div>
                 <span class="provider-title">Google AI Studio</span>
-                <span class="provider-badge-desc">· Gemini 2.0 Flash / 1.5 Pro (Multimodal VL)</span>
+                <span class="provider-badge-desc">· Gemini 2.0 Multimodal</span>
               </div>
             </div>
             <span class="provider-status-pill idle" id="status-pill-google">
@@ -6741,8 +6792,8 @@
             <div class="provider-title-wrap">
               <span class="provider-icon">⚡</span>
               <div>
-                <span class="provider-title">Groq Cloud (LPU)</span>
-                <span class="provider-badge-desc">· Ultra-Fast: LLaMA 3.3 70B, Mixtral 8x7B, Qwen 32B</span>
+                <span class="provider-title">Groq Cloud</span>
+                <span class="provider-badge-desc">· Ultra-Fast LPU</span>
               </div>
             </div>
             <span class="provider-status-pill idle" id="status-pill-groq">
@@ -6772,8 +6823,8 @@
             <div class="provider-title-wrap">
               <span class="provider-icon">🟢</span>
               <div>
-                <span class="provider-title">NVIDIA NIM Microservices</span>
-                <span class="provider-badge-desc">· High-Throughput Enterprise Endpoints</span>
+                <span class="provider-title">NVIDIA NIM</span>
+                <span class="provider-badge-desc">· Microservices</span>
               </div>
             </div>
             <span class="provider-status-pill idle" id="status-pill-nvidia">
@@ -6803,8 +6854,8 @@
             <div class="provider-title-wrap">
               <span class="provider-icon">🦙</span>
               <div>
-                <span class="provider-title">Local Ollama Store & Daemon</span>
-                <span class="provider-badge-desc">· Offline Edge Inference (Termux localhost:11434)</span>
+                <span class="provider-title">Local Ollama</span>
+                <span class="provider-badge-desc">· Offline Engine (11434)</span>
               </div>
             </div>
             <span class="provider-status-pill live" id="status-pill-ollama">
@@ -6846,9 +6897,12 @@
 
       <!-- Model Category Router & Autonomy Mode -->
       <div class="config-card">
-        <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.35rem;">⚙️ Model Routing & Autonomy</h3>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.85rem;">
-          Configure specialized models and permission boundaries for autonomous agentic actions.
+        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.35rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin: 0;">⚙️ Model Routing & Autonomy</h3>
+          <span class="info-mark" title="Route specialized models to coding, reasoning, chat, or vision agents and configure autonomy execution gates." onclick="showInfoMark('Route models to coding, reasoning, chat, and vision tasks, and set autonomy permissions.'); event.stopPropagation();">i</span>
+        </div>
+        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+          Specialized model routing & execution boundaries.
         </p>
 
         <div class="config-field">
@@ -6955,14 +7009,12 @@
 
       <!-- TAB 1: ACCESS TOKEN -->
       <div id="auth-tab-token">
-        <div class="auth-guide-banner">
-          <div class="auth-guide-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Personal Access Token (Classic or Fine-Grained)</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: white;">Personal Access Token</span>
+            <span class="info-mark" title="Enables autonomous PR auto-merge, conflict rebase, and fork sync. Encrypted in AES-256 vault." onclick="showInfoMark('Enables autonomous PR auto-merge, conflict rebase, and fork sync. Encrypted in AES-256 vault.'); event.stopPropagation();">i</span>
           </div>
-          <div class="auth-guide-text">
-            Enables autonomous PR auto-merge, conflict rebase, and fork synchronization. Credentials are encrypted client-side in the AES-GCM-256 hardware vault.
-          </div>
+          <span style="font-size: 0.65rem; color: var(--text-dim);">Classic / Fine-Grained</span>
         </div>
 
         <div class="config-field" style="margin-bottom: 0.85rem;">
@@ -7010,14 +7062,12 @@
 
       <!-- TAB 2: LOGIN AUTHENTICATION (DEVICE FLOW / OAUTH) -->
       <div id="auth-tab-login" style="display: none;">
-        <div class="auth-guide-banner">
-          <div class="auth-guide-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            <span>Browser Login & Device Authorization</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.65rem;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: white;">Device & Web Sign-In</span>
+            <span class="info-mark" title="Authenticate directly through GitHub RFC 8628 Device Flow or Web OAuth without copying tokens." onclick="showInfoMark('Authenticate directly through GitHub Device Flow or OAuth without copying tokens.'); event.stopPropagation();">i</span>
           </div>
-          <div class="auth-guide-text">
-            Authenticate directly through GitHub with RFC 8628 Device Flow or Web OAuth without manually copying or generating a token.
-          </div>
+          <span style="font-size: 0.65rem; color: var(--text-dim);">RFC 8628 & OAuth</span>
         </div>
 
         <!-- Device Flow Section -->
@@ -7402,6 +7452,11 @@
       t.innerText = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    function showInfoMark(msg) {
+      if (!msg) return;
+      showToast('ℹ️ ' + msg);
     }
 
     let terminalAutoScroll = true;
@@ -13132,6 +13187,7 @@ ${t.code.slice(0, 600)}
           icon: '🧩',
           status: 'idle',
           latency: '14ms',
+          summary: 'Brace matching & syntax integrity check.',
           details: 'Validates brace matching { } [ ] ( ), semicolon integrity, and prevents abrupt truncation.'
         },
         secrets: {
@@ -13140,6 +13196,7 @@ ${t.code.slice(0, 600)}
           icon: '🔐',
           status: 'idle',
           latency: '28ms',
+          summary: 'High-entropy token & credential leak scan.',
           details: 'Scans for high-entropy tokens, GitHub PATs, AWS access keys, OAuth secrets, and private certs.'
         },
         imports: {
@@ -13148,6 +13205,7 @@ ${t.code.slice(0, 600)}
           icon: '📦',
           status: 'idle',
           latency: '22ms',
+          summary: 'Circular deadlock & module resolve verification.',
           details: 'Verifies relative resolve paths, circular dependency deadlock checks, and package bounds.'
         },
         build: {
@@ -13156,6 +13214,7 @@ ${t.code.slice(0, 600)}
           icon: '⚡',
           status: 'idle',
           latency: '45ms',
+          summary: 'Virtual runtime simulation & bundle limits.',
           details: 'Runs isolated virtual runtime simulation, typecheck safety assertions, and bundle delta limits.'
         }
       },
@@ -13272,13 +13331,14 @@ ${t.code.slice(0, 600)}
           html += `
             <div class="canary-step-card ${statusCls}" id="canary-step-${k}">
               <div class="canary-step-top">
-                <div class="canary-step-title">
+                <div class="canary-step-title" style="display: flex; align-items: center; gap: 6px;">
                   <span>${s.icon}</span>
                   <span>${s.name}</span>
+                  <span class="info-mark" title="${s.details.replace(/"/g, '&quot;')}" onclick="showInfoMark('${s.details.replace(/'/g, "\\'")}'); event.stopPropagation();">i</span>
                 </div>
                 ${statusBadge}
               </div>
-              <div class="canary-step-desc">${s.details}</div>
+              <div class="canary-step-desc">${s.summary || s.details}</div>
               <div class="canary-step-meta">
                 <span>Latency: ${s.status === 'idle' ? '-' : s.latency}</span>
                 <span>Stage: ${k.toUpperCase()}</span>
