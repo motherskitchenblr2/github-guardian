@@ -1902,6 +1902,65 @@
       animation: fadeIn 0.3s ease;
     }
 
+    /* Streaming Cursor & Live Token Animation */
+    .streaming-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 14px;
+      background: var(--primary);
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: cursorBlink 0.8s infinite;
+      box-shadow: 0 0 6px var(--primary);
+      border-radius: 1px;
+    }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .stream-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .stream-speed-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 1px 7px;
+      border-radius: 9999px;
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34D399;
+    }
+    .stream-speed-pill.live {
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+    .stream-thinking-zone {
+      margin-bottom: 0.65rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.6);
+      border-left: 3px solid #8B5CF6;
+      font-size: 0.73rem;
+      color: #CBD5E1;
+      font-family: var(--font-mono);
+      white-space: pre-wrap;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .stream-content-zone {
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #F1F5F9;
+    }
+
     /* Floating Action Button (FAB) */
     .fab-chat {
       position: fixed;
@@ -12014,7 +12073,21 @@ Audit Summary:
         }
 
         const loadingDivId = 'agent-loading-' + Date.now();
-        appendChatMessage('agent', `<div id="${loadingDivId}"><em>${routeTag}Thinking offline with ${targetModel} (${thinkingLevel.toUpperCase()} level)... 🧠</em></div>`);
+        const agentName = agentMode === 'qa' ? '🔍 Agent Q&A' : '🛡️ Agent Guardian';
+        const streamContainerHtml = `
+          <div id="${loadingDivId}">
+            ${routeTag}
+            <div class="stream-header-pill">
+              <span class="status-dot live" style="background:#10B981;box-shadow:0 0 8px #10B981;animation:livePulseDot 1.5s infinite;"></span>
+              <span style="font-weight:700;">${agentName}</span> [<code>${targetModel}</code>]
+              <span class="stream-speed-pill" id="speed-${loadingDivId}">⚡ Thinking (${thinkingLevel.toUpperCase()})...</span>
+            </div>
+            <div class="stream-thinking-zone" id="thinking-${loadingDivId}" style="display:none;"></div>
+            <div class="stream-content-zone" id="content-${loadingDivId}"></div>
+            <span class="streaming-cursor" id="cursor-${loadingDivId}">▍</span>
+          </div>
+        `;
+        appendChatMessage('agent', streamContainerHtml);
 
         const thinkingInstructions = {
           'default': 'Provide balanced, helpful reasoning.',
@@ -12325,6 +12398,7 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
 
         try {
           let resp = null;
+          let isCloudStream = false;
 
           // 1. OpenRouter Integration Routing
           if (targetModel.startsWith('openrouter:') || targetModel.includes('openrouter')) {
@@ -12334,8 +12408,10 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
               if (modelId === 'free' || !modelId) modelId = 'deepseek/deepseek-r1:free';
 
               setAgentStatus('thinking', `OpenRouter (${modelId.split('/').pop() || modelId})...`);
+              const spdInit = document.getElementById(`speed-${loadingDivId}`);
+              if (spdInit) spdInit.innerText = `⚡ OpenRouter Stream...`;
 
-              const orResp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+              resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -12346,36 +12422,21 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
                 signal: currentChatAbortController ? currentChatAbortController.signal : undefined,
                 body: JSON.stringify({
                   model: modelId,
-                  messages: apiMessages.map(m => ({ role: m.role, content: m.content }))
+                  messages: apiMessages.map(m => ({ role: m.role, content: m.content })),
+                  stream: true
                 })
               });
-
-              if (orResp.ok) {
-                const orData = await orResp.json();
-                const choice = orData.choices?.[0];
-                const rawReply = choice?.message?.content || 'Task processed successfully.';
-                const promptToks = orData.usage?.prompt_tokens || Math.ceil(promptContext.length / 3.8);
-                const compToks = orData.usage?.completion_tokens || Math.ceil(rawReply.length / 3.8);
-
-                resp = {
-                  ok: true,
-                  json: async () => ({
-                    message: { content: rawReply },
-                    prompt_eval_count: promptToks,
-                    eval_count: compToks,
-                    total_duration: (Date.now() - startTime) * 1e6
-                  })
-                };
-              } else {
-                throw new Error(`OpenRouter API responded with HTTP ${orResp.status}`);
-              }
+              isCloudStream = true;
             }
           } else if (targetModel.startsWith('groq:')) {
             const groqKey = GuardianVault.getKey('groq') || document.getElementById('key-groq')?.value.trim();
             if (groqKey && GuardianVault.isEnabled('groq')) {
               const modelId = targetModel.replace('groq:', '').trim();
               setAgentStatus('thinking', `Groq (${modelId})...`);
-              const grResp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+              const spdInit = document.getElementById(`speed-${loadingDivId}`);
+              if (spdInit) spdInit.innerText = `⚡ Groq Stream...`;
+
+              resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -12384,30 +12445,20 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
                 signal: currentChatAbortController ? currentChatAbortController.signal : undefined,
                 body: JSON.stringify({
                   model: modelId,
-                  messages: apiMessages.map(m => ({ role: m.role, content: m.content }))
+                  messages: apiMessages.map(m => ({ role: m.role, content: m.content })),
+                  stream: true
                 })
               });
-              if (grResp.ok) {
-                const grData = await grResp.json();
-                const rawReply = grData.choices?.[0]?.message?.content || '';
-                resp = {
-                  ok: true,
-                  json: async () => ({
-                    message: { content: rawReply },
-                    prompt_eval_count: grData.usage?.prompt_tokens || 100,
-                    eval_count: grData.usage?.completion_tokens || 100,
-                    total_duration: (Date.now() - startTime) * 1e6
-                  })
-                };
-              } else {
-                throw new Error(`Groq API responded with HTTP ${grResp.status}`);
-              }
+              isCloudStream = true;
             }
           }
 
-          // Fallback to local Ollama daemon
+          // Fallback to local Ollama daemon (stream: true)
           if (!resp) {
             const ollamaEndpoint = GuardianVault.providers.ollama?.endpoint || 'http://localhost:11434';
+            const spdInit = document.getElementById(`speed-${loadingDivId}`);
+            if (spdInit) spdInit.innerText = `⚡ Ollama Stream...`;
+
             resp = await fetch(`${ollamaEndpoint}/api/chat`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -12415,102 +12466,222 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
               body: JSON.stringify({
                 model: targetModel,
                 messages: apiMessages,
-                stream: false
+                stream: true
               })
             });
           }
 
-          setAgentStatus('responding', 'Responding...');
-          if (resp.ok) {
-            const data = await resp.json();
-            const rawReply = data.message?.content || 'Task processed successfully.';
-            const parsed = parseThinking(rawReply);
+          if (!resp || !resp.ok) {
+            throw new Error(`Inference engine responded with HTTP ${resp?.status || 'Network error'}`);
+          }
 
-            // Priority 1: Ollama native thinking field in data.message.thinking (e.g. DeepSeek-R1)
-            // Priority 2: Thinking extracted from tags in rawReply (<think>, <thought>, <reasoning>)
-            // Priority 3: Synthesized structured reasoning trace based on thinkingLevel & targetModel
-            let rawThinking = (data.message?.thinking && data.message.thinking.trim()) ? data.message.thinking.trim() : (parsed.thinking || null);
+          setAgentStatus('responding', 'Streaming Tokens...');
 
-            if (!rawThinking && thinkingLevel !== 'off') {
-              const queryPreview = text.trim().substring(0, 50);
-              const steps = [
-                `• Query Comprehension: Evaluated user request ("${queryPreview}${text.length > 50 ? '...' : ''}") under ${agentMode === 'qa' ? 'Q&A Code Auditor' : 'Guardian Approving Authority'} persona.`,
-                `• Policy Check: Verified "Never Break The Code" policy & AST syntax guardrails.`,
-                thinkingLevel === 'high' ?
-                  `• Deep Code & Risk Analysis: Scanned for breaking changes, backwards compatibility, and potential security vectors.` :
-                  (thinkingLevel === 'medium' ?
-                    `• Analytical Reasoning: Evaluated repository scope and best practices for @motherskitchenblr2.` :
-                    `• Direct Reasoning: Formulated concise, helpful response aligned with project standards.`),
-                `• Engine Context: Model: ${targetModel} | Reasoning Depth: ${thinkingLevel.toUpperCase()} | Autonomy: ${currentAutonomy.toUpperCase()}`
-              ];
-              rawThinking = steps.join('\n');
+          const reader = resp.body.getReader();
+          const decoder = new TextDecoder();
+          let streamBuffer = '';
+          let rawReply = '';
+          let rawThinking = '';
+          let inThinkingTag = false;
+          let tokenCount = 0;
+          let promptTokens = Math.ceil((fullSystemPrompt.length + promptContext.length) / 3.8);
+          let finalPromptTokens = promptTokens;
+          let finalResponseTokens = 0;
+          let firstTokenTime = null;
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            streamBuffer += decoder.decode(value, { stream: true });
+            const lines = streamBuffer.split('\n');
+            streamBuffer = lines.pop(); // keep last incomplete chunk
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed) continue;
+
+              let deltaText = '';
+              let deltaThinking = '';
+
+              if (isCloudStream) {
+                // OpenAI / OpenRouter / Groq SSE protocol: data: {...}
+                if (trimmed.startsWith('data: ')) {
+                  const payload = trimmed.replace('data: ', '').trim();
+                  if (payload === '[DONE]') break;
+                  try {
+                    const data = JSON.parse(payload);
+                    const delta = data.choices?.[0]?.delta;
+                    if (delta?.content) {
+                      deltaText = delta.content;
+                    }
+                    if (data.usage?.prompt_tokens) finalPromptTokens = data.usage.prompt_tokens;
+                    if (data.usage?.completion_tokens) finalResponseTokens = data.usage.completion_tokens;
+                  } catch(e) {}
+                }
+              } else {
+                // Ollama NDJSON stream protocol: {"message":{"content":"...","thinking":"..."}, "done":false}
+                if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+                  try {
+                    const data = JSON.parse(trimmed);
+                    if (data.prompt_eval_count) finalPromptTokens = data.prompt_eval_count;
+                    if (data.eval_count) finalResponseTokens = data.eval_count;
+
+                    if (data.message?.thinking) {
+                      deltaThinking = data.message.thinking;
+                    }
+                    if (data.message?.content) {
+                      deltaText = data.message.content;
+                    }
+                  } catch(e) {}
+                }
+              }
+
+              if (deltaThinking || deltaText) {
+                if (!firstTokenTime) firstTokenTime = Date.now();
+                tokenCount++;
+
+                // Handle thinking stream
+                if (deltaThinking) {
+                  rawThinking += deltaThinking;
+                  const thZone = document.getElementById(`thinking-${loadingDivId}`);
+                  if (thZone) {
+                    thZone.style.display = 'block';
+                    thZone.innerHTML = `<strong>🧠 Thinking Process:</strong><br>` + formatThinkingContent(rawThinking);
+                  }
+                }
+
+                // Handle response content stream & embedded <think> tags
+                if (deltaText) {
+                  if (deltaText.includes('<think>')) inThinkingTag = true;
+
+                  if (inThinkingTag) {
+                    rawThinking += deltaText.replace('<think>', '');
+                    if (deltaText.includes('</think>')) {
+                      inThinkingTag = false;
+                      rawThinking = rawThinking.replace('</think>', '');
+                    }
+                    const thZone = document.getElementById(`thinking-${loadingDivId}`);
+                    if (thZone) {
+                      thZone.style.display = 'block';
+                      thZone.innerHTML = `<strong>🧠 Thinking Process:</strong><br>` + formatThinkingContent(rawThinking);
+                    }
+                  } else {
+                    rawReply += deltaText;
+                    const cntZone = document.getElementById(`content-${loadingDivId}`);
+                    if (cntZone) {
+                      cntZone.innerHTML = rawReply.replace(/\n/g, '<br>');
+                    }
+                  }
+                }
+
+                // Update live speed badge
+                const elapsedSec = (Date.now() - firstTokenTime) / 1000;
+                const liveSpeed = elapsedSec > 0 ? (tokenCount / elapsedSec).toFixed(1) : '0.0';
+                const spdEl = document.getElementById(`speed-${loadingDivId}`);
+                if (spdEl) {
+                  spdEl.innerText = `⚡ ${liveSpeed} tok/s (${tokenCount} tok)`;
+                }
+
+                // Auto-scroll chat window
+                const chatContainer = document.getElementById('chat-messages');
+                if (chatContainer) {
+                  chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+              }
             }
+          }
 
-            const promptTokens = data.prompt_eval_count || Math.ceil((systemPrompt.length + promptContext.length) / 3.8);
-            const responseTokens = data.eval_count || Math.ceil(rawReply.length / 3.8);
-            const totalTokens = promptTokens + responseTokens;
-            const durationSec = (data.total_duration ? data.total_duration / 1e9 : (Date.now() - startTime) / 1000);
-            const tokensPerSec = durationSec > 0 ? (responseTokens / durationSec).toFixed(1) : '35.0';
+          // Streaming complete: remove cursor
+          const curEl = document.getElementById(`cursor-${loadingDivId}`);
+          if (curEl) curEl.remove();
 
-            sessionTokensTotal += totalTokens;
-            sessionTokensRead += promptTokens;
-            sessionTokensWrite += responseTokens;
-            updateSessionTokenMeter();
+          const durationSec = ((Date.now() - startTime) / 1000).toFixed(2);
+          const responseTokens = finalResponseTokens || tokenCount || Math.ceil(rawReply.length / 3.8);
+          const totalTokens = finalPromptTokens + responseTokens;
+          const tokensPerSec = durationSec > 0 ? (responseTokens / durationSec).toFixed(1) : '25.0';
 
-            const telemetry = {
-              promptTokens,
-              responseTokens,
-              totalTokens,
-              speed: tokensPerSec,
-              durationSec: durationSec.toFixed(2)
-            };
+          sessionTokensTotal += totalTokens;
+          sessionTokensRead += finalPromptTokens;
+          sessionTokensWrite += responseTokens;
+          updateSessionTokenMeter();
 
-            const telemetryHtml = `
-              <div class="msg-telemetry-chip">
-                <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${promptTokens} tok</span>
-                <span class="tok-dot">•</span>
-                <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${responseTokens} tok</span>
-                <span class="tok-dot">•</span>
-                <span class="tok-tag total" title="Total Tokens Evaluated">⚡ Total: ${totalTokens} tok</span>
-                <span class="tok-dot">•</span>
-                <span class="tok-tag speed" title="Generation Speed">⚡ ${tokensPerSec} tok/s</span>
-                <span class="tok-dot">•</span>
-                <span class="tok-tag time" title="Response Latency">⏱️ ${durationSec.toFixed(2)}s</span>
+          const spdEl = document.getElementById(`speed-${loadingDivId}`);
+          if (spdEl) {
+            spdEl.innerText = `✔ ${tokensPerSec} tok/s · ${responseTokens} tok in ${durationSec}s`;
+            spdEl.className = 'stream-speed-pill live';
+          }
+
+          // If no model-native thinking was emitted but thinkingLevel is active, add synthesized trace
+          if (!rawThinking && thinkingLevel !== 'off') {
+            const queryPreview = text.trim().substring(0, 50);
+            const steps = [
+              `• Query Comprehension: Evaluated user request ("${queryPreview}${text.length > 50 ? '...' : ''}") under ${agentMode === 'qa' ? 'Q&A Code Auditor' : 'Guardian Approving Authority'} persona.`,
+              `• Policy Check: Verified "Never Break The Code" policy & AST syntax guardrails.`,
+              thinkingLevel === 'high' ?
+                `• Deep Code & Risk Analysis: Scanned for breaking changes, backwards compatibility, and potential security vectors.` :
+                (thinkingLevel === 'medium' ?
+                  `• Analytical Reasoning: Evaluated repository scope and best practices for @motherskitchenblr2.` :
+                  `• Direct Reasoning: Formulated concise, helpful response aligned with project standards.`),
+              `• Engine Context: Model: ${targetModel} | Reasoning Depth: ${thinkingLevel.toUpperCase()} | Autonomy: ${currentAutonomy.toUpperCase()}`
+            ];
+            rawThinking = steps.join('\n');
+          }
+
+          const telemetry = {
+            promptTokens: finalPromptTokens,
+            responseTokens: responseTokens,
+            totalTokens: totalTokens,
+            speed: tokensPerSec,
+            durationSec: durationSec
+          };
+
+          const telemetryHtml = `
+            <div class="msg-telemetry-chip">
+              <span class="tok-tag reading" title="Input Prompt Reading Tokens">📖 Read: ${finalPromptTokens} tok</span>
+              <span class="tok-dot">•</span>
+              <span class="tok-tag writing" title="Response Generation Writing Tokens">✍️ Write: ${responseTokens} tok</span>
+              <span class="tok-dot">•</span>
+              <span class="tok-tag total" title="Total Tokens Evaluated">⚡ Total: ${totalTokens} tok</span>
+              <span class="tok-dot">•</span>
+              <span class="tok-tag speed" title="Generation Speed">⚡ ${tokensPerSec} tok/s</span>
+              <span class="tok-dot">•</span>
+              <span class="tok-tag time" title="Response Latency">⏱️ ${durationSec}s</span>
+            </div>
+          `;
+
+          let thinkingHtml = '';
+          if (rawThinking) {
+            const formattedThinking = formatThinkingContent(rawThinking);
+            thinkingHtml = `
+              <div class="thinking-accordion">
+                <div class="thinking-header" onclick="toggleThinking(this)">
+                  <span class="thinking-title">
+                    <span>🧠</span>
+                    <span>AI Thinking Process (${thinkingLevel.toUpperCase()})</span>
+                  </span>
+                  <span class="thinking-toggle-badge">Expand to View ▼</span>
+                </div>
+                <div class="thinking-content">${formattedThinking}</div>
               </div>
             `;
-
-            let thinkingHtml = '';
-            if (rawThinking) {
-              const formattedThinking = formatThinkingContent(rawThinking);
-              thinkingHtml = `
-                <div class="thinking-accordion">
-                  <div class="thinking-header" onclick="toggleThinking(this)">
-                    <span class="thinking-title">
-                      <span>🧠</span>
-                      <span>AI Thinking Process (${thinkingLevel.toUpperCase()})</span>
-                    </span>
-                    <span class="thinking-toggle-badge">Expand to View ▼</span>
-                  </div>
-                  <div class="thinking-content">${formattedThinking}</div>
-                </div>
-              `;
-            }
-
-            let reply = parsed.cleanText;
-            reply = reply.replace(/\((Recommended)\)/gi, '<strong class="neon-green">(Recommended)</strong>');
-            const el = document.getElementById(loadingDivId);
-            const agentName = agentMode === 'qa' ? '🔍 Agent Q&A' : '🛡️ Agent Guardian';
-            if (el) {
-              el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply.replace(/\n/g, '<br>')}${telemetryHtml}`;
-            }
-            const chatContainer = document.getElementById('chat-messages');
-            if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
-            AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query. (${totalTokens} tok)`);
-            ChatSessionManager.recordMessage('agent', el ? el.innerHTML : reply, null, telemetry);
-            AntiGravityMemoryCompressor.registerInteraction(effectiveText, rawReply);
-          } else {
-            throw new Error(`HTTP ${resp.status}`);
           }
+
+          let reply = (rawReply || 'Task processed successfully.')
+            .replace(/\((Recommended)\)/gi, '<strong class="neon-green">(Recommended)</strong>')
+            .replace(/\n/g, '<br>');
+
+          const el = document.getElementById(loadingDivId);
+          if (el) {
+            el.innerHTML = `<strong>${agentName}</strong> [<code>${targetModel}</code>]:<br>${thinkingHtml}<br>${reply}${telemetryHtml}`;
+          }
+
+          const chatContainer = document.getElementById('chat-messages');
+          if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+
+          AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query. (${totalTokens} tok @ ${tokensPerSec} tok/s)`);
+          ChatSessionManager.recordMessage('agent', el ? el.innerHTML : reply, null, telemetry);
+          AntiGravityMemoryCompressor.registerInteraction(effectiveText, rawReply);
         } catch (e) {
           const el = document.getElementById(loadingDivId);
           if (e.name === 'AbortError' || wasManuallyAborted || currentChatAbortController?.signal?.aborted) {
