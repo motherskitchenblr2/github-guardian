@@ -1739,6 +1739,108 @@
     .fab-chat:active { transform: scale(0.92); }
     .fab-chat svg { width: 24px; height: 24px; fill: white; }
 
+    /* Guardian Floating Ball (FAB) State Indicators */
+    .fab-chat.state-blue {
+      background: linear-gradient(135deg, #0284C7, #2563EB);
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+      animation: fabPulseBlue 2s infinite ease-in-out;
+    }
+    .fab-chat.state-green {
+      background: linear-gradient(135deg, #059669, #10B981);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      animation: fabSpinGreen 1.8s infinite linear;
+    }
+    .fab-chat.state-amber {
+      background: linear-gradient(135deg, #D97706, #F59E0B);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.65);
+      animation: fabFadeAmber 1.4s infinite alternate;
+    }
+    .fab-chat.state-red {
+      background: linear-gradient(135deg, #DC2626, #EF4444) !important;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important;
+      animation: fabStrobeRed 0.75s infinite alternate !important;
+    }
+
+    @keyframes fabPulseBlue {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(37, 99, 235, 0.5); }
+      50% { transform: scale(1.06); box-shadow: 0 0 24px rgba(37, 99, 235, 0.85); }
+    }
+    @keyframes fabSpinGreen {
+      0% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.05) rotate(180deg); box-shadow: 0 0 25px rgba(16, 185, 129, 0.9); }
+      100% { transform: scale(1) rotate(360deg); }
+    }
+    @keyframes fabFadeAmber {
+      0% { opacity: 0.6; transform: scale(0.97); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+    @keyframes fabStrobeRed {
+      0% { opacity: 0.5; transform: scale(0.95); box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+      100% { opacity: 1; transform: scale(1.12); box-shadow: 0 0 30px rgba(239, 68, 68, 1); }
+    }
+
+    /* Awaiting Human Consent Card */
+    .human-consent-card {
+      margin: 0.75rem 0;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1.5px solid rgba(239, 68, 68, 0.5);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+      font-family: var(--font-sans);
+    }
+    .consent-header {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #F87171;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0.45rem;
+    }
+    .consent-body {
+      font-size: 0.73rem;
+      line-height: 1.45;
+      color: #E2E8F0;
+      margin-bottom: 0.75rem;
+    }
+    .consent-body code {
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #FCA5A5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .consent-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-consent-approve {
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: white;
+      border: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn-consent-approve:active { transform: scale(0.95); }
+    .btn-consent-reject {
+      background: rgba(255, 255, 255, 0.08);
+      color: #94A3B8;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-consent-reject:active { transform: scale(0.95); }
+
     /* Slide-Up Agent Chat Drawer */
     .agent-drawer {
       position: fixed;
@@ -2004,6 +2106,12 @@
       border-color: rgba(255, 0, 85, 0.7);
       color: #FF0055;
       box-shadow: 0 0 10px rgba(255, 0, 85, 0.35);
+    }
+    .agent-live-status-pill.blocked {
+      border-color: rgba(239, 68, 68, 0.9);
+      color: #EF4444;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+      animation: neonPulse 0.8s infinite alternate;
     }
 
     .status-anim-icon {
@@ -5914,13 +6022,13 @@ Audit Summary:
       AgentMemory.add('Guardian', 'Dependency Audit', rawCmd, res.summary);
     }
 
-    function executeTerminalCommandDirect(rawCmd) {
+    function executeTerminalCommandDirect(rawCmd, isApproved = false) {
       const input = document.getElementById('terminal-cli-input');
       if (input) input.value = rawCmd;
-      executeTerminalCommand();
+      executeTerminalCommand(isApproved);
     }
 
-    function executeTerminalCommand() {
+    function executeTerminalCommand(isApproved = false) {
       const input = document.getElementById('terminal-cli-input');
       if (!input) return;
       const raw = input.value.trim();
@@ -5932,6 +6040,31 @@ Audit Summary:
       if (el) {
         el.innerHTML += `<br><span class="neon-teal" style="font-weight: 800;">[guardian@termux:~$]</span> <span class="neon-green" style="font-weight: 700;">${raw}</span><br>`;
         el.scrollTop = el.scrollHeight;
+      }
+
+      // Guardian Gatekeeping & Human Consent Gate
+      if (!isApproved) {
+        const severity = evaluateTaskSeverity({ command: raw, type: 'terminal_command' });
+        if (severity === 'CRITICAL_BLOCKED') {
+          const taskId = 'task-' + Date.now();
+          blockedTaskRegistry.set(taskId, { command: raw, isTerminal: true });
+          setAgentStatus('blocked', 'Critical Command Intercepted');
+          if (el) {
+            el.innerHTML += `
+              <div class="human-consent-card" id="consent-card-${taskId}">
+                <div class="consent-header">⚠️ GUARDIAN GATEKEEPER — CRITICAL COMMAND INTERCEPTED</div>
+                <div class="consent-body">The requested command contains high-risk operations: <code>${raw}</code>. Autonomous execution is locked awaiting explicit human consent.</div>
+                <div class="consent-actions">
+                  <button class="btn-consent-approve" onclick="approveBlockedTask('${taskId}')">✅ Approve Task Execution</button>
+                  <button class="btn-consent-reject" onclick="cancelBlockedTask('${taskId}')">❌ Reject & Abort</button>
+                </div>
+              </div>
+            `;
+            el.scrollTop = el.scrollHeight;
+          }
+          showToast('⚠️ Critical task intercepted. Awaiting Human Consent.');
+          return;
+        }
       }
 
       if (cmd === 'clear') {
@@ -6321,6 +6454,8 @@ Audit Summary:
           role: 'Visual AI & OCR Inspector (Edge VL)',
           category: 'vision'
         };
+      }
+
       // 0.5 Shared Blackboard & State Coordination (Elastic Spectrum: 0.5B Edge to 1T+ LLMs)
       if (lower.includes('encode-handoff') || lower.includes('memory-hand-off') ||
           lower.includes('hydrate-state') || lower.includes('state-hydration') ||
@@ -8623,7 +8758,14 @@ Audit Summary:
     // Attached files pending send
     let pendingMsgAttachments = [];
 
-    // Live Agent Animation Status
+    function setFabState(state) {
+      const fab = document.querySelector('.fab-chat');
+      if (!fab) return;
+      fab.classList.remove('state-blue', 'state-green', 'state-amber', 'state-red');
+      if (state) fab.classList.add('state-' + state);
+    }
+
+    // Live Agent Animation Status & Floating Ball Blinking Synchronizer
     function setAgentStatus(state, customLabel = null) {
       const pill = document.getElementById('agent-live-status');
       const icon = document.getElementById('agent-status-icon');
@@ -8633,17 +8775,19 @@ Audit Summary:
       pill.className = 'agent-live-status-pill ' + state;
 
       const states = {
-        idle: { icon: '🟢', label: 'Ready' },
-        thinking: { icon: '🧠', label: 'Thinking...' },
-        working: { icon: '⚙️', label: 'Working...' },
-        responding: { icon: '💬', label: 'Responding...' },
-        reading: { icon: '📖', label: 'Reading...' },
-        writing: { icon: '✍️', label: 'Writing...' }
+        idle: { icon: '🟢', label: 'Ready', fab: 'blue' },
+        thinking: { icon: '🧠', label: 'Thinking...', fab: 'green' },
+        working: { icon: '⚙️', label: 'Working...', fab: 'green' },
+        responding: { icon: '💬', label: 'Responding...', fab: 'green' },
+        reading: { icon: '📖', label: 'Reading...', fab: 'amber' },
+        writing: { icon: '✍️', label: 'Writing...', fab: 'amber' },
+        blocked: { icon: '🔴', label: 'Blocked: Awaiting Consent', fab: 'red' }
       };
 
       const info = states[state] || states.idle;
       icon.innerText = info.icon;
       label.innerText = customLabel || info.label;
+      setFabState(info.fab);
     }
 
     function updateSessionTokenMeter() {
@@ -9178,6 +9322,139 @@ Audit Summary:
         }).join('');
       }
     };
+
+    // AntiGravity 3-Turn Sliding Compression Gate & Layer 1 Fact Compressor
+    const AntiGravityMemoryCompressor = {
+      KEY: 'antigravity_condensed_facts',
+      turnCounter: 0,
+      condensed_facts: {
+        last_bug_fixed: "None",
+        active_framework_versions: {},
+        known_codebase_conflicts: [],
+        user_preferences: []
+      },
+      init: function() {
+        try {
+          const raw = localStorage.getItem(this.KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            this.condensed_facts = Object.assign(this.condensed_facts, parsed);
+          }
+        } catch(e) {}
+      },
+      save: function() {
+        try {
+          localStorage.setItem(this.KEY, JSON.stringify(this.condensed_facts));
+        } catch(e) {}
+      },
+      registerInteraction: function(userPrompt, agentResponse) {
+        this.turnCounter++;
+        // Explicit Promotion Gate triggers every 3 turns
+        if (this.turnCounter % 3 === 0) {
+          this.compressBufferToAtomicFacts(userPrompt, agentResponse);
+        }
+      },
+      compressBufferToAtomicFacts: function(userPrompt, agentResponse) {
+        try {
+          const uLower = (userPrompt || '').toLowerCase();
+          const aLower = (agentResponse || '').toLowerCase();
+
+          // Extract bug fixes
+          if (uLower.includes('fix') || aLower.includes('fixed') || aLower.includes('resolved')) {
+            const m = userPrompt.match(/fix(?:ed)?\s+([^\n.,;]+)/i) || agentResponse.match(/(?:fixed|resolved)\s+([^\n.,;]+)/i);
+            if (m) this.condensed_facts.last_bug_fixed = m[1].trim().substring(0, 80);
+          }
+
+          // Extract preferences or constraints
+          if (uLower.includes('prefer') || uLower.includes('always') || uLower.includes('never break') || uLower.includes('must')) {
+            const cleanPref = userPrompt.substring(0, 100).trim();
+            if (!this.condensed_facts.user_preferences.includes(cleanPref)) {
+              this.condensed_facts.user_preferences.push(cleanPref);
+              if (this.condensed_facts.user_preferences.length > 5) {
+                this.condensed_facts.user_preferences.shift();
+              }
+            }
+          }
+
+          // Extract conflict markers
+          if (uLower.includes('conflict') || aLower.includes('conflict resolved')) {
+            const cMatch = userPrompt.match(/conflict\s+(?:in|on)\s+([^\n.,;]+)/i);
+            if (cMatch && !this.condensed_facts.known_codebase_conflicts.includes(cMatch[1].trim())) {
+              this.condensed_facts.known_codebase_conflicts.push(cMatch[1].trim());
+            }
+          }
+
+          this.save();
+        } catch(e) {
+          console.warn("AntiGravityMemoryCompressor notice:", e);
+        }
+      },
+      getCondensedJson: function() {
+        this.init();
+        return JSON.stringify(this.condensed_facts);
+      },
+      getMarkdownState: function() {
+        this.init();
+        return `### AntiGravity Memory Current State (Elastic Fact Ledger)\n- **Last Bug Fixed**: ${this.condensed_facts.last_bug_fixed}\n- **Known Codebase Conflicts**: ${this.condensed_facts.known_codebase_conflicts.length > 0 ? this.condensed_facts.known_codebase_conflicts.join(', ') : 'None'}\n- **Active Preferences**: ${this.condensed_facts.user_preferences.length > 0 ? this.condensed_facts.user_preferences.join('; ') : 'Never break the code; Preserve AST safety'}`;
+      }
+    };
+
+    // Guardian Gatekeeping & Severity Evaluator
+    const blockedTaskRegistry = new Map();
+
+    function evaluateTaskSeverity(taskPayload) {
+      const criticalKeywords = ["--force", "-f ", "rm -rf", "major-upgrade", "break", "schema-drop", "override-global", "drop table", "hard-reset", "reset --hard", "branch -d"];
+      const cmd = (typeof taskPayload === 'string' ? taskPayload : (taskPayload?.command || taskPayload?.text || '')).toLowerCase();
+
+      // Check 1: Explicit dangerous commands or keywords
+      if (criticalKeywords.some(kw => cmd.includes(kw))) {
+        return "CRITICAL_BLOCKED";
+      }
+
+      // Check 2: Core dependency modifications affecting structural packages
+      if (taskPayload?.type === 'dependency_upgrade' && taskPayload?.is_major_semver) {
+        return "CRITICAL_BLOCKED";
+      }
+
+      // Check 3: Logic modification where multiple architectural modules are impacted (> 5 files)
+      if (taskPayload?.impacted_files_count && taskPayload.impacted_files_count > 5) {
+        return "CRITICAL_BLOCKED";
+      }
+
+      return "AUTO_APPROVE";
+    }
+
+    function approveBlockedTask(taskId) {
+      const task = blockedTaskRegistry.get(taskId);
+      if (!task) return;
+      blockedTaskRegistry.delete(taskId);
+      setAgentStatus('idle');
+
+      const card = document.getElementById(`consent-card-${taskId}`);
+      if (card) {
+        card.innerHTML = `<div style="color: #34D399; font-weight: 700; font-size: 0.74rem;">✅ Human Consent Granted. Executing approved action: <code>${task.command}</code>...</div>`;
+      }
+
+      AgentMemory.add('Guardian-Gatekeeper', 'Human Consent Override', task.command, 'User manually approved high-severity blocked action.');
+      showToast('Task approved by human engineer. Executing...');
+
+      if (typeof task.onApprove === 'function') {
+        task.onApprove();
+      } else if (task.isTerminal) {
+        executeTerminalCommandDirect(task.command, true);
+      }
+    }
+
+    function cancelBlockedTask(taskId) {
+      blockedTaskRegistry.delete(taskId);
+      setAgentStatus('idle');
+
+      const card = document.getElementById(`consent-card-${taskId}`);
+      if (card) {
+        card.innerHTML = `<div style="color: #94A3B8; font-size: 0.74rem;">❌ Task Execution Rejected by Human Engineer. Safely aborted.</div>`;
+      }
+      showToast('Critical task aborted.');
+    }
 
     // Chat Session & History Manager
     const ChatSessionManager = {
@@ -10058,6 +10335,44 @@ Audit Summary:
     }
 
     async function executeChatMessage(text, model, agentMode, thinkingLevel, userMsgId, attachedFiles = []) {
+      let isHumanOverride = false;
+      let effectiveText = text;
+      if (typeof text === 'string' && text.startsWith('[HUMAN_APPROVED_OVERRIDE]:')) {
+        isHumanOverride = true;
+        effectiveText = text.replace('[HUMAN_APPROVED_OVERRIDE]:', '').trim();
+      }
+
+      // Guardian Gatekeeping & Human Consent Gate
+      if (!isHumanOverride) {
+        const severity = evaluateTaskSeverity({ command: effectiveText, type: 'chat_instruction' });
+        if (severity === 'CRITICAL_BLOCKED') {
+          const taskId = 'task-chat-' + Date.now();
+          blockedTaskRegistry.set(taskId, {
+            command: effectiveText,
+            onApprove: () => {
+              executeChatMessage(`[HUMAN_APPROVED_OVERRIDE]: ${effectiveText}`, model, agentMode, thinkingLevel, userMsgId, attachedFiles);
+            }
+          });
+          setAgentStatus('blocked', 'Critical Action Blocked');
+          const blockedCardHtml = `
+            <div class="human-consent-card" id="consent-card-${taskId}">
+              <div class="consent-header">⚠️ GUARDIAN GATEKEEPER — CRITICAL OPERATION INTERCEPTED</div>
+              <div class="consent-body">The requested operation contains critical destructive triggers or risky changes: <code>${escapeHtml(effectiveText.substring(0, 140))}</code>. Autonomous execution is locked awaiting explicit human consent.</div>
+              <div class="consent-actions">
+                <button class="btn-consent-approve" onclick="approveBlockedTask('${taskId}')">✅ Approve Task Execution</button>
+                <button class="btn-consent-reject" onclick="cancelBlockedTask('${taskId}')">❌ Reject & Abort</button>
+              </div>
+            </div>
+          `;
+          appendChatMessage('agent', blockedCardHtml);
+          ChatSessionManager.recordMessage('agent', blockedCardHtml);
+          isAgentBusy = false;
+          setSendButtonMode('send');
+          updateQueueUI();
+          return;
+        }
+      }
+
       isAgentBusy = true;
       currentChatAbortController = new AbortController();
       setSendButtonMode('stop');
@@ -10066,7 +10381,7 @@ Audit Summary:
       setAgentStatus('thinking', 'Thinking (' + thinkingLevel.toUpperCase() + ')');
 
       // Prepend attached file content to prompt context for Guardian review
-      let promptContext = text;
+      let promptContext = effectiveText;
       if (attachedFiles && attachedFiles.length > 0) {
         setAgentStatus('reading', 'Reading ' + attachedFiles.length + ' file(s)...');
         let fileTextBlock = '\n\n[USER ATTACHED FILES FOR AUDIT/REVIEW]:\n';
@@ -10857,7 +11172,7 @@ Audit Summary:
             `[EXECUTION PROTOCOL]:\n` +
             `1. TRACE ANALYSIS: Parse trace for filename, line, and column. Reject out-of-scope files.\n` +
             `2. REASONING BOUNDARY: Inspect function block for off-by-one, type mismatches, unhandled lookups.\n` +
-            `3. CORRECTION INJECTION: Draft isolated patch with defensive guard clause / fallback on failure line.\n`; +
+            `3. CORRECTION INJECTION: Draft isolated patch with defensive guard clause / fallback on failure line.\n` +
             `4. REGRESSION PROTECTION: Output unified git diff with 1-line assertion verification check.\n`;
 
           AgentMemory.add('Q&A', 'Skill Invoked', 'atomic-bug-hunter', 'Isolated runtime exception traceback and injected defensive guard clause patch.');
@@ -11238,7 +11553,7 @@ When auditing, scanning, or refactoring entire repositories, the host environmen
 • Skill Name: atomic-git-patch-writer (Private)
 • When to use: Triggered immediately when the isolated-code-chunk-engine outputs an error flag for a code slice.
 • Instructions & Rules:
-  - Zero-Prose Output Rule: Output strictly raw Unified Git Diff standard. No intro text, no markdown code blocks (```), and no summary.
+  - Zero-Prose Output Rule: Output strictly raw Unified Git Diff standard. No intro text, no markdown code blocks or triple backticks, and no summary.
   - Target Isolation: Ingest only the specific line range flagged as broken by the previous chunk evaluation.
   - Compact Rewrite: Construct replacement lines applying clean semantics (proper type-guards, balanced delimiters, or syntax alignments).
   - Unified Diff Execution: Generate the patch mapping original lines (-) to corrected lines (+).
@@ -11248,7 +11563,7 @@ Host Environment Assembly Line Loop (TypeScript / Python Strategy):
 - Step 1 (Map): Host app scans repository directory using standard fs/os calls, sends file list to repo-ingestion-router to generate clean queue.
 - Step 2 (Chunk): Host iterates through queue, slices file into 40-line overlapping windows (1-40, 35-75 on edge models; larger on high-context LLMs), feeds chunk to isolated-code-chunk-engine to check clean/dirty.
 - Step 3 (Apply): If dirty, host feeds target lines + error coordinates to atomic-git-patch-writer to generate unified diff.
-- Step 4 (Flush): Host executes `git apply patch.diff`, flushes agent memory back to baseline tokens, and pulls next chunk from queue.
+- Step 4 (Flush): Host executes 'git apply patch.diff', flushes agent memory back to baseline tokens, and pulls next chunk from queue.
 
 CORE BEHAVIOR & CONVERSATION POLICIES:
 1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.
@@ -11260,10 +11575,26 @@ CORE BEHAVIOR & CONVERSATION POLICIES:
 
 Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
 
-        // Retrieve multi-turn chat history for conversational continuity
-        const historyTurns = ChatSessionManager.getRecentTurns(6);
+        const priorityDirective = `[SYSTEM PRIORITY DIRECTIVE - LAYER 1 OVERRIDE]
+You are an expert repository reviewer and automated code engineer. 
+You MUST prioritize facts, constraints, and state histories documented in the [REPOSITORY HISTORY / FACT OBJECT] sections below. Global Memory takes absolute structural precedence over standard defaults, weights, or code generation presets.
+
+If a requested task or change conflicts with past recorded resolutions, state history, or explicit user constraints found in the context object, you must flag the conflict and halt execution immediately.
+
+[REPOSITORY HISTORY / COMPACT CHAT LOGS FACT OBJECT]
+${AntiGravityMemoryCompressor.getCondensedJson()}
+
+[ACTIVE REPOSITORY MEMORY.MD CURRENT STATE]
+${AntiGravityMemoryCompressor.getMarkdownState()}
+
+`;
+
+        const fullSystemPrompt = priorityDirective + systemPrompt;
+
+        // Retrieve multi-turn chat history for conversational continuity (elastic 4 turns to preserve token RAM)
+        const historyTurns = ChatSessionManager.getRecentTurns(4);
         const apiMessages = [
-          { role: 'system', content: systemPrompt },
+          { role: 'system', content: fullSystemPrompt },
           ...historyTurns,
           { role: 'user', content: promptContext }
         ];
@@ -11367,6 +11698,7 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
             if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
             AgentMemory.add(agentMode === 'qa' ? 'Q&A' : 'Guardian', 'Interaction', `Instruction: ${text.substring(0, 35)}...`, `Model ${targetModel} with ${thinkingLevel} thinking processed query. (${totalTokens} tok)`);
             ChatSessionManager.recordMessage('agent', el ? el.innerHTML : reply, null, telemetry);
+            AntiGravityMemoryCompressor.registerInteraction(effectiveText, rawReply);
           } else {
             throw new Error(`HTTP ${resp.status}`);
           }
@@ -11899,6 +12231,7 @@ Thinking level: ${thinkingLevel}. ${thinkingInstructions[thinkingLevel] || ''}`;
     initDrawerControlsSlider();
     GuardianTodo.render();
     GuardianWorkspace.init();
+    AntiGravityMemoryCompressor.init();
     ChatSessionManager.init();
     updateSessionTokenMeter();
     loadSavedKeys();
