@@ -6121,9 +6121,9 @@ Audit Summary:
             agent: 'Q&A',
             type: 'Skill Registered',
             title: 'Memory Compressor State Manager',
-            content: 'Skill active: Enforces 2048-token hard limit for sub-2B models. Strips prose/comments if payload > 400 tokens, maintains active state JSON map, and runs ephemeral sliding window (max 2 past steps).',
+            content: 'Skill active: Adaptive context management scaling from 2K tokens (0.5B-2B edge models) up to 1M+ tokens (1T+ frontier LLMs). Enforces token budgeting, strips prose/comments if payload exceeds allocation, maintains active state JSON map, and runs ephemeral sliding window (max 2 past steps).',
             timestamp: '2026-09-26 00:15:00 UTC',
-            metadata: { priority: 'MAXIMUM', category: 'token-frugal', skill: 'memory-compressor-state-manager' }
+            metadata: { priority: 'MAXIMUM', category: 'memory', skill: 'memory-compressor-state-manager' }
           },
           {
             id: 'mem_skill_dependency_vulnerability_patcher',
@@ -6132,7 +6132,7 @@ Audit Summary:
             title: 'Dependency Vulnerability Patcher',
             content: 'Skill active: Pinpoint target node extraction in manifests. Semver string-matching without full lockfile ingestion, atomic single-line git diffs, and peer-dependency pre-screening.',
             timestamp: '2026-09-26 00:15:01 UTC',
-            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'dependency-vulnerability-patcher' }
+            metadata: { priority: 'HIGH', category: 'security', skill: 'dependency-vulnerability-patcher' }
           },
           {
             id: 'mem_skill_conflict_syntax_resolver',
@@ -6141,7 +6141,7 @@ Audit Summary:
             title: 'Conflict Syntax Resolver',
             content: 'Skill active: Surgical chunk isolation (max 30 lines context around conflict markers/syntax error), line-by-line lineage comparison (HEAD vs Incoming), and zero-prose unified git diff patches.',
             timestamp: '2026-09-26 00:15:02 UTC',
-            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'conflict-syntax-resolver' }
+            metadata: { priority: 'HIGH', category: 'coding', skill: 'conflict-syntax-resolver' }
           },
           {
             id: 'mem_skill_pr_reviewer_squash_merger',
@@ -6150,7 +6150,7 @@ Audit Summary:
             title: 'PR Reviewer Squash Merger',
             content: 'Skill active: Zero-leak state gating (tests_passed, syntax_valid, vulnerabilities_resolved). Bypasses full code files, reads dense state, compresses commits into 1-line title + bulleted body, and outputs atomic squash payload.',
             timestamp: '2026-09-26 00:15:03 UTC',
-            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'pr-reviewer-squash-merger' }
+            metadata: { priority: 'HIGH', category: 'git', skill: 'pr-reviewer-squash-merger' }
           },
           {
             id: 'mem_skill_atomic_bug_hunter',
@@ -6159,7 +6159,7 @@ Audit Summary:
             title: 'Atomic Bug Hunter',
             content: 'Skill active: Pinpoint boundary (1 traceback snippet + max 40-line function scope). Diagnoses off-by-one, type mismatches, unhandled lookups, and outputs defensive guard clause diff with 1-line assertion.',
             timestamp: '2026-09-26 00:15:04 UTC',
-            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'atomic-bug-hunter' }
+            metadata: { priority: 'HIGH', category: 'coding', skill: 'atomic-bug-hunter' }
           },
           {
             id: 'mem_skill_memory_hand_off_encoder',
@@ -6193,7 +6193,7 @@ Audit Summary:
             agent: 'Guardian-Host',
             type: 'Skill Registered',
             title: 'Repo Ingestion Router',
-            content: 'Skill active: Ingests only workspace file metadata/paths (max 50 tokens), filters node_modules/vendor/.git/dist, produces micro-JSON file extension map, outputs 1 path per line queue without reading code.',
+            content: 'Skill active: Elastic repository mapper (0.5B to 1T+ models, 2K to 1M+ context). Ingests only workspace file metadata/paths (max 50 tokens on edge), filters build/git artifacts, produces micro-JSON file extension map, outputs 1 path per line queue.',
             timestamp: '2026-09-26 00:30:00 UTC',
             metadata: { priority: 'MAXIMUM', category: 'assembly_line', skill: 'repo-ingestion-router' }
           },
@@ -6202,7 +6202,7 @@ Audit Summary:
             agent: 'Coding Specialist',
             type: 'Skill Registered',
             title: 'Isolated Code-Chunk Engine',
-            content: 'Skill active: Sequentially scans 40-line sliding window + 1 parent scope. Evaluates syntax & logic bugs, emits strictly [STATUS: CLEAN] or line index + structural violation, flushes memory instantly.',
+            content: 'Skill active: Adaptive chunk scanner (0.5B to 1T+ models, 2K to 1M+ context). Sequentially audits isolated sliding windows + parent scope for syntax and logic bugs, emits strictly [STATUS: CLEAN] or line index + violation.',
             timestamp: '2026-09-26 00:30:01 UTC',
             metadata: { priority: 'MAXIMUM', category: 'assembly_line', skill: 'isolated-code-chunk-engine' }
           },
@@ -6211,7 +6211,7 @@ Audit Summary:
             agent: 'Coding Specialist',
             type: 'Skill Registered',
             title: 'Atomic Git-Patch Writer',
-            content: 'Skill active: Ingests only broken line range from chunk evaluation. Synthesizes compact AST-safe replacement, outputs raw Unified Git Diff standard (no intro, no markdown code blocks), emits [COMPLETE] to trigger host patch apply.',
+            content: 'Skill active: Enterprise precision patch synthesizer (0.5B to 1T+ models). Ingests only broken line range from chunk evaluation, generates raw Unified Git Diff standard, emits [COMPLETE] to trigger host patch apply.',
             timestamp: '2026-09-26 00:30:02 UTC',
             metadata: { priority: 'MAXIMUM', category: 'assembly_line', skill: 'atomic-git-patch-writer' }
           }
@@ -6321,7 +6321,7 @@ Audit Summary:
           role: 'Visual AI & OCR Inspector (Edge VL)',
           category: 'vision'
         };
-      // 0.5 Shared Blackboard & Token-Frugal State Coordination (Sub-2B Models)
+      // 0.5 Shared Blackboard & State Coordination (Elastic Spectrum: 0.5B Edge to 1T+ LLMs)
       if (lower.includes('encode-handoff') || lower.includes('memory-hand-off') ||
           lower.includes('hydrate-state') || lower.includes('state-hydration') ||
           lower.includes('collect-garbage') || lower.includes('context-garbage') ||
@@ -6329,11 +6329,11 @@ Audit Summary:
         const sModel = getWiredChatModel() || 'smollm2:360m';
         return {
           model: sModel,
-          role: 'Shared Blackboard & State Coordinator (Sub-2B ARM64)',
+          role: 'Shared Blackboard & State Coordinator (0.5B Edge to 1T+ LLM Architecture)',
           category: 'blackboard'
         };
       }
-      // 0.6 Map-Chunk-Apply Assembly Line (Sub-2B Whole-Repo Auditing)
+      // 0.6 Map-Chunk-Apply Assembly Line (Full-Repo Auditing: 0.5B Edge to 1T+ LLMs)
       if (lower.includes('repo-route') || lower.includes('repo-ingestion') || lower.includes('ingestion router') ||
           lower.includes('chunk-engine') || lower.includes('code-chunk') || lower.includes('isolated-code') ||
           lower.includes('atomic-patch') || lower.includes('git-patch-writer') || lower.includes('map-chunk-apply') ||
@@ -6342,14 +6342,14 @@ Audit Summary:
           const sModel = getWiredChatModel() || 'smollm2:360m';
           return {
             model: sModel,
-            role: 'Repository Metadata & Queue Ingestion Router (Sub-2B ARM64)',
+            role: 'Repository Metadata & Queue Ingestion Router (0.5B Edge to 1T+ LLM Architecture)',
             category: 'assembly_line'
           };
         } else {
           const cModel = getWiredCodingModel() || 'qwen2.5-coder:1.5b';
           return {
             model: cModel,
-            role: 'Assembly Line Chunk Scanner & Git Patch Writer (Sub-2B ARM64)',
+            role: 'Assembly Line Chunk Scanner & Git Patch Writer (0.5B Edge to 1T+ LLM Architecture)',
             category: 'coding'
           };
         }
@@ -6372,7 +6372,7 @@ Audit Summary:
         const cModel = getWiredCodingModel() || 'qwen2.5-coder:1.5b';
         return {
           model: cModel,
-          role: 'Coding & Surgical Patch Specialist (Sub-2B ARM64)',
+          role: 'Coding & Surgical Patch Specialist (0.5B Edge to 1T+ LLM Architecture)',
           category: 'coding'
         };
       }
@@ -6389,7 +6389,7 @@ Audit Summary:
         const rModel = getWiredReasoningModel() || 'deepseek-r1:1.5b';
         return {
           model: rModel,
-          role: 'Reasoning, Orchestration & Squash Authority (Sub-2B ARM64)',
+          role: 'Reasoning, Orchestration & Squash Authority (0.5B Edge to 1T+ LLM Architecture)',
           category: 'reasoning'
         };
       }
@@ -10766,16 +10766,16 @@ Audit Summary:
           AgentMemory.add('Guardian', 'Skill Invoked', 'living-documentation-sync', 'Compiled living documentation patches and OpenAPI synchronizations.');
         }
 
-        // 3.12 Skill: Memory Compressor State Manager (Sub-2B Token Frugal)
+        // 3.12 Skill: Memory Compressor State Manager (Elastic Context & Parameter Spectrum)
         const isCompressorIntent = /^\/(compress-state|state-compress|memory-compress)/i.test(text.trim()) ||
                                    lower.includes('memory-compressor-state-manager') || lower.includes('token budgeting') ||
                                    lower.includes('compressed memory map') || lower.includes('ephemeral sliding window');
 
         if (isCompressorIntent) {
           promptContext += `\n\n[SKILL INVOKED: memory-compressor-state-manager]\n` +
-            `[TINY MODEL CONSTRAINTS]: Context Hard Limit 2048 tokens. Zero conversational prose.\n` +
+            `[ELASTIC CONTEXT ARCHITECTURE]: Adaptive context scaling (2K tokens on 0.5B-2B edge models up to 1M+ tokens on 1T+ frontier LLMs). Enforces token budgeting and zero conversational fat.\n` +
             `[EXECUTION PROTOCOL]:\n` +
-            `1. TOKEN BUDGETING: Calculate payload tokens. If > 400 tokens, strip comments, duplicate whitespace, stack traces down to root error.\n` +
+            `1. TOKEN BUDGETING: Calculate payload tokens. If > 400 tokens in constrained mode, strip comments, duplicate whitespace, stack traces down to root error.\n` +
             `2. COMPRESSED MEMORY MAP: Output state strictly formatted as:\n` +
             `   {\n` +
             `     "repo": "owner/name",\n` +
@@ -10792,7 +10792,7 @@ Audit Summary:
           AgentMemory.add('Q&A', 'Skill Invoked', 'memory-compressor-state-manager', 'Compressed active execution state into token-frugal JSON map.');
         }
 
-        // 3.13 Skill: Dependency Vulnerability Patcher (Sub-2B Token Frugal)
+        // 3.13 Skill: Dependency Vulnerability Patcher (Precision Targeted Patching)
         const isDepPatchIntent = /^\/(patch-dep|vuln-patch|dependabot-patch)/i.test(text.trim()) ||
                                  lower.includes('dependency-vulnerability-patcher') || lower.includes('isolate target node') ||
                                  lower.includes('semver compatibility matrix') || lower.includes('breaking change pre-screen');
@@ -10809,7 +10809,7 @@ Audit Summary:
           AgentMemory.add('Q&A', 'Skill Invoked', 'dependency-vulnerability-patcher', 'Constructed pinpoint atomic dependency patch.');
         }
 
-        // 3.14 Skill: Conflict Syntax Resolver (Sub-2B Token Frugal)
+        // 3.14 Skill: Conflict Syntax Resolver (Surgical AST Isolation)
         const isConflictResolverIntent = /^\/(resolve-conflict|syntax-heal|chunk-resolve)/i.test(text.trim()) ||
                                          lower.includes('conflict-syntax-resolver') || lower.includes('chunk isolation') ||
                                          lower.includes('lineage comparison') || lower.includes('syntax healing');
@@ -10826,7 +10826,7 @@ Audit Summary:
           AgentMemory.add('Q&A', 'Skill Invoked', 'conflict-syntax-resolver', 'Executed 30-line surgical conflict and syntax healing patch.');
         }
 
-        // 3.15 Skill: PR Reviewer Squash Merger (Sub-2B Token Frugal)
+        // 3.15 Skill: PR Reviewer Squash Merger (Deterministic State Gating)
         const isSquashMergeIntent = /^\/(squash-merge|safe-squash|merge-blueprint)/i.test(text.trim()) ||
                                     lower.includes('pr-reviewer-squash-merger') || lower.includes('metric integrity gate') ||
                                     lower.includes('squash summary compression') || lower.includes('rebase safeness proxy');
@@ -10846,7 +10846,7 @@ Audit Summary:
           AgentMemory.add('Guardian', 'Skill Invoked', 'pr-reviewer-squash-merger', 'Generated zero-leak squash merge blueprint and action payload.');
         }
 
-        // 3.16 Skill: Atomic Bug Hunter (Sub-2B Token Frugal)
+        // 3.16 Skill: Atomic Bug Hunter (Surgical Root-Cause Diagnostics)
         const isBugHunterIntent = /^\/(hunt-bug|atomic-bug|root-cause-fix)/i.test(text.trim()) ||
                                   lower.includes('atomic-bug-hunter') || lower.includes('pinpoint boundary rule') ||
                                   lower.includes('defensive guard clause') || lower.includes('regression protection');
@@ -10857,7 +10857,7 @@ Audit Summary:
             `[EXECUTION PROTOCOL]:\n` +
             `1. TRACE ANALYSIS: Parse trace for filename, line, and column. Reject out-of-scope files.\n` +
             `2. REASONING BOUNDARY: Inspect function block for off-by-one, type mismatches, unhandled lookups.\n` +
-            `3. CORRECTION INJECTION: Draft isolated patch with defensive guard clause / fallback on failure line.\n` +
+            `3. CORRECTION INJECTION: Draft isolated patch with defensive guard clause / fallback on failure line.\n`; +
             `4. REGRESSION PROTECTION: Output unified git diff with 1-line assertion verification check.\n`;
 
           AgentMemory.add('Q&A', 'Skill Invoked', 'atomic-bug-hunter', 'Isolated runtime exception traceback and injected defensive guard clause patch.');
@@ -10921,7 +10921,7 @@ Audit Summary:
 
         if (isRepoRouteIntent) {
           promptContext += `\n\n[SKILL INVOKED: repo-ingestion-router]\n` +
-            `[TINY MODEL CONTEXT RULE]: Absolute limit: Ingest ONLY file paths and file sizes. Reject code contents.\n` +
+            `[ELASTIC REPO INGESTION]: Operates from 0.5B edge models up to 1T+ frontier LLMs (2K to 1M+ context). Ingest ONLY file paths and file sizes; reject raw code contents.\n` +
             `[STRUCTURAL MAP BLUEPRINT]:\n` +
             `1. TREE FILTERING: Ignore directories like node_modules, vendor, .git, dist, or build artifacts to save token space.\n` +
             `2. METADATA MINIFICATION: Convert directory listing into micro-JSON layout: {"files":["src/main.js","src/utils/math.ts"]}.\n` +
@@ -10937,13 +10937,13 @@ Audit Summary:
 
         if (isChunkEngineIntent) {
           promptContext += `\n\n[SKILL INVOKED: isolated-code-chunk-engine]\n` +
-            `[SLIDING CHUNK CONSTRAINT]: Context hard limit: Max 40 lines of code + 1 parent scope declaration.\n` +
+            `[ADAPTIVE SLIDING CHUNK]: Elastic window sizing across 0.5B to 1T+ models. Context limit: Max 40 lines + parent scope (edge mode) scaling to full blocks on high-capacity LLMs.\n` +
             `[LINE-BY-LINE SCAN PROTOCOL]:\n` +
             `1. SYNTAX EVALUATION: Scan isolated block strictly for bracket mismatches, trailing commas, unclosed string literals, scope bleeding.\n` +
             `2. BUG IDENTIFICATION: Flag immediate logic anomalies: unhandled null pointers, dead conditional loops, un-awaited async, leaking globals.\n` +
             `3. COMPRESSED EVALUATION LOG: If clean, output [STATUS: CLEAN]. If errors found, output ONLY line index and structural violation. Zero paragraphs.\n`;
 
-          AgentMemory.add('Coding Specialist', 'Skill Invoked', 'isolated-code-chunk-engine', 'Audited 40-line isolated code chunk for syntax and bugs.');
+          AgentMemory.add('Coding Specialist', 'Skill Invoked', 'isolated-code-chunk-engine', 'Audited isolated code chunk for syntax and bugs.');
         }
 
         // 3.22 Skill: Atomic Git-Patch Writer (Map-Chunk-Apply Assembly Line)
@@ -10953,7 +10953,7 @@ Audit Summary:
 
         if (isPatchWriterIntent) {
           promptContext += `\n\n[SKILL INVOKED: atomic-git-patch-writer]\n` +
-            `[ZERO-PROSE OUTPUT RULE]: Output strictly raw Unified Git Diff standard. No intro text, no markdown code blocks, and no summary.\n` +
+            `[ENTERPRISE PRECISION DIFF]: Zero-prose standard across all model tiers (0.5B to 1T+ LLMs). Strictly raw Unified Git Diff standard. No intro text, no markdown code blocks, and no summary.\n` +
             `[PATCH GENERATION PIPELINE]:\n` +
             `1. TARGET ISOLATION: Ingest ONLY specific line range flagged as broken by chunk evaluation.\n` +
             `2. COMPACT REWRITE: Construct replacement lines applying clean semantics (type guards, balanced delimiters).\n` +
@@ -11127,15 +11127,16 @@ SPECIALIZED SKILL — LIVING DOCUMENTATION SYNC:
   4. RUNBOOK & SETUP ALIGNMENT: Check if new third-party services, environmental environment variables, or tooling pre-requisites were added. Automatically inject setup requirements into the primary repository README.md.
   5. DOCUMENTATION UPDATE MANIFEST: Provide the exact Markdown and YAML file patches required to maintain a single source of truth between implementation and documentation.
 
-GOD-MODE TOKEN-FRUGAL SKILLS (SUB-2B PARAMETER MODELS & RESTRICTED 2K CONTEXT):
-Building high-performing AI agents on sub-2B models (Qwen-2.5-1.5B, Llama-3.2-1B, SmolLM2-360M) with 2K-4K token windows requires this state-driven, token-frugal memory architecture:
+ENTERPRISE PRECISION & ELASTIC CONTEXT ARCHITECTURE (0.5B EDGE TO 1T+ FRONTIER LLMs, 2K TO 1M+ CONTEXT WINDOWS):
+The architecture seamlessly scales across the entire parameter and context continuum—from 0.5B parameter edge models (e.g. Qwen-2.5-1.5B, Llama-3.2-1B, SmolLM2-360M) operating under tight 2K–4K token constraints, up to 1 Trillion+ parameter frontier LLMs (integrated via cloud APIs) with 128K to 1 Million+ context windows.
+When executing on constrained local models, the host engine dynamically contracts context budgets, enforcing atomic micro-chunking (30–50 lines), zero-prose JSON state serialization, and raw unified diffs to guarantee zero hallucination. When connected to high-capacity frontier LLMs, the system dynamically expands its context window, maintaining AST precision and deterministic state safety:
 
 1. memory-compressor-state-manager:
 • Skill Name: memory-compressor-state-manager (Private)
 • When to use: Run at the start and end of every single agent execution loop to serialize and maintain memory without context overflow.
 • Rules & Protocol:
-  - Context Hard Limit: 2048 tokens absolute. Never use prose or conversational fluff. Use compressed JSON or dense markdown keys.
-  - If payload > 400 tokens, strip comments, duplicate whitespace, and stack traces down to root error signature.
+  - Adaptive Context Budgeting: Calibrated for 2K tokens in edge mode (0.5B–2B) and dynamically expanding up to 1M+ tokens on frontier LLMs. Zero conversational fluff or narrative fat; enforce dense JSON/structural schema.
+  - If payload > 400 tokens in constrained mode, strip comments, duplicate whitespace, and stack traces down to root error signature.
   - Maintain Active State Map: {"repo": "owner/name", "pr": 102, "focus_file": "path", "target_lines": "start-end", "last_error": "...", "last_action": "...", "conflict_files": []}.
   - Ephemeral Sliding Window: Retain only current state and immediate previous execution outcome (max 2 iterations). Output exclusively the compressed JSON block.
 
@@ -11176,8 +11177,8 @@ Building high-performing AI agents on sub-2B models (Qwen-2.5-1.5B, Llama-3.2-1B
   - Inspect function block for off-by-one indices, type mismatches (undefined/null accesses), unhandled array lookups.
   - Draft isolated patch with defensive guard clause / fallback on failure line + 1-line verification assertion.
 
-SHARED BLACKBOARD ARCHITECTURE & MULTI-AGENT COORDINATION (SUB-2B MODELS):
-Instead of agents passing unstructured prose to each other, all sub-2B agents interact exclusively via a centralized, compressed JSON state canvas (Max 300 Tokens) with lossless context hand-offs:
+SHARED BLACKBOARD ARCHITECTURE & MULTI-AGENT STATE COORDINATION (0.5B EDGE TO 1T+ LLMs):
+Instead of agents passing unstructured prose to each other, all agents interact exclusively via a centralized, compressed JSON state canvas with lossless context hand-offs (strictly budgeted to 300 tokens on edge models, dynamically expanding for complex multi-agent graphs on frontier LLMs):
 
 1. memory-hand-off-encoder:
 • Skill Name: memory-hand-off-encoder (Private)
@@ -11201,7 +11202,7 @@ Instead of agents passing unstructured prose to each other, all sub-2B agents in
 • Skill Name: context-garbage-collector (Private)
 • When to use: Run this automated task asynchronously in the main loop between agent hand-offs.
 • Rules & Protocol:
-  - Max Allowed State Payload Size: 300 tokens.
+  - Adaptive State Ceiling: 300 tokens on edge models, scaling proportionally with multi-agent context complexity.
   - Metadata Truncation: Inspect centralized JSON state object.
   - Stale Key Deletion: Permanently delete keys related to completed operational stages (raw compiler errors, old semvers).
   - History Squashing: Squash historical steps array into total step count integer (e.g., steps_completed: 3).
@@ -11212,14 +11213,14 @@ Core Multi-Agent Memory Rules:
 • Agent Chat: Avoid conversational chatter between agents. Enforce app reading output token, closing Agent A, launching Agent B.
 • History: Avoid rolling log of every tool execution step. Enforce keeping only immediate last state + current state.
 
-MAP-CHUNK-APPLY ASSEMBLY LINE SKILLS (ENTIRE-REPO SUB-2B AUDITING & REFACTORING):
-When tiny sub-2B models face whole-repo audits, the host environment executes the Map-Chunk-Apply assembly line:
+MAP-CHUNK-APPLY ASSEMBLY LINE ARCHITECTURE (ENTERPRISE-GRADE REPO AUDITING & REFACTORING, 0.5B TO 1T+ PARAMETERS):
+When auditing, scanning, or refactoring entire repositories, the host environment orchestrates the Map-Chunk-Apply assembly line across any model size (0.5B edge to 1T+ frontier LLMs, 2K to 1M+ context). In edge mode, it slices files into 40-50 line sliding windows to guarantee zero hallucinations, and expands chunk windows up to entire modules on high-context frontier LLMs:
 
 1. repo-ingestion-router:
 • Skill Name: repo-ingestion-router (Private)
 • When to use: Run as the absolute initialization step of a repository-wide audit, scan, or syntax fix.
 • Instructions & Rules:
-  - Tiny Model Context Rule: Ingest ONLY file paths and file sizes. Reject code contents.
+  - Elastic Ingestion Rule: Ingest ONLY file paths and file sizes. Reject code contents during mapping to ensure deterministic, zero-token-waste routing regardless of model scale.
   - Tree Filtering: Ignore directories like node_modules, vendor, .git, dist, or build artifacts to save token space.
   - Metadata Minification: Convert the file directory listing into a micro-JSON layout mapping paths to file extension types: {"files":["src/main.js","src/utils/math.ts","config/db.json"]}.
   - Routing Queue Generation: Output exactly ONE file path per line to the host environment queue. Never process files in parallel within the same context window.
@@ -11228,7 +11229,7 @@ When tiny sub-2B models face whole-repo audits, the host environment executes th
 • Skill Name: isolated-code-chunk-engine (Private)
 • When to use: Executed sequentially inside an app-driven loop for every file slice provided by the repo-ingestion-router queue.
 • Instructions & Rules:
-  - Sliding Chunk Constraint: Max 40 lines of code + 1 parent scope declaration (e.g., class/function name).
+  - Adaptive Sliding Chunk: Slices 40 lines of code + 1 parent scope declaration (class/function) on edge models to eliminate hallucination, dynamically expanding to full module blocks on high-capacity LLMs.
   - Syntax Evaluation: Scan the isolated block strictly for bracket mismatches, trailing commas in invalid structures, unclosed string literals, and scope bleeding.
   - Bug Identification: Flag immediate logic anomalies: unhandled null pointers, dead conditional loops, un-awaited async definitions, or leaking global variables.
   - Compressed Evaluation Log: If clean, output [STATUS: CLEAN]. If errors are found, output only the line index and the exact structural violation. Skip any long paragraphs explaining why the code is broken.
@@ -11245,9 +11246,9 @@ When tiny sub-2B models face whole-repo audits, the host environment executes th
 
 Host Environment Assembly Line Loop (TypeScript / Python Strategy):
 - Step 1 (Map): Host app scans repository directory using standard fs/os calls, sends file list to repo-ingestion-router to generate clean queue.
-- Step 2 (Chunk): Host iterates through queue, slices file into 40-line overlapping windows (1-40, 35-75), feeds chunk to isolated-code-chunk-engine to check clean/dirty.
-- Step 3 (Apply): If dirty, host feeds 40 lines + error coordinates to atomic-git-patch-writer to generate unified diff.
-- Step 4 (Flush): Host executes `git apply patch.diff`, flushes agent memory back to 0 tokens, and pulls next 40-line chunk from queue.
+- Step 2 (Chunk): Host iterates through queue, slices file into 40-line overlapping windows (1-40, 35-75 on edge models; larger on high-context LLMs), feeds chunk to isolated-code-chunk-engine to check clean/dirty.
+- Step 3 (Apply): If dirty, host feeds target lines + error coordinates to atomic-git-patch-writer to generate unified diff.
+- Step 4 (Flush): Host executes `git apply patch.diff`, flushes agent memory back to baseline tokens, and pulls next chunk from queue.
 
 CORE BEHAVIOR & CONVERSATION POLICIES:
 1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.

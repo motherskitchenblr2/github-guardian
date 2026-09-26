@@ -3,8 +3,9 @@ name: "atomic-git-patch-writer"
 description: "Triggered immediately when the isolated-code-chunk-engine outputs an error flag for a code slice."
 ---
 
-# Zero-Prose Output Rule
-- Output format: Strictly raw Unified Git Diff standard. No intro text like "Here is your fix", no markdown code blocks (```), and no summary.
+# Enterprise Precision & Zero-Prose Output Standard
+- Model Spectrum: Applicable across 0.5B edge models to 1 Trillion+ parameter frontier LLMs.
+- Output Format: Strictly raw Unified Git Diff standard. No conversational intro text (e.g., "Here is your fix"), no markdown code fences (```), and no narrative summaries.
 
 # Patch Generation Pipeline
 1. TARGET ISOLATION: Ingest only the specific line range flagged as broken by the previous chunk evaluation.

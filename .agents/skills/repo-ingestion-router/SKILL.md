@@ -3,8 +3,9 @@ name: "repo-ingestion-router"
 description: "Run as the absolute initialization step of a repository-wide audit, scan, or syntax fix."
 ---
 
-# Tiny Model Context Rule
-- Absolute Limit: Ingest ONLY file paths and file sizes. Reject code contents.
+# Elastic Repository Ingestion Rules
+- Model & Context Elasticity: Engineered for models from 0.5B parameters up to 1 Trillion+ frontier LLMs, adapting from 2K tokens up to 1 Million+ token windows.
+- Structural Ingestion Boundary: Ingest ONLY file paths and file sizes. Reject code contents during mapping to ensure deterministic, zero-token-waste routing regardless of model scale.
 
 # Structural Map Blueprint
 1. TREE FILTERING: Ignore directories like `node_modules`, `vendor`, `.git`, `dist`, or build artifacts to save token space.
