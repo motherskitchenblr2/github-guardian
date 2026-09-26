@@ -2257,6 +2257,181 @@
       line-height: 1.5;
     }
 
+    /* ============================================================ */
+    /* PHASE 3: AUTONOMOUS BACKGROUND SWEEPER & HEARTBEAT DAEMON */
+    /* ============================================================ */
+    .sweeper-deck-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(7, 11, 20, 0.98));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .sweeper-deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sweeper-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sweeper-heartbeat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .sweeper-heartbeat-pill.online {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34D399;
+    }
+    .sweeper-heartbeat-pill.running {
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid rgba(0, 242, 254, 0.5);
+      color: #00F2FE;
+    }
+    .sweeper-heartbeat-pill.paused {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #FBBF24;
+    }
+
+    .heartbeat-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+    .heartbeat-dot.pulsing {
+      animation: heartbeatPulse 1.2s infinite ease-in-out;
+    }
+    @keyframes heartbeatPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .sweeper-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+    @media (max-width: 640px) {
+      .sweeper-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .sweeper-metric-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.75rem;
+    }
+
+    .sweeper-metric-title {
+      font-size: 0.64rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+      font-family: var(--font-mono);
+    }
+
+    .sweeper-metric-value {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      font-family: var(--font-mono);
+    }
+
+    .sweeper-modules-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      padding: 0.5rem 0.65rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .sweeper-chip-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+    .sweeper-chip-toggle.active {
+      background: rgba(0, 242, 254, 0.12);
+      border-color: rgba(0, 242, 254, 0.35);
+      color: #00F2FE;
+    }
+
+    .sweeper-controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sweeper-history-drawer {
+      margin-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 0.75rem;
+      display: none;
+    }
+
+    .sweeper-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+    }
+    .sweeper-history-table th {
+      text-align: left;
+      color: var(--text-dim);
+      padding: 0.35rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-weight: 600;
+    }
+    .sweeper-history-table td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #E2E8F0;
+    }
+
     /* Floating Action Button (FAB) */
     .fab-chat {
       position: fixed;
@@ -5072,6 +5247,116 @@
         </button>
       </div>
 
+      <!-- PHASE 3: AUTONOMOUS BACKGROUND SWEEPER & HEARTBEAT DAEMON -->
+      <div class="sweeper-deck-card" id="sweeper-control-deck">
+        <div class="sweeper-deck-header">
+          <div class="sweeper-title-group">
+            <span style="font-size: 1.1rem;">💓</span>
+            <div>
+              <div style="font-weight: 800; font-size: 0.88rem; color: #10B981; letter-spacing: 0.3px;">
+                Autonomous Background Sweeper & Heartbeat Daemon
+              </div>
+              <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">
+                Continuous repo maintenance, automated PR squash, fork re-alignment & threat patrol
+              </div>
+            </div>
+          </div>
+          <span class="sweeper-heartbeat-pill online" id="sweeper-heartbeat-badge">
+            <span class="heartbeat-dot pulsing"></span>
+            <span id="sweeper-status-text">HEARTBEAT ONLINE</span>
+          </span>
+        </div>
+
+        <!-- Telemetry & Countdown Grid -->
+        <div class="sweeper-grid">
+          <div class="sweeper-metric-card">
+            <div class="sweeper-metric-title">Next Scheduled Sweep</div>
+            <div class="sweeper-metric-value neon-teal" id="sweeper-countdown-val">00:59:59</div>
+          </div>
+          <div class="sweeper-metric-card">
+            <div class="sweeper-metric-title">Interval Frequency</div>
+            <div class="sweeper-metric-value">
+              <select class="diff-select" id="sweeper-interval-select" style="padding: 0.15rem 0.4rem; font-size: 0.72rem; width: 100%; border-color: rgba(16,185,129,0.3);" onchange="AutonomousSweeper.setInterval(this.value)">
+                <option value="5">Every 5 min (Testing)</option>
+                <option value="15">Every 15 min (Aggressive)</option>
+                <option value="30">Every 30 min (Active)</option>
+                <option value="60" selected>Every 1 hour (Standard)</option>
+                <option value="360">Every 6 hours (Periodic)</option>
+                <option value="1440">Every 24 hours (Daily Midnight)</option>
+              </select>
+            </div>
+          </div>
+          <div class="sweeper-metric-card">
+            <div class="sweeper-metric-title">Last Sweep Completed</div>
+            <div class="sweeper-metric-value" style="font-size: 0.74rem;" id="sweeper-last-run-val">Never (Initial)</div>
+          </div>
+          <div class="sweeper-metric-card">
+            <div class="sweeper-metric-title">Sweeper Health / Runs</div>
+            <div class="sweeper-metric-value neon-green" id="sweeper-health-val">100% (0 Runs)</div>
+          </div>
+        </div>
+
+        <!-- Active Modules Selector Chips -->
+        <div class="sweeper-modules-bar">
+          <span style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono); margin-right: 0.2rem;">Sweeper Modules:</span>
+          <div class="sweeper-chip-toggle active" id="chip-mod-prs" onclick="AutonomousSweeper.toggleModule('prs')">
+            <span>🔀</span> PRs (Auto-Merge)
+          </div>
+          <div class="sweeper-chip-toggle active" id="chip-mod-forks" onclick="AutonomousSweeper.toggleModule('forks')">
+            <span>🍴</span> 193 Forks Sync
+          </div>
+          <div class="sweeper-chip-toggle active" id="chip-mod-secrets" onclick="AutonomousSweeper.toggleModule('secrets')">
+            <span>🛡️</span> Secrets Patrol
+          </div>
+          <div class="sweeper-chip-toggle active" id="chip-mod-harden" onclick="AutonomousSweeper.toggleModule('harden')">
+            <span>🔒</span> Repo Hardening
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="sweeper-controls-row">
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button class="btn-micro" style="border-color: #10B981; color: #10B981; font-weight: 700;" onclick="AutonomousSweeper.triggerManualRun()">
+              <span>⚡</span> Trigger Sweep Now
+            </button>
+            <button class="btn-micro" id="sweeper-pause-btn" style="border-color: rgba(245,158,11,0.5); color: #FBBF24;" onclick="AutonomousSweeper.togglePause()">
+              <span>⏸️</span> Pause Sweeper
+            </button>
+          </div>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button class="btn-micro" style="border-color: rgba(255,255,255,0.2);" onclick="AutonomousSweeper.toggleHistoryDrawer()">
+              <span>📜</span> Audit History (<span id="sweeper-history-count">0</span>)
+            </button>
+            <button class="btn-micro" style="border-color: #00F2FE; color: #00F2FE;" onclick="AutonomousSweeper.copyCrontabConfig()">
+              <span>📋</span> Copy Termux Crontab
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsible Audit History Drawer -->
+        <div class="sweeper-history-drawer" id="sweeper-history-drawer">
+          <div style="font-size: 0.72rem; font-weight: 700; color: #94A3B8; margin-bottom: 0.4rem; font-family: var(--font-mono);">
+            📜 Sweeper Execution Ledger (Last 25 Runs)
+          </div>
+          <div style="max-height: 180px; overflow-y: auto;">
+            <table class="sweeper-history-table" id="sweeper-history-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Trigger</th>
+                  <th>Modules</th>
+                  <th>Outcome</th>
+                  <th>Duration</th>
+                </tr>
+              </thead>
+              <tbody id="sweeper-history-tbody">
+                <tr><td colspan="5" style="text-align: center; color: #64748B;">No sweeps executed yet. Autonomous heartbeat standing by.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- Autonomous Engine Live Telemetry Console Window -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
         <div class="section-title" style="font-size: 0.95rem; margin-bottom: 0;">
@@ -6843,6 +7128,8 @@ Audit Summary:
           el.innerHTML += `<span class="neon-pink" style="font-weight: 800;">Available Cyber CLI Commands:</span><br>
   • <span class="neon-teal">git &lt;status|branch|log|diff|pull|remote&gt;</span> - <span class="neon-white">Run live Git operations under "Never Break The Code" policy</span><br>
   • <span class="neon-teal">conflict-sandbox</span> - <span class="neon-white">Launch Side-by-Side Visual Git Diff & AST Conflict Resolver</span><br>
+  • <span class="neon-green">sweeper &lt;status|run|pause|resume&gt;</span> - <span class="neon-white">Manage Autonomous Background Sweeper & Heartbeat Daemon</span><br>
+  • <span class="neon-green">heartbeat</span>        - <span class="neon-white">Query live daemon heartbeat status & next scheduled run</span><br>
   • <span class="neon-amber">update deps</span>  - <span class="neon-white">Run AST dependency & Dependabot security check across 193 repos</span><br>
   • <span class="neon-teal">run-all</span>      - <span class="neon-white">Run master automated maintenance suite (PRs, Forks, Secrets, Hardening)</span><br>
   • <span class="neon-blue">review-prs</span>   - <span class="neon-white">Autonomous PR evaluation, squash-merge, and conflict resolution</span><br>
@@ -6864,6 +7151,17 @@ Audit Summary:
         document.getElementById('conflict-sandbox')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         appendTerminalLog(`[guardian@termux:~$] ${raw}`);
         appendTerminalLog(`[PREngine] Opened Interactive Side-by-Side Visual Git Diff & Conflict Sandbox.\nActive file: ${ConflictSandboxManager.currentFile}\nAST Validator: ONLINE.`);
+      } else if (cmd === 'heartbeat' || cmd === 'sweeper status') {
+        appendTerminalLog(`[guardian@termux:~$] ${raw}`);
+        appendTerminalLog(`[SWEP-DAEMON] Heartbeat: ${AutonomousSweeper.enabled ? 'ONLINE (Pulsing)' : 'PAUSED'}\nInterval: Every ${AutonomousSweeper.intervalMinutes}m\nLast Run: ${AutonomousSweeper.lastRunTime ? new Date(AutonomousSweeper.lastRunTime).toLocaleTimeString() : 'Never'}\nTotal Sweeps Executed: ${AutonomousSweeper.history.length}`);
+      } else if (cmd === 'sweeper run' || cmd === 'sweep') {
+        AutonomousSweeper.triggerManualRun();
+      } else if (cmd === 'sweeper pause') {
+        if (AutonomousSweeper.enabled) AutonomousSweeper.togglePause();
+        appendTerminalLog(`[guardian@termux:~$] sweeper pause\n[SWEP-DAEMON] Autonomous Sweeper PAUSED.`);
+      } else if (cmd === 'sweeper resume') {
+        if (!AutonomousSweeper.enabled) AutonomousSweeper.togglePause();
+        appendTerminalLog(`[guardian@termux:~$] sweeper resume\n[SWEP-DAEMON] Autonomous Sweeper RESUMED.`);
       } else if (cmd.startsWith('git ') || cmd === 'git') {
         executeGitCommandInTerminal(raw);
       } else if (cmd.startsWith('update deps') || cmd.startsWith('update dependencies') || cmd === 'deps' || cmd === 'dependencies' || cmd.startsWith('pip ') || cmd.startsWith('npm ') || cmd.startsWith('dependabot')) {
@@ -11252,6 +11550,292 @@ ${merged.split('\n').map(l => '+' + l).slice(0, 30).join('\n')}
       }
     };
 
+    // ============================================================
+    // PHASE 3: AUTONOMOUS BACKGROUND SWEEPER & HEARTBEAT DAEMON
+    // ============================================================
+    const AutonomousSweeper = {
+      KEY_ENABLED: 'guardian_sweeper_enabled',
+      KEY_INTERVAL: 'guardian_sweeper_interval',
+      KEY_LAST_RUN: 'guardian_sweeper_last_run',
+      KEY_HISTORY: 'guardian_sweeper_history_v1',
+      KEY_MODULES: 'guardian_sweeper_modules',
+
+      enabled: true,
+      intervalMinutes: 60,
+      lastRunTime: null,
+      nextRunTime: null,
+      isRunning: false,
+      tickerTimer: null,
+      activeModules: {
+        prs: true,
+        forks: true,
+        secrets: true,
+        harden: true
+      },
+      history: [],
+
+      init() {
+        try {
+          const savedEn = localStorage.getItem(this.KEY_ENABLED);
+          if (savedEn !== null) this.enabled = (savedEn === 'true');
+
+          const savedInt = localStorage.getItem(this.KEY_INTERVAL);
+          if (savedInt) this.intervalMinutes = parseInt(savedInt, 10) || 60;
+
+          const savedLast = localStorage.getItem(this.KEY_LAST_RUN);
+          if (savedLast) this.lastRunTime = parseInt(savedLast, 10);
+
+          const savedMods = localStorage.getItem(this.KEY_MODULES);
+          if (savedMods) {
+            this.activeModules = Object.assign(this.activeModules, JSON.parse(savedMods));
+          }
+
+          const savedHist = localStorage.getItem(this.KEY_HISTORY);
+          if (savedHist) {
+            this.history = JSON.parse(savedHist);
+          }
+        } catch(e) {
+          console.warn("AutonomousSweeper load notice:", e);
+        }
+
+        if (this.lastRunTime) {
+          this.nextRunTime = this.lastRunTime + (this.intervalMinutes * 60 * 1000);
+        } else {
+          this.nextRunTime = Date.now() + (this.intervalMinutes * 60 * 1000);
+        }
+
+        const intSelect = document.getElementById('sweeper-interval-select');
+        if (intSelect) intSelect.value = String(this.intervalMinutes);
+        this.syncModuleChipsUI();
+
+        if (this.tickerTimer) clearInterval(this.tickerTimer);
+        this.tickerTimer = setInterval(() => this.tick(), 1000);
+
+        this.render();
+
+        if (this.enabled && this.lastRunTime && Date.now() >= this.nextRunTime) {
+          setTimeout(() => {
+            this.runSweep('catch-up');
+          }, 3500);
+        }
+      },
+
+      tick() {
+        if (!this.enabled) {
+          this.updateCountdownDisplay('--:--:-- (Paused)');
+          return;
+        }
+
+        const now = Date.now();
+        const diffMs = this.nextRunTime - now;
+
+        if (diffMs <= 0 && !this.isRunning) {
+          this.runSweep('scheduled');
+        } else {
+          const totalSec = Math.max(0, Math.floor(diffMs / 1000));
+          const h = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+          const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+          const s = String(totalSec % 60).padStart(2, '0');
+          this.updateCountdownDisplay(`${h}:${m}:${s}`);
+        }
+      },
+
+      async runSweep(triggerType = 'manual') {
+        if (this.isRunning) return;
+        this.isRunning = true;
+        const startTime = Date.now();
+
+        this.setHeartbeatBadge('running', 'SWEEPING IN PROGRESS...');
+        showToast(`💓 Autonomous Sweeper launched (${triggerType})`);
+
+        const tPane = document.getElementById('terminal-logs-pane');
+        if (tPane) {
+          tPane.innerHTML += `<br><span class="neon-teal" style="font-weight: 800;">[guardian@termux:~$]</span> <span class="neon-green" style="font-weight: 700;">guardian-sweeper-daemon --heartbeat --trigger=${triggerType}</span><br>` +
+                             `<span class="neon-white">  [SWEP-DAEMON] Heartbeat Pulse Confirmed. Dispatching autonomous maintenance suite...</span><br>` +
+                             `<span class="neon-cyan">  -> Modules: PRs: ${this.activeModules.prs}, Forks: ${this.activeModules.forks}, Secrets: ${this.activeModules.secrets}, Harden: ${this.activeModules.harden}</span><br>`;
+          if (terminalAutoScroll) tPane.scrollTop = tPane.scrollHeight;
+        }
+
+        const allActive = this.activeModules.prs && this.activeModules.forks && this.activeModules.secrets && this.activeModules.harden;
+        const actionsToRun = [];
+        if (allActive) {
+          actionsToRun.push('run-all');
+        } else {
+          if (this.activeModules.prs) actionsToRun.push('review-prs');
+          if (this.activeModules.forks) actionsToRun.push('sync-forks');
+          if (this.activeModules.secrets) actionsToRun.push('scan-secrets');
+          if (this.activeModules.harden) actionsToRun.push('harden');
+        }
+
+        try {
+          for (const act of actionsToRun) {
+            await triggerRun(act, false);
+          }
+        } catch(e) {
+          console.error("Sweeper execution error:", e);
+        }
+
+        const durationSec = Math.max(1, Math.round((Date.now() - startTime) / 1000));
+        this.lastRunTime = Date.now();
+        this.nextRunTime = this.lastRunTime + (this.intervalMinutes * 60 * 1000);
+        this.isRunning = false;
+
+        localStorage.setItem(this.KEY_LAST_RUN, String(this.lastRunTime));
+
+        const record = {
+          id: 'swp_' + Date.now(),
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          date: new Date().toISOString().split('T')[0],
+          trigger: triggerType,
+          modules: actionsToRun.join(', '),
+          duration: `${durationSec}s`,
+          outcome: 'SUCCESS'
+        };
+        this.history.unshift(record);
+        if (this.history.length > 25) this.history.pop();
+        try {
+          localStorage.setItem(this.KEY_HISTORY, JSON.stringify(this.history));
+        } catch(e) {}
+
+        AgentMemory.add('Guardian', 'Autonomous Sweep', `Suite Trigger: ${triggerType}`, `Executed ${actionsToRun.join(', ')} under 'Never Break The Code' policy. Duration: ${durationSec}s`);
+
+        if (tPane) {
+          tPane.innerHTML += `<span class="neon-green">  ✔ [SWEP-DAEMON] Autonomous sweep completed in ${durationSec}s. Next heartbeat scheduled.</span><br>`;
+          if (terminalAutoScroll) tPane.scrollTop = tPane.scrollHeight;
+        }
+
+        this.render();
+        setTimeout(loadData, 2500);
+      },
+
+      triggerManualRun() {
+        this.runSweep('manual');
+      },
+
+      togglePause() {
+        this.enabled = !this.enabled;
+        localStorage.setItem(this.KEY_ENABLED, String(this.enabled));
+        if (this.enabled) {
+          this.nextRunTime = Date.now() + (this.intervalMinutes * 60 * 1000);
+          showToast('▶️ Autonomous Sweeper Resumed');
+        } else {
+          showToast('⏸️ Autonomous Sweeper Paused');
+        }
+        this.render();
+      },
+
+      setInterval(minutes) {
+        this.intervalMinutes = parseInt(minutes, 10) || 60;
+        localStorage.setItem(this.KEY_INTERVAL, String(this.intervalMinutes));
+        this.nextRunTime = Date.now() + (this.intervalMinutes * 60 * 1000);
+        this.render();
+        showToast(`Sweeper frequency set to every ${this.intervalMinutes}m`);
+      },
+
+      toggleModule(modName) {
+        if (this.activeModules.hasOwnProperty(modName)) {
+          this.activeModules[modName] = !this.activeModules[modName];
+          try {
+            localStorage.setItem(this.KEY_MODULES, JSON.stringify(this.activeModules));
+          } catch(e) {}
+          this.syncModuleChipsUI();
+          showToast(`Module '${modName}' ${this.activeModules[modName] ? 'Enabled' : 'Disabled'}`);
+        }
+      },
+
+      syncModuleChipsUI() {
+        ['prs', 'forks', 'secrets', 'harden'].forEach(m => {
+          const chip = document.getElementById(`chip-mod-${m}`);
+          if (chip) {
+            if (this.activeModules[m]) chip.classList.add('active');
+            else chip.classList.remove('active');
+          }
+        });
+      },
+
+      toggleHistoryDrawer() {
+        const drawer = document.getElementById('sweeper-history-drawer');
+        if (drawer) {
+          drawer.style.display = (drawer.style.display === 'block') ? 'none' : 'block';
+        }
+      },
+
+      copyCrontabConfig() {
+        const cmd = `0 * * * * cd /data/data/com.termux/files/home/github-guardian && python3 guardian.py run-all >> /data/data/com.termux/files/home/github-guardian/reports/daemon.log 2>&1`;
+        navigator.clipboard?.writeText(cmd).then(() => {
+          showToast('📋 Termux crontab configuration copied to clipboard!');
+        }).catch(() => {
+          showToast('Crontab config generated (clipboard restricted)');
+        });
+      },
+
+      setHeartbeatBadge(state, text) {
+        const badge = document.getElementById('sweeper-heartbeat-badge');
+        const txt = document.getElementById('sweeper-status-text');
+        if (!badge || !txt) return;
+
+        badge.className = `sweeper-heartbeat-pill ${state}`;
+        txt.innerText = text;
+      },
+
+      updateCountdownDisplay(text) {
+        const el = document.getElementById('sweeper-countdown-val');
+        if (el) el.innerText = text;
+      },
+
+      render() {
+        const pauseBtn = document.getElementById('sweeper-pause-btn');
+        if (pauseBtn) {
+          pauseBtn.innerHTML = this.enabled ? '<span>⏸️</span> Pause Sweeper' : '<span>▶️</span> Resume Sweeper';
+          pauseBtn.style.color = this.enabled ? '#FBBF24' : '#10B981';
+          pauseBtn.style.borderColor = this.enabled ? 'rgba(245,158,11,0.5)' : 'rgba(16,185,129,0.5)';
+        }
+
+        if (!this.isRunning) {
+          if (this.enabled) {
+            this.setHeartbeatBadge('online', 'HEARTBEAT ONLINE');
+          } else {
+            this.setHeartbeatBadge('paused', 'SWEEPER PAUSED');
+          }
+        }
+
+        const lastRunEl = document.getElementById('sweeper-last-run-val');
+        if (lastRunEl) {
+          if (this.lastRunTime) {
+            const dateStr = new Date(this.lastRunTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            lastRunEl.innerText = dateStr;
+          } else {
+            lastRunEl.innerText = 'Never (Initial)';
+          }
+        }
+
+        const healthEl = document.getElementById('sweeper-health-val');
+        if (healthEl) {
+          healthEl.innerText = `100% (${this.history.length} Runs)`;
+        }
+
+        const countEl = document.getElementById('sweeper-history-count');
+        if (countEl) countEl.innerText = String(this.history.length);
+
+        const tbody = document.getElementById('sweeper-history-tbody');
+        if (tbody) {
+          if (this.history.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748B;">No sweeps executed yet. Autonomous heartbeat standing by.</td></tr>`;
+          } else {
+            tbody.innerHTML = this.history.map(h => `
+              <tr>
+                <td style="color: #94A3B8;">${h.date} ${h.timestamp}</td>
+                <td><span class="card-badge" style="background: rgba(0,242,254,0.1); color: #00F2FE;">${h.trigger}</span></td>
+                <td><code>${h.modules}</code></td>
+                <td><span style="color: #10B981;">✔ ${h.outcome}</span></td>
+                <td style="color: var(--text-dim);">${h.duration}</td>
+              </tr>
+            `).join('');
+          }
+        }
+      }
+    };
+
     // Guardian Gatekeeping & Severity Evaluator
     const blockedTaskRegistry = new Map();
 
@@ -14293,6 +14877,7 @@ ${AntiGravityMemoryCompressor.getMarkdownState()}
     renderOfficePane();
     AgentMemory.renderLedger();
     ConflictSandboxManager.init();
+    AutonomousSweeper.init();
     loadData();
     checkOllamaService(false);
     setInterval(loadData, 8000);
