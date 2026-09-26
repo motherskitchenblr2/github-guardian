@@ -5505,6 +5505,11 @@
 
     <!-- Quick Prompt Pills -->
     <div class="quick-prompts">
+      <div class="prompt-pill" style="border-color: rgba(96,165,250,0.5); color: #60A5FA; background: rgba(96,165,250,0.08);" onclick="sendQuickPrompt('/compress-state Run memory-compressor-state-manager to serialize active state into token-frugal JSON')">💾 State Compressor</div>
+      <div class="prompt-pill" style="border-color: rgba(251,146,60,0.5); color: #FB923C; background: rgba(251,146,60,0.08);" onclick="sendQuickPrompt('/patch-dep Run dependency-vulnerability-patcher for pinpoint atomic dependency extraction')">🩹 Vuln Patcher</div>
+      <div class="prompt-pill" style="border-color: rgba(244,63,94,0.5); color: #FB7185; background: rgba(244,63,94,0.08);" onclick="sendQuickPrompt('/resolve-conflict Run conflict-syntax-resolver with 30-line surgical chunk isolation')">⚔️ Conflict Resolver</div>
+      <div class="prompt-pill" style="border-color: rgba(16,185,129,0.5); color: #34D399; background: rgba(16,185,129,0.08);" onclick="sendQuickPrompt('/squash-merge Run pr-reviewer-squash-merger with zero-leak state gating')">🔀 Squash & Merge</div>
+      <div class="prompt-pill" style="border-color: rgba(234,179,8,0.5); color: #FACC15; background: rgba(234,179,8,0.08);" onclick="sendQuickPrompt('/hunt-bug Run atomic-bug-hunter on traceback and 40-line function scope')">🎯 Bug Hunter</div>
       <div class="prompt-pill" style="border-color: rgba(99,102,241,0.5); color: #818CF8; background: rgba(99,102,241,0.08);" onclick="sendQuickPrompt('/orchestrate Run master-ci-cd-pipeline-orchestrator on current payload and repo graph')">🎛️ Orchestrator</div>
       <div class="prompt-pill" style="border-color: rgba(14,165,233,0.5); color: #38BDF8; background: rgba(14,165,233,0.08);" onclick="sendQuickPrompt('/test-matrix Run automated-testing-matrix on test suite, coverage, and mocks')">🧪 Test Matrix</div>
       <div class="prompt-pill" style="border-color: rgba(234,179,8,0.5); color: #FACC15; background: rgba(234,179,8,0.08);" onclick="sendQuickPrompt('/refactor Run architectural-refactor-engine to eliminate anti-patterns and complexity')">📐 Refactor Engine</div>
@@ -6104,6 +6109,51 @@ Audit Summary:
             content: 'Skill active: Tail-end sweep preventing doc drift. Scans diffs for mutations in controller parameters, route definitions, schemas, regenerates OpenAPI/Swagger specs, breaking deprecation alerts, runbook/README alignment, and documentation update manifests.',
             timestamp: '2026-09-26 00:03:00 UTC',
             metadata: { priority: 'HIGH', category: 'documentation', skill: 'living-documentation-sync' }
+          },
+          {
+            id: 'mem_skill_memory_compressor_state_manager',
+            agent: 'Q&A',
+            type: 'Skill Registered',
+            title: 'Memory Compressor State Manager',
+            content: 'Skill active: Enforces 2048-token hard limit for sub-2B models. Strips prose/comments if payload > 400 tokens, maintains active state JSON map, and runs ephemeral sliding window (max 2 past steps).',
+            timestamp: '2026-09-26 00:15:00 UTC',
+            metadata: { priority: 'MAXIMUM', category: 'token-frugal', skill: 'memory-compressor-state-manager' }
+          },
+          {
+            id: 'mem_skill_dependency_vulnerability_patcher',
+            agent: 'Q&A',
+            type: 'Skill Registered',
+            title: 'Dependency Vulnerability Patcher',
+            content: 'Skill active: Pinpoint target node extraction in manifests. Semver string-matching without full lockfile ingestion, atomic single-line git diffs, and peer-dependency pre-screening.',
+            timestamp: '2026-09-26 00:15:01 UTC',
+            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'dependency-vulnerability-patcher' }
+          },
+          {
+            id: 'mem_skill_conflict_syntax_resolver',
+            agent: 'Q&A',
+            type: 'Skill Registered',
+            title: 'Conflict Syntax Resolver',
+            content: 'Skill active: Surgical chunk isolation (max 30 lines context around conflict markers/syntax error), line-by-line lineage comparison (HEAD vs Incoming), and zero-prose unified git diff patches.',
+            timestamp: '2026-09-26 00:15:02 UTC',
+            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'conflict-syntax-resolver' }
+          },
+          {
+            id: 'mem_skill_pr_reviewer_squash_merger',
+            agent: 'Guardian',
+            type: 'Skill Registered',
+            title: 'PR Reviewer Squash Merger',
+            content: 'Skill active: Zero-leak state gating (tests_passed, syntax_valid, vulnerabilities_resolved). Bypasses full code files, reads dense state, compresses commits into 1-line title + bulleted body, and outputs atomic squash payload.',
+            timestamp: '2026-09-26 00:15:03 UTC',
+            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'pr-reviewer-squash-merger' }
+          },
+          {
+            id: 'mem_skill_atomic_bug_hunter',
+            agent: 'Q&A',
+            type: 'Skill Registered',
+            title: 'Atomic Bug Hunter',
+            content: 'Skill active: Pinpoint boundary (1 traceback snippet + max 40-line function scope). Diagnoses off-by-one, type mismatches, unhandled lookups, and outputs defensive guard clause diff with 1-line assertion.',
+            timestamp: '2026-09-26 00:15:04 UTC',
+            metadata: { priority: 'HIGH', category: 'token-frugal', skill: 'atomic-bug-hunter' }
           }
         ];
         this.save(defaults);
@@ -6212,7 +6262,7 @@ Audit Summary:
           category: 'vision'
         };
       }
-      // 1. Coding / Patches / Syntax / Testing Matrix / Refactoring / Schema Migrations / Smoke, Perf & Security
+      // 1. Coding / Patches / Syntax / Testing / Refactoring / Conflict & Bug Surgery / Security
       if (lower.includes('code') || lower.includes('syntax') || lower.includes('conflict') || lower.includes('patch') ||
           lower.includes('bug') || lower.includes('fix') || lower.includes('refactor') || lower.includes('function') ||
           lower.includes('typescript') || lower.includes('python') || lower.includes('commit') || lower.includes('file') ||
@@ -6223,15 +6273,18 @@ Audit Summary:
           lower.includes('secret') || lower.includes('credential') || lower.includes('compliance') || lower.includes('cve') ||
           lower.includes('high-entropy') || lower.includes('vulnerability') ||
           lower.includes('test') || lower.includes('mock') || lower.includes('coverage') || lower.includes('flakiness') ||
-          lower.includes('cyclomatic') || lower.includes('anti-pattern')) {
+          lower.includes('cyclomatic') || lower.includes('anti-pattern') ||
+          lower.includes('compress-state') || lower.includes('memory-compressor') || lower.includes('patch-dep') ||
+          lower.includes('conflict-syntax') || lower.includes('surgical chunk') || lower.includes('atomic-bug') ||
+          lower.includes('bug-hunter')) {
         const cModel = getWiredCodingModel() || 'qwen2.5-coder:1.5b';
         return {
           model: cModel,
-          role: 'Coding, Testing & Refactor Specialist (Offline ARM64)',
+          role: 'Coding & Surgical Patch Specialist (Sub-2B ARM64)',
           category: 'coding'
         };
       }
-      // 2. Reasoning / Architecture / Orchestration / Release Review / Decisions / Rollback / Living Docs
+      // 2. Reasoning / Architecture / Orchestration / Release Review / Squash-Merger / Rollback
       if (lower.includes('reason') || lower.includes('why') || lower.includes('architect') || lower.includes('logic') ||
           lower.includes('strategy') || lower.includes('decision') || lower.includes('squash vs rebase') ||
           lower.includes('evaluate') || lower.includes('plan') || lower.includes('analyze') || lower.includes('compare') ||
@@ -6239,11 +6292,12 @@ Audit Summary:
           lower.includes('rollback') || lower.includes('revert') ||
           lower.includes('orchestrat') || lower.includes('pipeline') || lower.includes('arbitration') ||
           lower.includes('living-documentation') || lower.includes('docs-sync') || lower.includes('documentation') ||
-          lower.includes('openapi') || lower.includes('swagger')) {
+          lower.includes('openapi') || lower.includes('swagger') ||
+          lower.includes('squash-merge') || lower.includes('pr-reviewer-squash-merger')) {
         const rModel = getWiredReasoningModel() || 'deepseek-r1:1.5b';
         return {
           model: rModel,
-          role: 'Reasoning & CI/CD Orchestration Specialist (Offline ARM64)',
+          role: 'Reasoning, Orchestration & Squash Authority (Sub-2B ARM64)',
           category: 'reasoning'
         };
       }
@@ -10620,6 +10674,103 @@ Audit Summary:
           AgentMemory.add('Guardian', 'Skill Invoked', 'living-documentation-sync', 'Compiled living documentation patches and OpenAPI synchronizations.');
         }
 
+        // 3.12 Skill: Memory Compressor State Manager (Sub-2B Token Frugal)
+        const isCompressorIntent = /^\/(compress-state|state-compress|memory-compress)/i.test(text.trim()) ||
+                                   lower.includes('memory-compressor-state-manager') || lower.includes('token budgeting') ||
+                                   lower.includes('compressed memory map') || lower.includes('ephemeral sliding window');
+
+        if (isCompressorIntent) {
+          promptContext += `\n\n[SKILL INVOKED: memory-compressor-state-manager]\n` +
+            `[TINY MODEL CONSTRAINTS]: Context Hard Limit 2048 tokens. Zero conversational prose.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. TOKEN BUDGETING: Calculate payload tokens. If > 400 tokens, strip comments, duplicate whitespace, stack traces down to root error.\n` +
+            `2. COMPRESSED MEMORY MAP: Output state strictly formatted as:\n` +
+            `   {\n` +
+            `     "repo": "owner/name",\n` +
+            `     "pr": 102,\n` +
+            `     "focus_file": "path/file.ext",\n` +
+            `     "target_lines": "start-end",\n` +
+            `     "last_error": "error_signature",\n` +
+            `     "last_action": "last_tool_or_git_call",\n` +
+            `     "conflict_files": []\n` +
+            `   }\n` +
+            `3. EPHEMERAL SLIDING WINDOW: Retain only current state and immediate previous execution outcome (max 2 iterations).\n` +
+            `4. Output exclusively the compressed JSON block.\n`;
+
+          AgentMemory.add('Q&A', 'Skill Invoked', 'memory-compressor-state-manager', 'Compressed active execution state into token-frugal JSON map.');
+        }
+
+        // 3.13 Skill: Dependency Vulnerability Patcher (Sub-2B Token Frugal)
+        const isDepPatchIntent = /^\/(patch-dep|vuln-patch|dependabot-patch)/i.test(text.trim()) ||
+                                 lower.includes('dependency-vulnerability-patcher') || lower.includes('isolate target node') ||
+                                 lower.includes('semver compatibility matrix') || lower.includes('breaking change pre-screen');
+
+        if (isDepPatchIntent) {
+          promptContext += `\n\n[SKILL INVOKED: dependency-vulnerability-patcher]\n` +
+            `[RESTRICTED CONTEXT GUARDRAILS]: Do NOT ingest entire lockfile. Receive only specific target node.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. ISOLATE TARGET NODE: Request only the line numbers of vulnerability-carrying dependency.\n` +
+            `2. SEMVER COMPATIBILITY MATRIX: Compare version jump via strict string matching (Current vs Secure).\n` +
+            `3. ATOMIC EDITS ONLY: Generate minimal unified git diff targeting only modified version string line.\n` +
+            `4. BREAKING CHANGE PRE-SCREEN: Scan localized lockfile block for peer conflicts. Halt and hand off to state manager if found.\n`;
+
+          AgentMemory.add('Q&A', 'Skill Invoked', 'dependency-vulnerability-patcher', 'Constructed pinpoint atomic dependency patch.');
+        }
+
+        // 3.14 Skill: Conflict Syntax Resolver (Sub-2B Token Frugal)
+        const isConflictResolverIntent = /^\/(resolve-conflict|syntax-heal|chunk-resolve)/i.test(text.trim()) ||
+                                         lower.includes('conflict-syntax-resolver') || lower.includes('chunk isolation') ||
+                                         lower.includes('lineage comparison') || lower.includes('syntax healing');
+
+        if (isConflictResolverIntent) {
+          promptContext += `\n\n[SKILL INVOKED: conflict-syntax-resolver]\n` +
+            `[CODE CHUNK ISOLATION CONSTRAINT]: Max 30 lines context around conflict markers (<<<<<<< to >>>>>>>) or syntax error.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. MARKER PARSING: Ingest only isolated 30-line conflict snippet.\n` +
+            `2. LINEAGE COMPARISON: Compare HEAD vs Incoming line-by-line (deletions, renames, variances).\n` +
+            `3. SYNTAX HEALING: Balance open delimiters (parentheses, braces, brackets) and fix indent boundaries.\n` +
+            `4. ATOMIC PATCH GENERATION: Output exclusively a unified standard Git Diff patch. No prose or commentary.\n`;
+
+          AgentMemory.add('Q&A', 'Skill Invoked', 'conflict-syntax-resolver', 'Executed 30-line surgical conflict and syntax healing patch.');
+        }
+
+        // 3.15 Skill: PR Reviewer Squash Merger (Sub-2B Token Frugal)
+        const isSquashMergeIntent = /^\/(squash-merge|safe-squash|merge-blueprint)/i.test(text.trim()) ||
+                                    lower.includes('pr-reviewer-squash-merger') || lower.includes('metric integrity gate') ||
+                                    lower.includes('squash summary compression') || lower.includes('rebase safeness proxy');
+
+        if (isSquashMergeIntent) {
+          promptContext += `\n\n[SKILL INVOKED: pr-reviewer-squash-merger]\n` +
+            `[MEMORY COMPRESSION CONSTRAINT]: Do NOT read full code files. Read only dense execution states from test/conflict auditors.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. METRIC INTEGRITY GATE: Verify tests_passed: true, syntax_valid: true, vulnerabilities_resolved: true.\n` +
+            `2. SQUASH SUMMARY COMPRESSION: Compress commit history into single-line title + bulleted functional changes.\n` +
+            `3. REBASE SAFENESS PROXY: Trigger isolated rebase command if base branch drifted.\n` +
+            `4. ATOMIC MERGE INSTRUCTION: Output payload:\n` +
+            `   Action: SQUASH_AND_MERGE\n` +
+            `   Commit Title: "[Fix] <Component Name>: <Short Summary>"\n` +
+            `   Commit Body: "- Resolved security vulnerabilities\\n- Balanced syntax blocks"\n`;
+
+          AgentMemory.add('Guardian', 'Skill Invoked', 'pr-reviewer-squash-merger', 'Generated zero-leak squash merge blueprint and action payload.');
+        }
+
+        // 3.16 Skill: Atomic Bug Hunter (Sub-2B Token Frugal)
+        const isBugHunterIntent = /^\/(hunt-bug|atomic-bug|root-cause-fix)/i.test(text.trim()) ||
+                                  lower.includes('atomic-bug-hunter') || lower.includes('pinpoint boundary rule') ||
+                                  lower.includes('defensive guard clause') || lower.includes('regression protection');
+
+        if (isBugHunterIntent) {
+          promptContext += `\n\n[SKILL INVOKED: atomic-bug-hunter]\n` +
+            `[PINPOINT BOUNDARY RULE]: Max 1 runtime stack trace snippet + max 40-line target function scope.\n` +
+            `[EXECUTION PROTOCOL]:\n` +
+            `1. TRACE ANALYSIS: Parse trace for filename, line, and column. Reject out-of-scope files.\n` +
+            `2. REASONING BOUNDARY: Inspect function block for off-by-one, type mismatches, unhandled lookups.\n` +
+            `3. CORRECTION INJECTION: Draft isolated patch with defensive guard clause / fallback on failure line.\n` +
+            `4. REGRESSION PROTECTION: Output unified git diff with 1-line assertion verification check.\n`;
+
+          AgentMemory.add('Q&A', 'Skill Invoked', 'atomic-bug-hunter', 'Isolated runtime exception traceback and injected defensive guard clause patch.');
+        }
+
         // 4. Dynamic Offline Model Task Routing with Thinking Levels & Multi-Turn Natural Conversation
         let targetModel = model;
         let routeTag = '';
@@ -10783,6 +10934,55 @@ SPECIALIZED SKILL — LIVING DOCUMENTATION SYNC:
   3. BREAKING DEPRECATION ALERTS: Identify any deleted endpoints, altered return models, or renamed fields. Draft conspicuous, human-readable migration notices outlining the breaking modifications.
   4. RUNBOOK & SETUP ALIGNMENT: Check if new third-party services, environmental environment variables, or tooling pre-requisites were added. Automatically inject setup requirements into the primary repository README.md.
   5. DOCUMENTATION UPDATE MANIFEST: Provide the exact Markdown and YAML file patches required to maintain a single source of truth between implementation and documentation.
+
+GOD-MODE TOKEN-FRUGAL SKILLS (SUB-2B PARAMETER MODELS & RESTRICTED 2K CONTEXT):
+Building high-performing AI agents on sub-2B models (Qwen-2.5-1.5B, Llama-3.2-1B, SmolLM2-360M) with 2K-4K token windows requires this state-driven, token-frugal memory architecture:
+
+1. memory-compressor-state-manager:
+• Skill Name: memory-compressor-state-manager (Private)
+• When to use: Run at the start and end of every single agent execution loop to serialize and maintain memory without context overflow.
+• Rules & Protocol:
+  - Context Hard Limit: 2048 tokens absolute. Never use prose or conversational fluff. Use compressed JSON or dense markdown keys.
+  - If payload > 400 tokens, strip comments, duplicate whitespace, and stack traces down to root error signature.
+  - Maintain Active State Map: {"repo": "owner/name", "pr": 102, "focus_file": "path", "target_lines": "start-end", "last_error": "...", "last_action": "...", "conflict_files": []}.
+  - Ephemeral Sliding Window: Retain only current state and immediate previous execution outcome (max 2 iterations). Output exclusively the compressed JSON block.
+
+2. dependency-vulnerability-patcher:
+• Skill Name: dependency-vulnerability-patcher (Private)
+• When to use: Trigger when a Dependabot alert, security scan, or outdated package notification is flagged.
+• Rules & Protocol:
+  - Never ingest an entire package lockfile or dependency tree. Request only the specific target node line numbers.
+  - Evaluate required secure version jump via strict string matching (Current vs Secure).
+  - Generate a minimal unified git diff targeting only the modified version string line. Do not rewrite surrounding object brackets.
+  - Pre-screen localized lockfile block for peer conflicts; if detected, halt and hand off to memory-compressor-state-manager.
+
+3. conflict-syntax-resolver:
+• Skill Name: conflict-syntax-resolver (Private)
+• When to use: Use when a PR experiences merge conflicts, syntax validation failures, or safe-merge assertion faults.
+• Rules & Protocol:
+  - Code Block Boundary: Max 30 lines of source code context around conflict markers (<<<<<<< to >>>>>>>) or syntax error line.
+  - Strip unaffected files. Ingest only the isolated 30-line conflict snippet.
+  - Compare HEAD vs Incoming line-by-line (logic deletions, variable renames, formatting variances).
+  - Apply localized syntax healing (balanced delimiters, indentation) and output exclusively unified standard git diff patch without commentary.
+
+4. pr-reviewer-squash-merger:
+• Skill Name: pr-reviewer-squash-merger (Private)
+• When to use: Trigger during the final phase of a PR lifecycle to execute safe merging, squashing, or automated regression verification.
+• Rules & Protocol:
+  - Do not read code files. Read only dense execution states from testing matrix and conflict resolvers.
+  - Verify metric integrity: tests_passed: true, syntax_valid: true, vulnerabilities_resolved: true.
+  - Compress commit history into single-line title + bulleted functional changes.
+  - Check if base branch drifted; trigger isolated rebase command if needed.
+  - Output execution payload: Action: SQUASH_AND_MERGE, Commit Title: "[Fix] <Component Name>: <Short Summary>", Commit Body.
+
+5. atomic-bug-hunter:
+• Skill Name: atomic-bug-hunter (Private)
+• When to use: Run whenever test assertions fail or unexpected exceptions are caught during pipeline execution steps.
+• Rules & Protocol:
+  - Max input allowance: 1 runtime exception stack trace snippet + exactly 1 target function scope block (max 40 lines).
+  - Parse traceback for exact filename, line, and column. Reject out-of-scope files.
+  - Inspect function block for off-by-one indices, type mismatches (undefined/null accesses), unhandled array lookups.
+  - Draft isolated patch with defensive guard clause / fallback on failure line + 1-line verification assertion.
 
 CORE BEHAVIOR & CONVERSATION POLICIES:
 1. NATURAL HUMAN CONVERSATION: You are an authentic, thoughtful, senior developer and architect. Converse naturally and warmly like a real human team member. NEVER sound like a robotic script or repeat canned boilerplate phrases.
