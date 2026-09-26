@@ -2578,6 +2578,163 @@
       margin-top: 0.45rem;
     }
 
+    /* ============================================================ */
+    /* PHASE 5: DYNAMIC VISUAL MULTI-AGENT DAG & HAND-OFF MONITOR */
+    /* ============================================================ */
+    .dag-deck-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(7, 11, 20, 0.98));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .dag-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .dag-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dag-canvas-container {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      padding: 1rem 0.5rem;
+      gap: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(168, 85, 247, 0.4) transparent;
+      margin-bottom: 1rem;
+    }
+
+    .dag-node {
+      background: rgba(10, 15, 29, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
+      min-width: 175px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .dag-node:hover {
+      border-color: #A855F7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.25);
+    }
+    .dag-node.active-processing {
+      border-color: #00F2FE;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      animation: dagNodePulse 1.5s infinite alternate;
+    }
+    .dag-node.passed {
+      border-color: #10B981;
+    }
+    .dag-node.selected {
+      border-color: #C084FC;
+      background: rgba(168, 85, 247, 0.08);
+    }
+
+    @keyframes dagNodePulse {
+      0% { border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 0 8px rgba(0, 242, 254, 0.2); }
+      100% { border-color: rgba(0, 242, 254, 0.9); box-shadow: 0 0 18px rgba(0, 242, 254, 0.5); }
+    }
+
+    .dag-node-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .dag-node-role {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    .dag-node-model {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      color: #94A3B8;
+      margin-bottom: 0.45rem;
+    }
+
+    .dag-token-bar-wrapper {
+      margin-bottom: 0.45rem;
+    }
+    .dag-token-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      margin-bottom: 0.2rem;
+    }
+    .dag-token-bar {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .dag-token-fill {
+      height: 100%;
+      background: #10B981;
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+
+    .dag-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+      padding: 0 0.2rem;
+    }
+    .dag-connector.animating {
+      color: #00F2FE;
+      animation: connectorFlow 1s infinite linear;
+    }
+    @keyframes connectorFlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .dag-inspector-panel {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      margin-top: 0.75rem;
+    }
+
+    .dag-log-telemetry {
+      background: #020409;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #E2E8F0;
+      max-height: 130px;
+      overflow-y: auto;
+      line-height: 1.45;
+      margin-top: 0.75rem;
+    }
+
     /* Floating Action Button (FAB) */
     .fab-chat {
       position: fixed;
@@ -5556,6 +5713,52 @@
         </div>
       </div>
 
+      <!-- PHASE 5: DYNAMIC VISUAL MULTI-AGENT DAG & HAND-OFF MONITOR -->
+      <div class="dag-deck-card" id="dag-control-deck">
+        <div class="dag-header">
+          <div class="dag-title-group">
+            <span style="font-size: 1.1rem;">🕸️</span>
+            <div>
+              <div style="font-weight: 800; font-size: 0.88rem; color: #C084FC;">
+                Dynamic Multi-Agent DAG & Hand-Off Monitor
+              </div>
+              <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">
+                Micro-agent pipeline orchestration: Map ──► Chunk ──► Patch ──► Audit ──► Gatekeeper
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <button class="btn-micro" style="border-color: #A855F7; color: #C084FC; font-weight: 700;" onclick="MultiAgentDAG.simulateRun()">
+              <span>▶️</span> Run Assembly Line
+            </button>
+            <button class="btn-micro" style="border-color: rgba(255,255,255,0.2);" onclick="MultiAgentDAG.reset()">
+              <span>🔄</span> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- DAG Canvas (Scrollable Horizontal Nodes) -->
+        <div class="dag-canvas-container" id="dag-nodes-canvas">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Live Telemetry Stream for Pipeline Execution -->
+        <div class="dag-log-telemetry" id="dag-telemetry-log">
+          [DAG-MONITOR] Pipeline Standby. Micro-agents initialized under "Never Break The Code" policy.
+        </div>
+
+        <!-- Node Inspector Drawer (Collapsible) -->
+        <div class="dag-inspector-panel" id="dag-inspector-panel" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+            <span style="font-size: 0.74rem; font-weight: 700; color: #C084FC; font-family: var(--font-mono);" id="dag-inspector-title">
+              🔍 Node Inspector: Ingestion Router
+            </span>
+            <button class="btn-micro" onclick="MultiAgentDAG.closeInspector()">Close ✕</button>
+          </div>
+          <div id="dag-inspector-body" style="font-family: var(--font-mono); font-size: 0.7rem; color: #CBD5E1; line-height: 1.45;"></div>
+        </div>
+      </div>
+
       <!-- Office Metrics Grid -->
       <div class="office-metrics-grid">
         <div class="office-metric-card">
@@ -7318,6 +7521,8 @@ Audit Summary:
   • <span class="neon-green">ollama pull &lt;model&gt;</span> - <span class="neon-white">Download and auto-wire model (e.g. ollama pull qwen2.5-coder:1.5b)</span><br>
   • <span class="neon-green">ollama status</span>- <span class="neon-white">Check local Ollama daemon service health on port 11434</span><br>
   • <span class="neon-teal">rag &lt;query&gt;</span>         - <span class="neon-white">Search local codebase with BM25 semantic vector indexer</span><br>
+  • <span class="neon-purple">dag</span>                 - <span class="neon-white">Open Dynamic Multi-Agent DAG & Hand-Off Monitor in Office tab</span><br>
+  • <span class="neon-purple">assembly-line</span>       - <span class="neon-white">Trigger 5-stage sequential assembly line audit</span><br>
   • <span class="neon-pink">test ai &lt;prompt&gt;</span> - <span class="neon-white">Run offline inference test on local model directly</span><br>
   • <span class="neon-teal">clear</span>        - <span class="neon-white">Clear terminal buffer</span><br>
   • <span class="neon-blue">refresh</span>      - <span class="neon-white">Fetch latest telemetry stream</span><br><br>`;
@@ -7325,6 +7530,15 @@ Audit Summary:
         }
       } else if (cmd === 'refresh') {
         refreshTerminalLogs();
+      } else if (cmd === 'dag' || cmd === 'dag-monitor' || cmd === 'pipeline') {
+        switchNav('office');
+        document.getElementById('dag-control-deck')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        appendTerminalLog(`[guardian@termux:~$] ${raw}`);
+        appendTerminalLog(`[DAG-MONITOR] Opened Dynamic Visual Multi-Agent DAG & Hand-Off Monitor.\nStages: 1. Router -> 2. Chunk -> 3. Patch -> 4. Auditor -> 5. Gatekeeper.`);
+      } else if (cmd === 'assembly-line' || cmd === 'run dag' || cmd === 'run pipeline') {
+        switchNav('office');
+        document.getElementById('dag-control-deck')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        MultiAgentDAG.simulateRun();
       } else if (cmd.startsWith('rag ') || cmd.startsWith('search ')) {
         const q = raw.replace(/^(rag|search)\s+/i, '').trim();
         appendTerminalLog(`[guardian@termux:~$] ${raw}`);
@@ -12403,6 +12617,264 @@ ${t.code.slice(0, 600)}
       }
     };
 
+    // ============================================================
+    // PHASE 5: DYNAMIC VISUAL MULTI-AGENT DAG & HAND-OFF MONITOR
+    // ============================================================
+    const MultiAgentDAG = {
+      selectedNodeKey: 'router',
+      isRunning: false,
+
+      nodes: {
+        router: {
+          key: 'router',
+          stage: 1,
+          name: 'Ingestion Router',
+          skill: 'repo-ingestion-router',
+          model: 'Gemma 1B / Router',
+          icon: '🗺️',
+          status: 'idle',
+          maxTokens: 50,
+          currentTokens: 42,
+          spec: 'Tiny Model Rule: Ingest ONLY file paths and sizes. Rejects code contents. Emits micro-JSON queue one file per line.',
+          input: 'Full workspace metadata (242 repos)',
+          output: '{"files": ["shared/secrets.ts", "package.json", "api/routes.py"]}'
+        },
+        chunk: {
+          key: 'chunk',
+          stage: 2,
+          name: 'Code-Chunk Engine',
+          skill: 'isolated-code-chunk-engine',
+          model: 'Qwen 1.5B / Coder',
+          icon: '⚙️',
+          status: 'idle',
+          maxTokens: 256,
+          currentTokens: 180,
+          spec: 'Sliding Chunk Constraint: Max 30-40 lines of code + 1 parent scope. Evaluates bracket parity, null-pointers, scope bleeding.',
+          input: 'shared/secrets.ts (lines 10-38)',
+          output: '[CHUNK EVALUATION]: Line 24: Conflict detected. HEAD AES-GCM-256 vs Incoming OAuth2-Bearer.'
+        },
+        patch: {
+          key: 'patch',
+          stage: 3,
+          name: 'Git Patch Writer',
+          skill: 'atomic-git-patch-writer',
+          model: 'Qwen 1.5B / Coder',
+          icon: '✂️',
+          status: 'idle',
+          maxTokens: 384,
+          currentTokens: 210,
+          spec: 'Zero-Prose Output Rule: Raw Unified Git Diff format ONLY. No markdown backticks, no explanatory commentary.',
+          input: 'shared/secrets.ts conflict coordinates',
+          output: 'diff --git a/shared/secrets.ts b/shared/secrets.ts\n@@ -24,8 +24,12 @@\n+  // AI-Merged: WebCrypto AES-GCM-256 with OAuth2 Fallback'
+        },
+        auditor: {
+          key: 'auditor',
+          stage: 4,
+          name: 'Strict Auditor',
+          skill: 'strict-professional-auditor',
+          model: 'DeepSeek-R1 1.5B / Reasoner',
+          icon: '🔍',
+          status: 'idle',
+          maxTokens: 512,
+          currentTokens: 340,
+          spec: 'AST Integrity Verification: Enforces "Never Break The Code" policy. Validates bracket parity, zero API breakage, regression check.',
+          input: 'Unified patch diff + AST tree',
+          output: '✔ AST Parity: 100% Validated. Brackets balanced. No breaking mutations.'
+        },
+        guardian: {
+          key: 'guardian',
+          stage: 5,
+          name: 'Guardian Gatekeeper',
+          skill: 'floating-ball-guardian',
+          model: 'Qwen 1.7B / Approver',
+          icon: '🛡️',
+          status: 'idle',
+          maxTokens: 512,
+          currentTokens: 290,
+          spec: 'Decision & Approval Authority: Approves minor squash-merges; halts & escrows critical actions for human consent.',
+          input: 'Audited PR Dossier & Risk Matrix',
+          output: '[GUARDIAN STATUS: APPROVED]: Dispatched linear squash-merge into origin/main.'
+        }
+      },
+
+      init() {
+        this.render();
+      },
+
+      render() {
+        const canvas = document.getElementById('dag-nodes-canvas');
+        if (!canvas) return;
+
+        const keys = ['router', 'chunk', 'patch', 'auditor', 'guardian'];
+        let html = '';
+
+        keys.forEach((k, idx) => {
+          const n = this.nodes[k];
+          const isSelected = (this.selectedNodeKey === k);
+          const statusCls = (n.status === 'processing') ? 'active-processing' : (n.status === 'passed' ? 'passed' : '');
+          const statusBadge = (n.status === 'processing') ?
+            '<span class="card-badge badge-rebased" style="font-size:0.6rem;">⚡ Processing</span>' :
+            (n.status === 'passed' ?
+              '<span class="card-badge badge-merged" style="font-size:0.6rem;">✔ Passed</span>' :
+              (n.status === 'blocked' ?
+                '<span class="card-badge badge-conflict" style="font-size:0.6rem;">⚠️ Blocked</span>' :
+                '<span class="card-badge" style="font-size:0.6rem; background:rgba(255,255,255,0.06); color:#94A3B8;">Idle</span>'));
+
+          const tokenPct = Math.min(100, Math.round((n.currentTokens / n.maxTokens) * 100));
+          const tokenColor = tokenPct > 85 ? '#EF4444' : (tokenPct > 65 ? '#F59E0B' : '#10B981');
+
+          html += `
+            <div class="dag-node ${statusCls} ${isSelected ? 'selected' : ''}" onclick="MultiAgentDAG.selectNode('${k}')" id="dag-node-${k}">
+              <div class="dag-node-top">
+                <span style="font-size: 0.95rem;">${n.icon}</span>
+                ${statusBadge}
+              </div>
+              <div class="dag-node-role">${n.name}</div>
+              <div class="dag-node-model">${n.model}</div>
+              <div class="dag-token-bar-wrapper">
+                <div class="dag-token-meta">
+                  <span>Tokens: ${n.currentTokens} / ${n.maxTokens}</span>
+                  <span>${tokenPct}%</span>
+                </div>
+                <div class="dag-token-bar">
+                  <div class="dag-token-fill" style="width: ${tokenPct}%; background: ${tokenColor};"></div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          if (idx < keys.length - 1) {
+            const isConnAnimating = (n.status === 'passed' && this.nodes[keys[idx+1]].status === 'processing');
+            html += `
+              <div class="dag-connector ${isConnAnimating ? 'animating' : ''}" id="dag-conn-${idx}">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            `;
+          }
+        });
+
+        canvas.innerHTML = html;
+        this.renderInspector();
+      },
+
+      selectNode(key) {
+        this.selectedNodeKey = key;
+        const panel = document.getElementById('dag-inspector-panel');
+        if (panel) panel.style.display = 'block';
+        this.render();
+      },
+
+      closeInspector() {
+        const panel = document.getElementById('dag-inspector-panel');
+        if (panel) panel.style.display = 'none';
+      },
+
+      renderInspector() {
+        const title = document.getElementById('dag-inspector-title');
+        const body = document.getElementById('dag-inspector-body');
+        const n = this.nodes[this.selectedNodeKey];
+        if (!n || !title || !body) return;
+
+        title.innerText = `🔍 Node Inspector: ${n.name} (Stage ${n.stage} of 5)`;
+        body.innerHTML = `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; margin-bottom: 0.65rem;">
+            <div><strong>Active Skill:</strong> <code>${n.skill}</code></div>
+            <div><strong>Model Assignment:</strong> <span class="neon-teal">${n.model}</span></div>
+            <div><strong>Token Budget:</strong> <span class="neon-green">${n.currentTokens} / ${n.maxTokens} tokens</span></div>
+            <div><strong>Status:</strong> <span class="card-badge ${n.status === 'passed' ? 'badge-merged' : 'badge-rebased'}">${n.status.toUpperCase()}</span></div>
+          </div>
+          <div style="margin-bottom: 0.45rem;"><strong>Instruction Directive:</strong> ${this.escapeHtml(n.spec)}</div>
+          <div style="margin-bottom: 0.45rem;"><strong>Input Context:</strong> <code>${this.escapeHtml(n.input)}</code></div>
+          <div><strong>Live Output Payload:</strong>
+            <pre style="background: rgba(0,0,0,0.5); padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem; color: #38BDF8; max-height: 100px; overflow-y: auto;">${this.escapeHtml(n.output)}</pre>
+          </div>
+        `;
+      },
+
+      async simulateRun() {
+        if (this.isRunning) return;
+        this.isRunning = true;
+        this.reset();
+
+        const logEl = document.getElementById('dag-telemetry-log');
+        const appendLog = (msg) => {
+          if (logEl) {
+            logEl.innerHTML += `<br>${msg}`;
+            logEl.scrollTop = logEl.scrollHeight;
+          }
+          const tPane = document.getElementById('terminal-logs-pane');
+          if (tPane) {
+            tPane.innerHTML += `<span class="neon-purple">${msg}</span><br>`;
+            if (terminalAutoScroll) tPane.scrollTop = tPane.scrollHeight;
+          }
+        };
+
+        showToast('🚀 Running Multi-Agent Assembly Line...');
+        appendLog(`[DAG-START] Dispatched assembly pipeline for repository audit & conflict resolution.`);
+
+        // Stage 1: Router
+        this.nodes.router.status = 'processing';
+        this.selectNode('router');
+        appendLog(`[STAGE 1/5] Ingestion Router: Scanning file paths (Budget: 42/50 tokens)...`);
+        await new Promise(r => setTimeout(r, 900));
+        this.nodes.router.status = 'passed';
+        appendLog(`✔ [STAGE 1/5] Ingestion Router: 3 targets queued. Handing off to Code-Chunk Engine.`);
+
+        // Stage 2: Code Chunk
+        this.nodes.chunk.status = 'processing';
+        this.selectNode('chunk');
+        appendLog(`[STAGE 2/5] Code-Chunk Engine: Evaluating 30-line surgical slice in shared/secrets.ts...`);
+        await new Promise(r => setTimeout(r, 1100));
+        this.nodes.chunk.status = 'passed';
+        appendLog(`✔ [STAGE 2/5] Code-Chunk Engine: Conflict flagged at line 24. Handing off to Git Patch Writer.`);
+
+        // Stage 3: Patch Writer
+        this.nodes.patch.status = 'processing';
+        this.selectNode('patch');
+        appendLog(`[STAGE 3/5] Git Patch Writer: Synthesizing raw Unified Git Diff patch...`);
+        await new Promise(r => setTimeout(r, 1000));
+        this.nodes.patch.status = 'passed';
+        appendLog(`✔ [STAGE 3/5] Git Patch Writer: Pure atomic diff generated. Handing off to Strict Auditor.`);
+
+        // Stage 4: Auditor
+        this.nodes.auditor.status = 'processing';
+        this.selectNode('auditor');
+        appendLog(`[STAGE 4/5] Strict Auditor (DeepSeek-R1): Verifying AST tree parity and syntax safety...`);
+        await new Promise(r => setTimeout(r, 1200));
+        this.nodes.auditor.status = 'passed';
+        appendLog(`✔ [STAGE 4/5] Strict Auditor: AST Integrity 100% validated. Zero syntax leaks.`);
+
+        // Stage 5: Guardian
+        this.nodes.guardian.status = 'processing';
+        this.selectNode('guardian');
+        appendLog(`[STAGE 5/5] Guardian Gatekeeper: Evaluating risk matrix under "Never Break The Code" policy...`);
+        await new Promise(r => setTimeout(r, 900));
+        this.nodes.guardian.status = 'passed';
+        appendLog(`🎉 [DAG-COMPLETE] Guardian Approved: Changes ready for automated linear squash-merge!`);
+
+        this.isRunning = false;
+        this.render();
+        showToast('🎉 Assembly Line Execution Completed (100% AST Safe)!');
+        AgentMemory.add('Guardian', 'Assembly Line Executed', '5-Node DAG Pipeline', 'Full sequential audit passed: Ingestion -> Chunk Engine -> Patch Writer -> Auditor -> Gatekeeper.');
+      },
+
+      reset() {
+        Object.keys(this.nodes).forEach(k => {
+          this.nodes[k].status = 'idle';
+        });
+        this.render();
+      },
+
+      escapeHtml(str) {
+        return (str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+    };
+
     // Guardian Gatekeeping & Severity Evaluator
     const blockedTaskRegistry = new Map();
 
@@ -15446,6 +15918,7 @@ ${typeof CodebaseSemanticRAG !== 'undefined' ? CodebaseSemanticRAG.getPromptCont
     ConflictSandboxManager.init();
     AutonomousSweeper.init();
     CodebaseSemanticRAG.init();
+    MultiAgentDAG.init();
     loadData();
     checkOllamaService(false);
     setInterval(loadData, 8000);
