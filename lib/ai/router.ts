@@ -59,10 +59,16 @@ export class AIRouter {
 
     const lower = userPrompt.toLowerCase();
 
-    // 2. Deep Reasoning & Complex Conflict Resolution
+    // 2. Deep Reasoning, GitHub Architecture, Branch Protection & Security
     if (
       context?.hasConflicts ||
       context?.isSecurityAudit ||
+      lower.includes("branch protection") ||
+      lower.includes("ruleset") ||
+      lower.includes("force push") ||
+      lower.includes("branch") ||
+      lower.includes("token") ||
+      lower.includes("workflow") ||
       lower.includes("conflict") ||
       lower.includes("security") ||
       lower.includes("vulnerability") ||
@@ -75,7 +81,7 @@ export class AIRouter {
     ) {
       return {
         selectedModelId: this.assignments.reasoning_model,
-        reason: "Routed to Reasoning Model for multi-step diagnosis and conflict resolution.",
+        reason: "Routed to GitHub Security & Reasoning Model for DevSecOps compliance, branch protection, and architectural diagnosis.",
         category: "reasoning",
       };
     }

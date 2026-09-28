@@ -32,6 +32,7 @@ import { ExecutiveOffice } from "@/components/office/ExecutiveOffice";
 import { CyberTerminal } from "@/components/terminal/CyberTerminal";
 import { MultimodalAiSuite } from "@/components/ai/MultimodalAiSuite";
 import { MultiAccountManager } from "@/components/integrations/MultiAccountManager";
+import { BranchProtectionManager } from "@/components/security/BranchProtectionManager";
 import { AutonomyMode, ModelAssignments, DEFAULT_MODEL_ASSIGNMENTS } from "@/lib/ai/router";
 
 interface PullRequest {
@@ -76,6 +77,8 @@ export default function GuardianDashboard() {
 
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
   const [isRouterModalOpen, setIsRouterModalOpen] = useState(false);
+  const [isBranchProtectionOpen, setIsBranchProtectionOpen] = useState(false);
+  const [selectedProtectionRepo, setSelectedProtectionRepo] = useState<string>("");
   const [modelAssignments, setModelAssignments] = useState<ModelAssignments>(DEFAULT_MODEL_ASSIGNMENTS);
 
   const [stats, setStats] = useState<any>({
@@ -264,6 +267,13 @@ export default function GuardianDashboard() {
           showToast(`Autonomy Mode set to ${newAssignments.autonomy_mode.toUpperCase()}`);
         }}
       />
+      <BranchProtectionManager
+        isOpen={isBranchProtectionOpen}
+        onClose={() => setIsBranchProtectionOpen(false)}
+        selectedRepo={selectedProtectionRepo}
+        allRepos={allRepos}
+        showToast={showToast}
+      />
 
       {/* Toast Notification */}
       {toastMessage && (
@@ -293,6 +303,17 @@ export default function GuardianDashboard() {
           </div>
 
           <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => {
+                setSelectedProtectionRepo(allRepos[0]?.full_name || "motherskitchenblr2/github-guardian");
+                setIsBranchProtectionOpen(true);
+              }}
+              className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:text-emerald-300 touch-press"
+              title="Branch Protection Rules & Immutability Shield"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
+
             <button
               onClick={() => setIsRouterModalOpen(true)}
               className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white touch-press"
@@ -644,6 +665,18 @@ export default function GuardianDashboard() {
                         <span>Hugging Face Hub</span>
                         <ExternalLink className="w-3 h-3 opacity-60" />
                       </a>
+
+                      <button
+                        onClick={() => {
+                          setSelectedProtectionRepo(repo.full_name);
+                          setIsBranchProtectionOpen(true);
+                        }}
+                        className="py-1.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
+                        title="Configure Branch Protection & Immutability Rules"
+                      >
+                        <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Branch Shield</span>
+                      </button>
 
                       <button
                         onClick={() => {

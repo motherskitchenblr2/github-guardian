@@ -123,6 +123,41 @@ export const AGENT_TOOLS: ToolDefinition[] = [
       parameters: { type: "object", properties: {} },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "get_branch_protection",
+      description: "Inspect active branch protection rules and security posture for a repository and branch.",
+      parameters: {
+        type: "object",
+        properties: {
+          repo: { type: "string", description: "Repository full name, e.g. motherskitchenblr2/VOLT-CODE-AI-v5.0" },
+          branch: { type: "string", description: "Target branch name (default 'main')" },
+        },
+        required: ["repo"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "apply_branch_protection",
+      description: "Apply GitHub Guardian recommended or strict enterprise branch protection rules to eliminate risks of force-pushes, branch deletions, and unverified merges.",
+      parameters: {
+        type: "object",
+        properties: {
+          repo: { type: "string", description: "Repository full name" },
+          branch: { type: "string", description: "Target branch name (default 'main')" },
+          preset: {
+            type: "string",
+            enum: ["guardian_recommended", "strict_enterprise"],
+            description: "Protection policy preset",
+          },
+        },
+        required: ["repo"],
+      },
+    },
+  },
 ];
 
 export async function executeAgentTool(name: string, args: Record<string, any>): Promise<any> {
@@ -203,6 +238,62 @@ export async function executeAgentTool(name: string, args: Record<string, any>):
 
     case "get_device_hardware": {
       return scanDeviceHardware();
+    }
+
+    case "get_branch_protection": {
+      const branch = args.branch || "main";
+      const { status, data } = await fetchGitHub(`/repos/${args.repo}/branches/${encodeURIComponent(branch)}/protection`);
+      if (status === 200 && data) {
+        return {
+          repo: args.repo,
+          branch,
+          protected: true,
+          enforce_admins: !!data.enforce_admins?.enabled,
+          pull_request_reviews: !!data.required_pull_request_reviews,
+          approvals_required: data.required_pull_request_reviews?.required_approving_review_count || 1,
+          dismiss_stale: !!data.required_pull_request_reviews?.dismiss_stale_reviews,
+          linear_history: !!data.required_linear_history?.enabled,
+          allow_force_pushes: !!data.allow_force_pushes?.enabled,
+          allow_deletions: !!data.allow_deletions?.enabled,
+          message: "Branch protection active with strict rules.",
+        };
+      }
+      return { repo: args.repo, branch, protected: false, message: "Branch has no active protection rules." };
+    }
+
+    case "apply_branch_protection": {
+      const branch = args.branch || "main";
+      const isStrict = args.preset === "strict_enterprise";
+      const payload = {
+        enforce_admins: true,
+        required_status_checks: isStrict ? { strict: true, contexts: [] } : null,
+        required_pull_request_reviews: {
+          dismiss_stale_reviews: true,
+          require_code_owner_reviews: isStrict,
+          required_approving_review_count: isStrict ? 2 : 1,
+          require_last_push_approval: true,
+        },
+        restrictions: null,
+        required_linear_history: true,
+        allow_force_pushes: false,
+        allow_deletions: false,
+        required_conversation_resolution: true,
+      };
+
+      const { status, data } = await fetchGitHub(`/repos/${args.repo}/branches/${encodeURIComponent(branch)}/protection`, {
+        method: "PUT",
+        headers: { Accept: "application/vnd.github.v3+json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      return {
+        status,
+        success: status === 200,
+        repo: args.repo,
+        branch,
+        applied_preset: args.preset || "guardian_recommended",
+        message: status === 200 ? "Branch protection successfully applied with Zero-Trust immutability!" : data?.message,
+      };
     }
 
     default:
