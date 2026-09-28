@@ -12,6 +12,9 @@ reports/dashboard.log
 
 # Reports with sensitive repo telemetry
 reports/*.json
+reports/*.md
+reports/guardian_report_*.md
+
 
 # Security & Secrets Protection
 .env
@@ -32,6 +35,17 @@ id_ed25519*
 ai_config.json
 reports/ai_config.json
 
+# Node & Next.js / Vercel Build Artifacts
+node_modules/
+.next/
+out/
+build/
+dist/
+.vercel/
+next-env.d.ts
+*.tsbuildinfo
+
 # OS Artifacts
 .DS_Store
 Thumbs.db
+
