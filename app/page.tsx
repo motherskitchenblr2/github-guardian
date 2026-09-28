@@ -20,11 +20,18 @@ import {
   Sparkles,
   SlidersHorizontal,
   Bot,
+  Terminal,
+  Building2,
+  UserCheck,
 } from "lucide-react";
 import { HardwareAdvisor } from "@/components/ai/HardwareAdvisor";
 import { ApiKeyModal } from "@/components/ai/ApiKeyModal";
 import { ModelSelectorModal } from "@/components/ai/ModelSelectorModal";
 import { AgentChatDrawer } from "@/components/ai/AgentChatDrawer";
+import { ExecutiveOffice } from "@/components/office/ExecutiveOffice";
+import { CyberTerminal } from "@/components/terminal/CyberTerminal";
+import { MultimodalAiSuite } from "@/components/ai/MultimodalAiSuite";
+import { MultiAccountManager } from "@/components/integrations/MultiAccountManager";
 import { AutonomyMode, ModelAssignments, DEFAULT_MODEL_ASSIGNMENTS } from "@/lib/ai/router";
 
 interface PullRequest {
@@ -64,7 +71,7 @@ interface RepositoryItem {
 }
 
 export default function GuardianDashboard() {
-  const [activeTab, setActiveTab] = useState<"repos" | "prs" | "forks" | "secrets" | "ai">("repos");
+  const [activeTab, setActiveTab] = useState<"office" | "repos" | "prs" | "forks" | "terminal" | "ai" | "integrations">("office");
   const [repoVisibilityFilter, setRepoVisibilityFilter] = useState<"all" | "public" | "private">("all");
 
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
@@ -382,6 +389,18 @@ export default function GuardianDashboard() {
         <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/5">
             <button
+              onClick={() => setActiveTab("office")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                activeTab === "office"
+                  ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Building2 className="w-3.5 h-3.5" />
+              <span>Office</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab("repos")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
                 activeTab === "repos"
@@ -421,6 +440,18 @@ export default function GuardianDashboard() {
             </button>
 
             <button
+              onClick={() => setActiveTab("terminal")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                activeTab === "terminal"
+                  ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Terminal</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab("ai")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
                 activeTab === "ai"
@@ -428,23 +459,32 @@ export default function GuardianDashboard() {
                   : "text-slate-400 hover:text-white"
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Hardware & AI Advisor</span>
+              <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+              <span>AI Suite</span>
             </button>
 
             <button
-              onClick={() => setActiveTab("secrets")}
+              onClick={() => setActiveTab("integrations")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
-                activeTab === "secrets"
+                activeTab === "integrations"
                   ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
                   : "text-slate-400 hover:text-white"
               }`}
             >
-              <KeyRound className="w-3.5 h-3.5" />
-              <span>Secrets</span>
+              <UserCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Integrations</span>
             </button>
           </div>
         </div>
+
+        {/* TAB 0: EXECUTIVE OFFICE */}
+        {activeTab === "office" && (
+          <ExecutiveOffice
+            stats={stats}
+            showToast={showToast}
+            onNavigateToTab={(tab: any) => setActiveTab(tab)}
+          />
+        )}
 
         {/* TAB 1: REPOSITORIES (ALL, PUBLIC, PRIVATE) */}
         {activeTab === "repos" && (
@@ -579,6 +619,42 @@ export default function GuardianDashboard() {
                       <span className="text-[10px] text-slate-500">
                         Updated {new Date(repo.updated_at).toLocaleDateString()}
                       </span>
+                    </div>
+
+                    {/* Dedicated GitHub & Hugging Face Action Buttons to view and work on individual repositories */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5 flex-wrap">
+                      <a
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
+                      >
+                        <FolderGit2 className="w-3.5 h-3.5 text-sky-400" />
+                        <span>GitHub Repo</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
+                      </a>
+
+                      <a
+                        href={`https://huggingface.co/models?search=${encodeURIComponent(repo.name)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Hugging Face Hub</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
+                      </a>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab("terminal");
+                          showToast(`Cyber Terminal: Target repository set to ${repo.name}`);
+                        }}
+                        className="py-1.5 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press sm:ml-auto"
+                      >
+                        <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Work in Terminal</span>
+                      </button>
                     </div>
                   </div>
                 ))
@@ -716,31 +792,23 @@ export default function GuardianDashboard() {
           </div>
         )}
 
-        {/* TAB 4: HARDWARE & AI ADVISOR */}
-        {activeTab === "ai" && (
-          <div className="space-y-4">
-            <HardwareAdvisor />
-          </div>
+        {/* TAB 4: CYBER TERMINAL */}
+        {activeTab === "terminal" && (
+          <CyberTerminal showToast={showToast} />
         )}
 
-        {/* TAB 5: SECRET LEAK DEFENSE */}
-        {activeTab === "secrets" && (
-          <div className="space-y-4">
-            <div className="glass-panel p-5 rounded-2xl text-center flex flex-col items-center">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3">
-                <Shield className="w-6 h-6" />
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-white">Continuous Secret Scanner Active</h3>
-              <p className="text-xs text-slate-400 max-w-md mt-1 leading-relaxed">
-                Audits all git commits and file modifications for exposed Personal Access Tokens, OpenAI keys,
-                Anthropic tokens, AWS keys, and credentials in .env files.
-              </p>
-              <div className="mt-4 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Zero Leaks Detected Across 25+ Scanned Repos</span>
-              </div>
-            </div>
-          </div>
+        {/* TAB 5: AI SUITE */}
+        {activeTab === "ai" && (
+          <MultimodalAiSuite
+            showToast={showToast}
+            onOpenKeyModal={() => setIsKeyModalOpen(true)}
+            onOpenRouterModal={() => setIsRouterModalOpen(true)}
+          />
+        )}
+
+        {/* TAB 6: MULTI-ACCOUNT INTEGRATIONS */}
+        {activeTab === "integrations" && (
+          <MultiAccountManager showToast={showToast} />
         )}
       </main>
 
@@ -754,53 +822,73 @@ export default function GuardianDashboard() {
       {/* Floating Bottom Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-2xl border-t border-white/10 px-2 py-2 flex items-center justify-around md:hidden">
         <button
-          onClick={() => setActiveTab("repos")}
+          onClick={() => setActiveTab("office")}
           className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "repos" ? "text-sky-400" : "text-slate-400"
+            activeTab === "office" ? "text-sky-400 font-semibold" : "text-slate-400"
           }`}
         >
-          <FolderGit2 className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Repos</span>
+          <Building2 className="w-4 h-4" />
+          <span className="text-[10px]">Office</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("repos")}
+          className={`flex flex-col items-center gap-1 touch-press ${
+            activeTab === "repos" ? "text-sky-400 font-semibold" : "text-slate-400"
+          }`}
+        >
+          <FolderGit2 className="w-4 h-4" />
+          <span className="text-[10px]">Repos</span>
         </button>
 
         <button
           onClick={() => setActiveTab("prs")}
           className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "prs" ? "text-sky-400" : "text-slate-400"
+            activeTab === "prs" ? "text-sky-400 font-semibold" : "text-slate-400"
           }`}
         >
-          <GitPullRequest className="w-5 h-5" />
-          <span className="text-[10px] font-medium">PRs</span>
+          <GitPullRequest className="w-4 h-4" />
+          <span className="text-[10px]">PRs</span>
         </button>
 
         <button
           onClick={() => setActiveTab("forks")}
           className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "forks" ? "text-sky-400" : "text-slate-400"
+            activeTab === "forks" ? "text-sky-400 font-semibold" : "text-slate-400"
           }`}
         >
-          <GitFork className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Forks</span>
+          <GitFork className="w-4 h-4" />
+          <span className="text-[10px]">Forks</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("terminal")}
+          className={`flex flex-col items-center gap-1 touch-press ${
+            activeTab === "terminal" ? "text-sky-400 font-semibold" : "text-slate-400"
+          }`}
+        >
+          <Terminal className="w-4 h-4" />
+          <span className="text-[10px]">Terminal</span>
         </button>
 
         <button
           onClick={() => setActiveTab("ai")}
           className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "ai" ? "text-sky-400" : "text-slate-400"
+            activeTab === "ai" ? "text-sky-400 font-semibold" : "text-slate-400"
           }`}
         >
-          <Sparkles className="w-5 h-5" />
-          <span className="text-[10px] font-medium">AI Advisor</span>
+          <Sparkles className="w-4 h-4" />
+          <span className="text-[10px]">AI</span>
         </button>
 
         <button
-          onClick={() => setActiveTab("secrets")}
+          onClick={() => setActiveTab("integrations")}
           className={`flex flex-col items-center gap-1 touch-press ${
-            activeTab === "secrets" ? "text-sky-400" : "text-slate-400"
+            activeTab === "integrations" ? "text-sky-400 font-semibold" : "text-slate-400"
           }`}
         >
-          <KeyRound className="w-5 h-5" />
-          <span className="text-[10px] font-medium">Secrets</span>
+          <UserCheck className="w-4 h-4" />
+          <span className="text-[10px]">Accounts</span>
         </button>
       </nav>
     </div>
