@@ -493,7 +493,7 @@ export default function GuardianDashboard() {
               }`}
             >
               <UserCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>Integrations</span>
+              <span>Accounts</span>
             </button>
           </div>
         </div>
@@ -911,7 +911,7 @@ export default function GuardianDashboard() {
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span className="text-[10px]">AI</span>
+          <span className="text-[10px]">AI Suite</span>
         </button>
 
         <button

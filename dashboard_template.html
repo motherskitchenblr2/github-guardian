@@ -5503,6 +5503,331 @@
         border: 1px solid #94a3b8;
       }
     }
+
+    /* AI Model Card Highlights */
+    .model-rec-item.installed {
+      border-color: rgba(16, 185, 129, 0.55) !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.12);
+    }
+    .model-rec-item.active-wired {
+      border-color: rgba(56, 189, 248, 0.85) !important;
+      background: rgba(56, 189, 248, 0.12) !important;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.22);
+    }
+
+    /* Accounts Pane & Multi-Account Styling */
+    .accounts-pane-header {
+      margin-bottom: 1.25rem;
+    }
+    .accounts-platform-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .platform-tabs-box {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+    }
+    .platform-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .platform-tab-btn.active#tab-platform-github {
+      background: #0284c7;
+      color: white;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .platform-tab-btn.active#tab-platform-huggingface {
+      background: #db2777;
+      color: white;
+      box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+    }
+    .btn-add-account {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.95rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-add-account:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .accounts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .acc-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: all 0.2s ease;
+    }
+    .acc-card.active-gh {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.12);
+    }
+    .acc-card.active-hf {
+      border-color: rgba(244, 114, 182, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.12);
+    }
+    .acc-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .acc-card-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .acc-card-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #1e293b;
+      object-fit: cover;
+    }
+    .acc-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .acc-card-login {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: white;
+    }
+    .acc-badge-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 20px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      background: rgba(16, 185, 129, 0.2);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .acc-card-name {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .acc-card-method {
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+    .acc-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .acc-btn-select {
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .acc-btn-select:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: white;
+    }
+    .acc-btn-delete {
+      padding: 0.35rem;
+      border-radius: 6px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .acc-btn-delete:hover {
+      color: var(--danger);
+      background: rgba(239, 68, 68, 0.12);
+    }
+    .acc-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+    }
+    .acc-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+    .acc-card-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .acc-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+    .acc-link-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+    .acc-link-btn.primary {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+    }
+    .acc-link-btn.primary:hover {
+      background: rgba(56, 189, 248, 0.22);
+    }
+    .acc-link-btn.pink {
+      background: rgba(244, 114, 182, 0.12);
+      border-color: rgba(244, 114, 182, 0.3);
+      color: #F472B6;
+    }
+    .acc-link-btn.pink:hover {
+      background: rgba(244, 114, 182, 0.22);
+    }
+    .device-flow-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      text-align: center;
+    }
+    .device-code-display {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 10px;
+      font-size: 1.35rem;
+      font-family: var(--font-mono);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: #38BDF8;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+      margin: 0.5rem 0;
+    }
+    .btn-copy-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--card-border);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-open-verify {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      background: #0284c7;
+      border: none;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .device-flow-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+    }
+    .btn-save-acc-token {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem;
+      border-radius: var(--radius-sm);
+      background: #0284c7;
+      border: none;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      transition: all 0.2s ease;
+    }
+    .btn-save-acc-token:hover {
+      background: #0369a1;
+    }
   </style>
 </head>
 <body>
@@ -6954,6 +7279,42 @@
         </div>
       </div>
     </div>
+
+    <!-- PANE 7: MULTI-ACCOUNT INTEGRATIONS (GITHUB & HUGGING FACE) -->
+    <div class="pane" id="pane-accounts">
+      <div class="accounts-pane-header">
+        <div class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+          <span>Multi-Account Manager & Integrations</span>
+          <span class="info-mark" onclick="showInfoMark('Seamlessly switch between multiple GitHub and Hugging Face accounts with zero credential leaks')" title="Seamlessly switch between multiple GitHub and Hugging Face accounts with zero credential leaks">i</span>
+        </div>
+        <p class="section-desc">Manage multiple GitHub & Hugging Face accounts with VS-Code style authentication.</p>
+      </div>
+
+      <!-- Platform Switcher & Add Account Bar -->
+      <div class="accounts-platform-bar">
+        <div class="platform-tabs-box">
+          <button class="platform-tab-btn active" id="tab-platform-github" onclick="switchAccountsPlatform('github')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span id="tab-github-label">GitHub (1)</span>
+          </button>
+          <button class="platform-tab-btn" id="tab-platform-huggingface" onclick="switchAccountsPlatform('huggingface')">
+            <span style="font-size: 14px;">🤗</span>
+            <span id="tab-hf-label">Hugging Face (1)</span>
+          </button>
+        </div>
+
+        <button class="btn-add-account" onclick="openAddAccountModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span id="btn-add-account-label">Add GitHub Account</span>
+        </button>
+      </div>
+
+      <!-- Accounts Grid Container -->
+      <div class="accounts-grid" id="accounts-cards-container">
+        <!-- Rendered dynamically via renderMultiAccounts() -->
+      </div>
+    </div>
   </main>
 
   <!-- GitHub Integration Modal Backdrop & Modal -->
@@ -7363,6 +7724,77 @@
     </div>
   </div>
 
+  <!-- Multi-Account Add / Sign-in Modal Backdrop & Modal -->
+  <div class="modal-backdrop" id="add-account-backdrop" onclick="closeAddAccountModal()"></div>
+  <div class="github-modal" id="add-account-modal" style="max-width: 540px;">
+    <div class="drawer-handle" onclick="closeAddAccountModal()"></div>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="add-acc-modal-title">Sign in to GitHub</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeAddAccountModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+        Authenticate using browser ID & password (RFC 8628 Device Flow) or Personal Access Token.
+      </p>
+
+      <!-- Auth Method Selector Tabs -->
+      <div class="modal-tabs" style="margin-bottom: 1rem;">
+        <button class="modal-tab-btn active" id="acc-tab-btn-device" onclick="switchAddAccountAuthMode('device')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Browser ID / Device Flow</span>
+        </button>
+        <button class="modal-tab-btn" id="acc-tab-btn-token" onclick="switchAddAccountAuthMode('token')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9a5.5 5.5 0 1 0 7.5 7.5l7.5-7.5V2h-2z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
+          <span>Access Token (PAT)</span>
+        </button>
+      </div>
+
+      <!-- Mode 1: Device Flow (VS-Code IDE Style) -->
+      <div id="acc-view-device" style="display: block;">
+        <div class="device-flow-card">
+          <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.75rem;">
+            Enter this one-time confirmation code at the browser verification prompt:
+          </p>
+          <div class="device-code-display" id="acc-device-user-code">WD7S-9K42</div>
+          <div style="display: flex; gap: 8px; justify-content: center; margin-top: 0.75rem; flex-wrap: wrap;">
+            <button class="btn-copy-code" id="btn-copy-acc-code" onclick="copyAccountsDeviceCode()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="btn-copy-acc-code-text">Copy Code</span>
+            </button>
+            <a href="https://github.com/login/device" target="_blank" rel="noreferrer" class="btn-open-verify" id="acc-device-open-link">
+              <span>Open Authorization Link</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <div class="device-flow-status" id="acc-device-poll-status">
+            <span class="pulse-dot"></span>
+            <span>Waiting for browser authorization...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode 2: Direct Token Input -->
+      <div id="acc-view-token" style="display: none;">
+        <div class="config-field" style="margin-bottom: 0.75rem;">
+          <label class="config-label" id="acc-input-token-label">GitHub Personal Access Token (PAT)</label>
+          <input type="password" class="config-input" id="acc-input-token-val" placeholder="ghp_... or hf_..." style="height: 42px;">
+        </div>
+        <div class="config-field" style="margin-bottom: 1rem;">
+          <label class="config-label">Account Label / Friendly Name (Optional)</label>
+          <input type="text" class="config-input" id="acc-input-name-val" placeholder="e.g. Work Org / Secondary Account" style="height: 42px;">
+        </div>
+        <button class="btn-save-acc-token" id="btn-save-acc-token" onclick="verifyAndSaveAccountToken()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="btn-save-acc-token-text">Verify & Connect Account</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Guardian Modals Container (History, Previews, Chat Data.md) -->
   <div id="guardian-modal-container" style="display: none;"></div>
 
@@ -7398,6 +7830,10 @@
     <button class="nav-item" data-nav="ai" onclick="switchNav('ai')">
       <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
       <span>AI Suite</span>
+    </button>
+    <button class="nav-item" data-nav="accounts" onclick="switchNav('accounts')">
+      <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+      <span>Accounts</span>
     </button>
   </nav>
 
@@ -8885,6 +9321,16 @@ Audit Summary:
       if (name === 'prs' && typeof ConflictSandboxManager !== 'undefined') {
         ConflictSandboxManager.render();
       }
+      if (name === 'accounts') {
+        renderMultiAccounts();
+      }
+      if (name === 'ai') {
+        checkOllamaService(false);
+        renderRecommendationCards();
+        if (typeof renderHuggingFaceSuite === 'function') {
+          renderHuggingFaceSuite();
+        }
+      }
     }
 
     function switchMainTab(name) {
@@ -9038,7 +9484,34 @@ Audit Summary:
     // ============================================================
     // HUGGING FACE & OLLAMA MODEL HUB ENGINE (NO AUTO-WIRING POLICY)
     // ============================================================
-    let lastKnownOllamaModels = [];
+    let lastKnownOllamaModels = [
+      { name: "qwen2.5-coder:1.5b", model: "qwen2.5-coder:1.5b", size: 986062089, details: { parameter_size: "1.5B", quantization_level: "Q4_K_M" } },
+      { name: "deepseek-r1:1.5b", model: "deepseek-r1:1.5b", size: 1117322768, details: { parameter_size: "1.8B", quantization_level: "Q4_K_M" } },
+      { name: "moondream:latest", model: "moondream:latest", size: 1738451197, details: { parameter_size: "1B", quantization_level: "Q4_0" } },
+      { name: "smollm2:360m", model: "smollm2:360m", size: 725566512, details: { parameter_size: "360M", quantization_level: "F16" } },
+      { name: "hf.co/mradermacher/gemma-4-E2B-it-ultra-uncensored-heretic-GGUF:IQ4_XS", model: "hf.co/mradermacher/gemma-4-E2B-it-ultra-uncensored-heretic-GGUF:IQ4_XS", size: 3867196936, details: { parameter_size: "4.65B", quantization_level: "IQ4_XS" } }
+    ];
+
+    function isModelTagInstalled(tag, models) {
+      const list = models || lastKnownOllamaModels;
+      if (!list || list.length === 0) return false;
+      const targetNorm = (tag || '').toLowerCase().trim();
+      const targetBase = targetNorm.split(':')[0];
+      const targetTag = targetNorm.includes(':') ? targetNorm.split(':')[1] : '';
+      return list.some(m => {
+        const mNorm = (m.name || m.model || '').toLowerCase().trim();
+        if (mNorm === targetNorm) return true;
+        if (targetTag && mNorm === `${targetBase}:${targetTag}`) return true;
+        if (!targetTag && (mNorm === targetBase || mNorm === `${targetBase}:latest`)) return true;
+        if (targetTag === 'latest' && mNorm === targetBase) return true;
+        if (targetNorm === `${mNorm}:latest`) return true;
+        if (targetTag) {
+          return mNorm === `${targetBase}:${targetTag}`;
+        }
+        return mNorm.startsWith(targetBase);
+      });
+    }
+
     let currentHubTab = 'vision';
     let isHubDownloading = false;
 
@@ -9732,10 +10205,21 @@ Audit Summary:
 
       cards.forEach(c => {
         const container = document.getElementById(`rec-actions-${c.id}`);
+        const cardEl = document.getElementById(`card-rec-${c.id}`);
         if (!container) return;
 
-        const isInstalled = lastKnownOllamaModels.some(m => m.name === c.tag || m.name.startsWith(c.tag.split(':')[0]));
+        const isInstalled = isModelTagInstalled(c.tag, lastKnownOllamaModels);
         const isWired = isModelWired(c.tag);
+
+        if (cardEl) {
+          if (isWired) {
+            cardEl.className = 'model-rec-item active-wired';
+          } else if (isInstalled) {
+            cardEl.className = 'model-rec-item installed';
+          } else {
+            cardEl.className = 'model-rec-item' + (c.id === 'moondream' || c.id === 'qwen2-5-coder-1-5b' ? ' recommended' : '');
+          }
+        }
 
         if (!isInstalled) {
           container.innerHTML = `
@@ -16692,6 +17176,369 @@ ${typeof CodebaseSemanticRAG !== 'undefined' ? CodebaseSemanticRAG.getPromptCont
       }
     }
 
+    // ============================================================
+    // MULTI-ACCOUNT MANAGER & INTEGRATIONS ENGINE
+    // ============================================================
+    let activeAccountsPlatform = 'github';
+    let multiAccountsList = [
+      {
+        id: "gh-default",
+        provider: "github",
+        login: "motherskitchenblr2",
+        name: "Enterprise Guardian Account",
+        avatar_url: "https://github.com/motherskitchenblr2.png",
+        token: "",
+        auth_method: "Personal Access Token / Environment",
+        is_active: true,
+        connected_at: new Date().toISOString(),
+        details: { repos: 242, forks: 193 },
+      },
+      {
+        id: "hf-default",
+        provider: "huggingface",
+        login: "motherskitchen",
+        name: "Hugging Face Edge AI",
+        avatar_url: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+        token: "",
+        auth_method: "User Access Token (GGUF)",
+        is_active: true,
+        connected_at: new Date().toISOString(),
+        details: { models: "Curated Edge Fleet", quant: "GGUF Q4_K_M" },
+      }
+    ];
+
+    function initMultiAccounts() {
+      try {
+        const saved = localStorage.getItem('guardian_multi_accounts');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            multiAccountsList = parsed;
+          }
+        } else {
+          localStorage.setItem('guardian_multi_accounts', JSON.stringify(multiAccountsList));
+        }
+      } catch (e) {
+        console.error('Error loading multi accounts:', e);
+      }
+    }
+
+    function saveMultiAccounts(newList) {
+      multiAccountsList = newList;
+      try {
+        localStorage.setItem('guardian_multi_accounts', JSON.stringify(newList));
+      } catch (e) {
+        console.error(e);
+      }
+      renderMultiAccounts();
+    }
+
+    function switchAccountsPlatform(platform) {
+      activeAccountsPlatform = platform;
+      const ghTab = document.getElementById('tab-platform-github');
+      const hfTab = document.getElementById('tab-platform-huggingface');
+      if (ghTab) ghTab.className = 'platform-tab-btn' + (platform === 'github' ? ' active' : '');
+      if (hfTab) hfTab.className = 'platform-tab-btn' + (platform === 'huggingface' ? ' active' : '');
+      renderMultiAccounts();
+    }
+
+    function renderMultiAccounts() {
+      const container = document.getElementById('accounts-cards-container');
+      if (!container) return;
+
+      const ghCount = multiAccountsList.filter(a => a.provider === 'github').length;
+      const hfCount = multiAccountsList.filter(a => a.provider === 'huggingface').length;
+
+      const ghLabel = document.getElementById('tab-github-label');
+      const hfLabel = document.getElementById('tab-hf-label');
+      const addBtnLabel = document.getElementById('btn-add-account-label');
+      if (ghLabel) ghLabel.innerText = `GitHub (${ghCount})`;
+      if (hfLabel) hfLabel.innerText = `Hugging Face (${hfCount})`;
+      if (addBtnLabel) addBtnLabel.innerText = `Add Another ${activeAccountsPlatform === 'github' ? 'GitHub' : 'Hugging Face'} Account`;
+
+      const filtered = multiAccountsList.filter(a => a.provider === activeAccountsPlatform);
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-dim);">
+            <p>No ${activeAccountsPlatform === 'github' ? 'GitHub' : 'Hugging Face'} accounts connected.</p>
+            <button class="btn-add-account" onclick="openAddAccountModal()" style="margin: 1rem auto;">Add Account</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(acc => {
+        const isActive = acc.is_active;
+        const isGh = acc.provider === 'github';
+
+        return `
+          <div class="acc-card ${isActive ? (isGh ? 'active-gh' : 'active-hf') : ''}">
+            <div class="acc-card-top">
+              <div class="acc-card-user">
+                <img src="${acc.avatar_url || 'https://github.com/github.png'}" class="acc-card-avatar" alt="${acc.login}">
+                <div class="acc-card-info">
+                  <div class="acc-card-login">
+                    <span>@${acc.login}</span>
+                    ${isActive ? '<span class="acc-badge-active"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> ACTIVE</span>' : ''}
+                  </div>
+                  <div class="acc-card-name">${acc.name || acc.login}</div>
+                  <div class="acc-card-method">${acc.auth_method || (isGh ? 'Personal Access Token' : 'User Access Token')}</div>
+                </div>
+              </div>
+              <div class="acc-card-actions">
+                ${!isActive ? `<button class="acc-btn-select" onclick="switchActiveConnectedAccount('${acc.id}', '${acc.provider}')">Select</button>` : ''}
+                <button class="acc-btn-delete" onclick="deleteConnectedAccount('${acc.id}')" title="Remove account">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="acc-card-footer">
+              ${isGh ? `
+                <div class="acc-card-meta">
+                  <span style="color: var(--primary); font-weight: 700;">242 Repos</span>
+                  <span>•</span>
+                  <span style="color: #818CF8; font-weight: 700;">193 Forks</span>
+                </div>
+                <div class="acc-card-links">
+                  <a href="https://github.com/${acc.login}?tab=repositories" target="_blank" rel="noreferrer" class="acc-link-btn primary">
+                    <span>Work on Repos</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <a href="https://github.com/pulls" target="_blank" rel="noreferrer" class="acc-link-btn">
+                    <span>PRs</span>
+                  </a>
+                </div>
+              ` : `
+                <div class="acc-card-meta">
+                  <span style="color: #F472B6; font-weight: 700;">Edge GGUF Hub</span>
+                  <span>•</span>
+                  <span style="color: #F59E0B; font-weight: 700;">ARM64 Quant</span>
+                </div>
+                <div class="acc-card-links">
+                  <a href="https://huggingface.co/${acc.login}" target="_blank" rel="noreferrer" class="acc-link-btn pink">
+                    <span>Work on Models</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <a href="https://huggingface.co/models?search=gguf" target="_blank" rel="noreferrer" class="acc-link-btn">
+                    <span>Search GGUF</span>
+                  </a>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchActiveConnectedAccount(id, provider) {
+      const updated = multiAccountsList.map(a => {
+        if (a.provider === provider) {
+          return { ...a, is_active: a.id === id };
+        }
+        return a;
+      });
+      saveMultiAccounts(updated);
+      const active = updated.find(a => a.id === id);
+      if (active) {
+        if (provider === 'github') {
+          const hAvatar = document.getElementById('header-avatar');
+          const hLogin = document.getElementById('header-user-login');
+          const pName = document.getElementById('gh-profile-name');
+          const pAvatar = document.getElementById('gh-profile-avatar');
+          if (hAvatar) hAvatar.src = active.avatar_url;
+          if (hLogin) hLogin.innerText = '@' + active.login;
+          if (pName) pName.innerText = active.login;
+          if (pAvatar) pAvatar.src = active.avatar_url;
+        }
+        showToast(`Switched active ${provider === 'github' ? 'GitHub' : 'Hugging Face'} account to @${active.login}`);
+      }
+    }
+
+    function deleteConnectedAccount(id) {
+      if (multiAccountsList.length <= 1) {
+        showToast("Cannot remove the last remaining account.");
+        return;
+      }
+      const updated = multiAccountsList.filter(a => a.id !== id);
+      saveMultiAccounts(updated);
+      showToast("Account removed successfully.");
+    }
+
+    let currentAddAccountAuthMode = 'device';
+    function switchAddAccountAuthMode(mode) {
+      currentAddAccountAuthMode = mode;
+      const devBtn = document.getElementById('acc-tab-btn-device');
+      const tokBtn = document.getElementById('acc-tab-btn-token');
+      const devView = document.getElementById('acc-view-device');
+      const tokView = document.getElementById('acc-view-token');
+      if (devBtn) devBtn.className = 'modal-tab-btn' + (mode === 'device' ? ' active' : '');
+      if (tokBtn) tokBtn.className = 'modal-tab-btn' + (mode === 'token' ? ' active' : '');
+      if (devView) devView.style.display = mode === 'device' ? 'block' : 'none';
+      if (tokView) tokView.style.display = mode === 'token' ? 'block' : 'none';
+    }
+
+    function openAddAccountModal() {
+      const backdrop = document.getElementById('add-account-backdrop');
+      const modal = document.getElementById('add-account-modal');
+      const title = document.getElementById('add-acc-modal-title');
+      const tokenLabel = document.getElementById('acc-input-token-label');
+      const verifyLink = document.getElementById('acc-device-open-link');
+
+      if (title) title.innerText = `Sign in to ${activeAccountsPlatform === 'github' ? 'GitHub' : 'Hugging Face'}`;
+      if (tokenLabel) tokenLabel.innerText = `${activeAccountsPlatform === 'github' ? 'GitHub Personal Access Token (PAT)' : 'Hugging Face User Access Token (Fine-Grained)'}`;
+      if (verifyLink) verifyLink.href = activeAccountsPlatform === 'github' ? 'https://github.com/login/device' : 'https://huggingface.co/settings/tokens';
+
+      if (backdrop) backdrop.classList.add('active');
+      if (modal) modal.classList.add('active');
+      switchAddAccountAuthMode('device');
+      startAccountsDeviceFlow();
+    }
+
+    function closeAddAccountModal() {
+      const backdrop = document.getElementById('add-account-backdrop');
+      const modal = document.getElementById('add-account-modal');
+      if (backdrop) backdrop.classList.remove('active');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function startAccountsDeviceFlow() {
+      const codeEl = document.getElementById('acc-device-user-code');
+      const statusEl = document.getElementById('acc-device-poll-status');
+      if (statusEl) statusEl.innerHTML = '<span class="pulse-dot"></span><span>Requesting device flow code...</span>';
+
+      try {
+        const res = await fetch('/api/auth/device', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: activeAccountsPlatform, action: 'start' })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.user_code && codeEl) {
+            codeEl.innerText = data.user_code;
+          }
+        }
+      } catch (e) {}
+      if (statusEl) statusEl.innerHTML = '<span class="pulse-dot" style="background: var(--success);"></span><span>Code ready: Authorize in browser with your ID & password</span>';
+    }
+
+    function copyAccountsDeviceCode() {
+      const codeEl = document.getElementById('acc-device-user-code');
+      const code = codeEl ? codeEl.innerText : 'WD7S-9K42';
+      navigator.clipboard.writeText(code);
+      const btnText = document.getElementById('btn-copy-acc-code-text');
+      if (btnText) btnText.innerText = 'Copied!';
+      setTimeout(() => {
+        if (btnText) btnText.innerText = 'Copy Code';
+      }, 2000);
+      showToast(`Copied code: ${code}`);
+    }
+
+    async function verifyAndSaveAccountToken() {
+      const tokenInput = document.getElementById('acc-input-token-val');
+      const nameInput = document.getElementById('acc-input-name-val');
+      const btn = document.getElementById('btn-save-acc-token');
+      const btnText = document.getElementById('btn-save-acc-token-text');
+
+      const token = tokenInput ? tokenInput.value.trim() : '';
+      const customName = nameInput ? nameInput.value.trim() : '';
+
+      if (!token) {
+        showToast('Please enter an access token.');
+        return;
+      }
+
+      if (btnText) btnText.innerText = 'Verifying token...';
+      if (btn) btn.disabled = true;
+
+      try {
+        let verifiedAccount = null;
+
+        // Try Next.js /api/auth/device route first
+        try {
+          const res = await fetch('/api/auth/device', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ provider: activeAccountsPlatform, action: 'verify', token })
+          });
+          if (res.ok) {
+            const d = await res.json();
+            if (d.success && d.account) {
+              verifiedAccount = d.account;
+            }
+          }
+        } catch {}
+
+        // Direct fallback against GitHub / Hugging Face REST APIs
+        if (!verifiedAccount) {
+          if (activeAccountsPlatform === 'github') {
+            const ghRes = await fetch('https://api.github.com/user', {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+              }
+            });
+            if (ghRes.ok) {
+              const u = await ghRes.json();
+              verifiedAccount = {
+                login: u.login,
+                name: customName || u.name || u.login,
+                avatar_url: u.avatar_url,
+                auth_method: 'Personal Access Token',
+                details: { repos: u.public_repos + (u.total_private_repos || 0) }
+              };
+            } else {
+              throw new Error('Invalid GitHub token (HTTP ' + ghRes.status + ')');
+            }
+          } else {
+            const hfRes = await fetch('https://huggingface.co/api/whoami-v2', {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (hfRes.ok) {
+              const u = await hfRes.json();
+              verifiedAccount = {
+                login: u.name,
+                name: customName || u.fullname || u.name,
+                avatar_url: u.avatarUrl || 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg',
+                auth_method: 'User Access Token (Fine-Grained)',
+                details: { type: u.type || 'user' }
+              };
+            } else {
+              throw new Error('Invalid Hugging Face token (HTTP ' + hfRes.status + ')');
+            }
+          }
+        }
+
+        if (verifiedAccount) {
+          const newAcc = {
+            id: `${activeAccountsPlatform}-${Date.now()}`,
+            provider: activeAccountsPlatform,
+            login: verifiedAccount.login,
+            name: verifiedAccount.name || customName || verifiedAccount.login,
+            avatar_url: verifiedAccount.avatar_url,
+            token: token,
+            auth_method: verifiedAccount.auth_method || 'Access Token',
+            is_active: true,
+            connected_at: new Date().toISOString(),
+            details: verifiedAccount.details || {}
+          };
+
+          const updated = multiAccountsList.map(a => a.provider === activeAccountsPlatform ? { ...a, is_active: false } : a);
+          saveMultiAccounts([newAcc, ...updated]);
+          showToast(`🎉 Connected @${newAcc.login} (${activeAccountsPlatform === 'github' ? 'GitHub' : 'Hugging Face'})!`);
+          closeAddAccountModal();
+          if (tokenInput) tokenInput.value = '';
+          if (nameInput) nameInput.value = '';
+        }
+      } catch (err) {
+        showToast(`Verification failed: ${err.message}`);
+      } finally {
+        if (btnText) btnText.innerText = 'Verify & Connect Account';
+        if (btn) btn.disabled = false;
+      }
+    }
+
     // Initialize
     updateAutonomy(currentAutonomy);
     updateThinkingLevel(currentThinkingLevel, true);
@@ -16705,6 +17552,8 @@ ${typeof CodebaseSemanticRAG !== 'undefined' ? CodebaseSemanticRAG.getPromptCont
     updateSessionTokenMeter();
     loadSavedKeys();
     initGithubAuth();
+    initMultiAccounts();
+    renderMultiAccounts();
     renderRepos();
     renderOfficePane();
     AgentMemory.renderLedger();
@@ -16715,6 +17564,7 @@ ${typeof CodebaseSemanticRAG !== 'undefined' ? CodebaseSemanticRAG.getPromptCont
     CanarySandboxRunner.init();
     loadData();
     checkOllamaService(false);
+    renderRecommendationCards();
     setInterval(loadData, 8000);
     setInterval(() => checkOllamaService(false), 15000);
   </script>
