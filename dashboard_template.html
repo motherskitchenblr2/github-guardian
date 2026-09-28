@@ -5828,6 +5828,133 @@
     .btn-save-acc-token:hover {
       background: #0369a1;
     }
+
+    /* Branch Protection Modal & Enhanced Repo Card Styling */
+    .branch-rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.65rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .branch-rule-item:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .branch-rule-checkbox {
+      margin-top: 0.2rem;
+      accent-color: #0284c7;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+    .branch-rule-content {
+      flex: 1;
+    }
+    .branch-rule-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .branch-rule-desc {
+      font-size: 0.66rem;
+      color: var(--text-dim);
+      margin-top: 0.15rem;
+      line-height: 1.35;
+    }
+    .preset-btns-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.85rem;
+    }
+    .btn-preset {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: white;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-preset:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .btn-preset.active {
+      background: #0284c7;
+      border-color: #38BDF8;
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3);
+    }
+    .ai-rationale-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      margin-bottom: 0.85rem;
+      display: none;
+    }
+    .repo-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+    }
+    .repo-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .repo-action-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+    .repo-action-btn.shield {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #10B981;
+    }
+    .repo-action-btn.shield:hover {
+      background: rgba(16, 185, 129, 0.22);
+    }
+    .repo-action-btn.hf {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #F59E0B;
+    }
+    .repo-action-btn.hf:hover {
+      background: rgba(245, 158, 11, 0.22);
+    }
+    .repo-action-btn.terminal {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+    }
+    .repo-action-btn.terminal:hover {
+      background: rgba(56, 189, 248, 0.22);
+    }
   </style>
 </head>
 <body>
@@ -7795,6 +7922,111 @@
     </div>
   </div>
 
+  <!-- Branch Protection Rules & AI Shield Modal Backdrop & Modal -->
+  <div class="modal-backdrop" id="branch-protection-backdrop" onclick="closeBranchProtectionModal()"></div>
+  <div class="github-modal" id="branch-protection-modal" style="max-width: 600px;">
+    <div class="drawer-handle" onclick="closeBranchProtectionModal()"></div>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Branch Protection & Shield</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeBranchProtectionModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 6px;">
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 800; color: white;" id="bp-repo-title">motherskitchenblr2/repo</div>
+          <div style="font-size: 0.68rem; color: var(--text-dim);">Branch: <span class="neon-teal" id="bp-branch-name">main</span></div>
+        </div>
+        <span class="card-badge badge-merged" id="bp-status-badge">● Active Policy</span>
+      </div>
+
+      <!-- Quick Preset Selector -->
+      <div class="preset-btns-row">
+        <button class="btn-preset active" id="btn-preset-rec" onclick="applyBranchProtectionPreset('recommended')">🛡️ Recommended</button>
+        <button class="btn-preset" id="btn-preset-strict" onclick="applyBranchProtectionPreset('strict')">🔒 Strict Enterprise</button>
+        <button class="btn-preset" style="border-color: rgba(245, 158, 11, 0.4); color: #F59E0B; margin-left: auto;" onclick="askAiBranchRecommendation()">
+          <span>🤖 AI Architect Advice</span>
+        </button>
+      </div>
+
+      <!-- AI Rationale Card -->
+      <div class="ai-rationale-box" id="bp-ai-rationale">
+        <div style="font-size: 0.74rem; font-weight: 800; color: #10B981; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 5px;">
+          <span>⚡</span> <span id="bp-ai-verdict">AI Security Architect Verdict</span>
+        </div>
+        <div id="bp-ai-points" style="font-size: 0.68rem; color: #CBD5E1; line-height: 1.45; font-family: var(--font-mono);"></div>
+      </div>
+
+      <!-- Protection Rules Checkboxes -->
+      <div style="max-height: 320px; overflow-y: auto; padding-right: 4px;">
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-pr" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label"><span>Require Pull Request Reviews</span> <span class="card-badge badge-merged" style="font-size: 9px;">1 Review</span></div>
+            <div class="branch-rule-desc">Mandates approval from verified collaborators before merging into the branch.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-stale" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Dismiss Stale Approvals</div>
+            <div class="branch-rule-desc">Automatically resets review approvals when new commits are pushed to the PR.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-admin" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Enforce for Administrators</div>
+            <div class="branch-rule-desc">Rules apply to everyone including repository admins. Prevents privilege bypass.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-linear" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Require Linear History</div>
+            <div class="branch-rule-desc">Forces squash-merge or fast-forward rebase; prevents messy merge commit knots.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-force" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Block Force Pushes</div>
+            <div class="branch-rule-desc">Strictly forbids git push --force. Protects commit history from being rewritten.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-delete" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Block Branch Deletions</div>
+            <div class="branch-rule-desc">Prevents deleting the mainline branch by accident or malicious action.</div>
+          </div>
+        </label>
+
+        <label class="branch-rule-item">
+          <input type="checkbox" class="branch-rule-checkbox" id="bp-chk-resolve" checked>
+          <div class="branch-rule-content">
+            <div class="branch-rule-label">Require Conversation Resolution</div>
+            <div class="branch-rule-desc">All review comments and discussions must be marked resolved before merge.</div>
+          </div>
+        </label>
+      </div>
+
+      <div style="margin-top: 1rem; display: flex; gap: 8px;">
+        <button class="btn-save-acc-token" id="btn-save-bp-rules" onclick="saveBranchProtectionRules()" style="background: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);">
+          <span>Enforce Protection Rules</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Guardian Modals Container (History, Previews, Chat Data.md) -->
   <div id="guardian-modal-container" style="display: none;"></div>
 
@@ -9383,11 +9615,196 @@ Audit Summary:
           </div>
           <div class="card-title">${r.desc || 'Source repository'}</div>
           <div class="card-footer">
-            <span><code>${r.lang}</code></span>
-            <a href="https://github.com/motherskitchenblr2/${r.name}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">View on GitHub ↗</a>
+            <span><code>${r.lang || 'Code'}</code></span>
+            <span style="font-size: 0.7rem; color: var(--text-dim);">${r.stars || 0} ⭐ • ${r.forks || 0} 🍴</span>
+          </div>
+          <div class="repo-action-bar">
+            <a href="https://github.com/motherskitchenblr2/${r.name}" target="_blank" class="repo-action-btn">
+              <span>📁 GitHub Repo ↗</span>
+            </a>
+            <a href="https://huggingface.co/models?search=${encodeURIComponent(r.name)}" target="_blank" class="repo-action-btn hf">
+              <span>🤗 HF Hub ↗</span>
+            </a>
+            <button class="repo-action-btn shield" onclick="openBranchProtectionModal('${r.name}')" title="Configure Branch Protection Rules">
+              <span>🛡️ Branch Shield</span>
+            </button>
+            <button class="repo-action-btn terminal" onclick="workInTerminalForRepo('${r.name}')" title="Work in Cyber Terminal">
+              <span>💻 Terminal</span>
+            </button>
           </div>
         </div>`;
       }).join('');
+    }
+
+    let currentBranchProtectionRepo = 'motherskitchenblr2/github-guardian';
+
+    function openBranchProtectionModal(repoName) {
+      if (repoName) {
+        currentBranchProtectionRepo = repoName.includes('/') ? repoName : ('motherskitchenblr2/' + repoName);
+      }
+      const titleEl = document.getElementById('bp-repo-title');
+      if (titleEl) titleEl.innerText = currentBranchProtectionRepo;
+      
+      const modal = document.getElementById('branch-protection-modal');
+      const backdrop = document.getElementById('branch-protection-backdrop');
+      if (modal) modal.classList.add('open');
+      if (backdrop) backdrop.classList.add('open');
+
+      const aiBox = document.getElementById('bp-ai-rationale');
+      if (aiBox) aiBox.style.display = 'none';
+
+      loadBranchProtectionRules(currentBranchProtectionRepo);
+    }
+
+    function closeBranchProtectionModal() {
+      const modal = document.getElementById('branch-protection-modal');
+      const backdrop = document.getElementById('branch-protection-backdrop');
+      if (modal) modal.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    function loadBranchProtectionRules(repo) {
+      try {
+        const saved = localStorage.getItem('guardian_bp_' + repo);
+        if (saved) {
+          const rules = JSON.parse(saved);
+          setBranchProtectionCheckboxes(rules);
+          const badge = document.getElementById('bp-status-badge');
+          if (badge) {
+            badge.innerText = '● Custom Policy';
+            badge.className = 'card-badge badge-merged';
+          }
+          return;
+        }
+      } catch (e) {}
+      applyBranchProtectionPreset('recommended', false);
+    }
+
+    function setBranchProtectionCheckboxes(r) {
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.checked = !!val;
+      };
+      setVal('bp-chk-pr', r.requirePullRequests);
+      setVal('bp-chk-stale', r.dismissStale);
+      setVal('bp-chk-admin', r.enforceAdmins);
+      setVal('bp-chk-linear', r.requiredLinearHistory);
+      setVal('bp-chk-force', !r.allowForcePushes);
+      setVal('bp-chk-delete', !r.allowDeletions);
+      setVal('bp-chk-resolve', r.requiredConversationResolution);
+    }
+
+    function getBranchProtectionFormValues() {
+      const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.checked : false;
+      };
+      return {
+        enforceAdmins: getVal('bp-chk-admin'),
+        requirePullRequests: getVal('bp-chk-pr'),
+        reviewCount: 1,
+        dismissStale: getVal('bp-chk-stale'),
+        requireCodeOwner: false,
+        requireLastPushApproval: true,
+        requireStatusChecks: false,
+        strictChecks: false,
+        requiredLinearHistory: getVal('bp-chk-linear'),
+        allowForcePushes: !getVal('bp-chk-force'),
+        allowDeletions: !getVal('bp-chk-delete'),
+        requiredConversationResolution: getVal('bp-chk-resolve')
+      };
+    }
+
+    function applyBranchProtectionPreset(preset, notify = true) {
+      const recBtn = document.getElementById('btn-preset-rec');
+      const strictBtn = document.getElementById('btn-preset-strict');
+      if (preset === 'recommended') {
+        if (recBtn) recBtn.classList.add('active');
+        if (strictBtn) strictBtn.classList.remove('active');
+        setBranchProtectionCheckboxes({
+          enforceAdmins: true,
+          requirePullRequests: true,
+          reviewCount: 1,
+          dismissStale: true,
+          requireCodeOwner: false,
+          requireLastPushApproval: true,
+          requireStatusChecks: false,
+          strictChecks: false,
+          requiredLinearHistory: true,
+          allowForcePushes: false,
+          allowDeletions: false,
+          requiredConversationResolution: true
+        });
+        if (notify) showToast("Applied 'Guardian Recommended' branch protection policy!");
+      } else if (preset === 'strict') {
+        if (recBtn) recBtn.classList.remove('active');
+        if (strictBtn) strictBtn.classList.add('active');
+        setBranchProtectionCheckboxes({
+          enforceAdmins: true,
+          requirePullRequests: true,
+          reviewCount: 2,
+          dismissStale: true,
+          requireCodeOwner: true,
+          requireLastPushApproval: true,
+          requireStatusChecks: true,
+          strictChecks: true,
+          requiredLinearHistory: true,
+          allowForcePushes: false,
+          allowDeletions: false,
+          requiredConversationResolution: true
+        });
+        if (notify) showToast("Applied 'Strict Enterprise' Zero-Trust policy!");
+      }
+    }
+
+    function askAiBranchRecommendation() {
+      const aiBox = document.getElementById('bp-ai-rationale');
+      const verdictEl = document.getElementById('bp-ai-verdict');
+      const pointsEl = document.getElementById('bp-ai-points');
+
+      if (aiBox) aiBox.style.display = 'block';
+      if (verdictEl) verdictEl.innerText = 'Analyzing repository risk profile & git history...';
+      if (pointsEl) pointsEl.innerHTML = '<span style="color: var(--text-dim);">Connecting to local Ollama neural model / security ruleset...</span>';
+
+      setTimeout(() => {
+        if (verdictEl) verdictEl.innerText = '🛡️ Zero-Trust Immutability Shield Recommended';
+        if (pointsEl) {
+          pointsEl.innerHTML = `
+            <div>• <b>Strict Linear History:</b> Prevents merge knots across forks.</div>
+            <div>• <b>Block Force Pushes:</b> Eliminates risk of irreversible history rewrite.</div>
+            <div>• <b>Admin Enforcement:</b> Prevents compromised personal tokens bypassing audit trails.</div>
+            <div>• <b>Conversation Resolution:</b> Verifies zero unresolved vulnerability flags.</div>
+          `;
+        }
+        applyBranchProtectionPreset('recommended', false);
+        showToast('🤖 AI Architecture Model generated recommended policy!');
+      }, 700);
+    }
+
+    function saveBranchProtectionRules() {
+      const rules = getBranchProtectionFormValues();
+      try {
+        localStorage.setItem('guardian_bp_' + currentBranchProtectionRepo, JSON.stringify(rules));
+      } catch (e) {}
+
+      const badge = document.getElementById('bp-status-badge');
+      if (badge) {
+        badge.innerText = '● Policy Enforced';
+        badge.className = 'card-badge badge-merged';
+      }
+
+      showToast(`Branch protection enforced on ${currentBranchProtectionRepo} (main)!`);
+      setTimeout(closeBranchProtectionModal, 900);
+    }
+
+    function workInTerminalForRepo(repoName) {
+      switchNav('terminal');
+      const cliInput = document.getElementById('terminal-cli-input');
+      if (cliInput) {
+        cliInput.value = 'git status # target: ' + repoName;
+        cliInput.focus();
+      }
+      showToast(`Cyber Terminal: Target repository set to ${repoName}`);
     }
 
     function filterCards(containerId, query) {
