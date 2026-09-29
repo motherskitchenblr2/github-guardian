@@ -5551,15 +5551,21 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .platform-tab-btn.active#tab-platform-github {
+    .platform-tab-btn.active#tab-platform-github,
+    .platform-tab-btn.active#repo-platform-tab-github,
+    .platform-tab-btn.active#pr-platform-tab-github,
+    .platform-tab-btn.active#fork-platform-tab-github {
       background: #0284c7;
       color: white;
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
     }
-    .platform-tab-btn.active#tab-platform-huggingface {
-      background: #db2777;
-      color: white;
-      box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+    .platform-tab-btn.active#tab-platform-huggingface,
+    .platform-tab-btn.active#repo-platform-tab-huggingface,
+    .platform-tab-btn.active#pr-platform-tab-huggingface,
+    .platform-tab-btn.active#fork-platform-tab-huggingface {
+      background: #f59e0b;
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
     }
     .btn-add-account {
       display: flex;
@@ -6530,11 +6536,25 @@
     <!-- PANE 2: PULL REQUESTS & ACTIONS -->
     <div class="pane" id="pane-prs">
       <div class="section-title">
-        <span>🔀 Pull Requests</span>
-        <span class="info-mark" onclick="showInfoMark('Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers')" title="Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers">i</span>
+        <span>🔀 Pull Requests & Discussions</span>
+        <span class="info-mark" onclick="showInfoMark('Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers across platforms')" title="Automated PR squash-merges, Dependabot lockfile rebase triggers, and syntax conflict rectifiers across platforms">i</span>
       </div>
-      <p class="section-desc">Automated squash-merges & conflict resolution.</p>
-      
+      <p class="section-desc">Automated squash-merges, conflict resolution & community reviews.</p>
+
+      <!-- Platform Sub-Navigation Switcher -->
+      <div class="platform-tabs-box" style="margin-bottom: 1rem;">
+        <button class="platform-tab-btn active" id="pr-platform-tab-github" onclick="switchPrPlatform('github')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span id="pr-platform-gh-label">GitHub PRs (924)</span>
+        </button>
+        <button class="platform-tab-btn" id="pr-platform-tab-huggingface" onclick="switchPrPlatform('huggingface')">
+          <span style="font-size: 14px;">🤗</span>
+          <span id="pr-platform-hf-label">Hugging Face PRs & Discussions (4)</span>
+        </button>
+      </div>
+
+      <!-- GitHub PR View -->
+      <div id="pr-view-github">
       <div class="search-box">
         <input type="text" class="search-input" id="pr-search-input" placeholder="Search pull requests or repositories..." onkeyup="filterCards('prs-list', this.value)">
       </div>
@@ -6708,31 +6728,66 @@
           </div>
         </div>
       </div>
+
+      <!-- Hugging Face PR View -->
+      <div id="pr-view-huggingface" style="display: none;">
+        <div class="search-box">
+          <input type="text" class="search-input" id="hf-pr-search-input" placeholder="Search HF PRs and community discussions..." onkeyup="filterCards('hf-prs-list', this.value)">
+        </div>
+        <div id="hf-prs-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
     </div>
 
     <!-- PANE 3: FORKS SYNCHRONIZATION -->
     <div class="pane" id="pane-forks">
       <div class="section-title">
-        <span>🍴 Fork Synchronization</span>
-        <span class="info-mark" onclick="showInfoMark('Tracking 193 forked repositories against upstream main/master branches with automated fast-forward sync')" title="Tracking 193 forked repositories against upstream main/master branches with automated fast-forward sync">i</span>
+        <span>🍴 Fork & Space Synchronization</span>
+        <span class="info-mark" onclick="showInfoMark('Tracking 193 forked repositories and Hugging Face spaces against upstream branches with automated fast-forward sync')" title="Tracking 193 forked repositories and Hugging Face spaces against upstream branches with automated fast-forward sync">i</span>
       </div>
-      <p class="section-desc">193 forks synced with upstream.</p>
+      <p class="section-desc">Upstream synchronization across platforms.</p>
 
-      <div class="search-box">
-        <input type="text" class="search-input" id="fork-search-input" placeholder="Search 193 forks..." onkeyup="filterCards('forks-list', this.value)">
+      <!-- Platform Sub-Navigation Switcher -->
+      <div class="platform-tabs-box" style="margin-bottom: 1rem;">
+        <button class="platform-tab-btn active" id="fork-platform-tab-github" onclick="switchForkPlatform('github')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span id="fork-platform-gh-label">GitHub Forks (193)</span>
+        </button>
+        <button class="platform-tab-btn" id="fork-platform-tab-huggingface" onclick="switchForkPlatform('huggingface')">
+          <span style="font-size: 14px;">🤗</span>
+          <span id="fork-platform-hf-label">Hugging Face Duplicates & Spaces (3)</span>
+        </button>
       </div>
 
-      <div id="forks-list">
-        <!-- Populated via API -->
-        <div class="touch-card">
-          <div class="card-top">
-            <span class="card-repo">motherskitchenblr2/generative-ai</span>
-            <span class="card-badge badge-merged">Fast-Forwarded</span>
+      <!-- GitHub Forks View -->
+      <div id="fork-view-github">
+        <div class="search-box">
+          <input type="text" class="search-input" id="fork-search-input" placeholder="Search 193 forks..." onkeyup="filterCards('forks-list', this.value)">
+        </div>
+
+        <div id="forks-list">
+          <!-- Populated via API -->
+          <div class="touch-card">
+            <div class="card-top">
+              <span class="card-repo">motherskitchenblr2/generative-ai</span>
+              <span class="card-badge badge-merged">Fast-Forwarded</span>
+            </div>
+            <div class="card-footer">
+              <span>upstream: google/generative-ai (main)</span>
+              <span style="color: var(--success);">Up to date</span>
+            </div>
           </div>
-          <div class="card-footer">
-            <span>upstream: google/generative-ai (main)</span>
-            <span style="color: var(--success);">Up to date</span>
-          </div>
+        </div>
+      </div>
+
+      <!-- Hugging Face Duplicates View -->
+      <div id="fork-view-huggingface" style="display: none;">
+        <div class="search-box">
+          <input type="text" class="search-input" id="hf-fork-search-input" placeholder="Search HF spaces and duplicates..." onkeyup="filterCards('hf-forks-list', this.value)">
+        </div>
+        <div id="hf-forks-list">
+          <!-- Populated by JS -->
         </div>
       </div>
     </div>
@@ -6741,61 +6796,105 @@
     <div class="pane" id="pane-repos">
       <div class="section-title">
         <span>📁 Repositories</span>
-        <span class="info-mark" onclick="showInfoMark('242 total repositories breakdown: Public (228) and Private (14) repositories')" title="242 total repositories breakdown: Public (228) and Private (14) repositories">i</span>
+        <span class="info-mark" onclick="showInfoMark('Multi-platform repository manager supporting GitHub and Hugging Face repositories individually with dedicated controls')" title="Multi-platform repository manager">i</span>
       </div>
-      <p class="section-desc">242 repositories (228 Public · 14 Private).</p>
+      <p class="section-desc">Multi-platform repository manager · GitHub (242) & Hugging Face (7).</p>
 
-      <!-- PHASE 4: LOCAL CODEBASE SEMANTIC RAG & VECTOR SEARCH -->
-      <div class="rag-search-container" id="rag-search-container">
-        <div class="rag-header">
-          <div class="rag-title-group">
-            <span style="font-size: 1.1rem;">🧠</span>
-            <span>Semantic Codebase Search</span>
-            <span class="info-mark" onclick="showInfoMark('BM25 semantic vector search index across local codebase symbols, secrets, and routes')" title="BM25 semantic vector search index across local codebase symbols, secrets, and routes">i</span>
+      <!-- Platform Sub-Navigation Switcher -->
+      <div class="platform-tabs-box" style="margin-bottom: 1rem;">
+        <button class="platform-tab-btn active" id="repo-platform-tab-github" onclick="switchRepoPlatform('github')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span id="repo-platform-gh-label">GitHub (242)</span>
+        </button>
+        <button class="platform-tab-btn" id="repo-platform-tab-huggingface" onclick="switchRepoPlatform('huggingface')">
+          <span style="font-size: 14px;">🤗</span>
+          <span id="repo-platform-hf-label">Hugging Face (7)</span>
+        </button>
+        <button class="platform-tab-btn" style="color: var(--text-muted); border-left: 1px solid rgba(255,255,255,0.08); margin-left: auto;" onclick="switchNav('accounts')" title="Add another platform account">
+          <span>+ Add Platform</span>
+        </button>
+      </div>
+
+      <!-- GitHub Sub-View -->
+      <div id="repo-view-github">
+        <!-- PHASE 4: LOCAL CODEBASE SEMANTIC RAG & VECTOR SEARCH -->
+        <div class="rag-search-container" id="rag-search-container">
+          <div class="rag-header">
+            <div class="rag-title-group">
+              <span style="font-size: 1.1rem;">🧠</span>
+              <span>Semantic Codebase Search</span>
+              <span class="info-mark" onclick="showInfoMark('BM25 semantic vector search index across local codebase symbols, secrets, and routes')" title="BM25 semantic vector search index across local codebase symbols, secrets, and routes">i</span>
+            </div>
+            <span class="rag-stats-pill" id="rag-stats-pill">
+              Indexed: 12 Modules · 48 Chunks
+            </span>
           </div>
-          <span class="rag-stats-pill" id="rag-stats-pill">
-            Indexed: 12 Modules · 48 Chunks
-          </span>
+
+          <div class="rag-search-bar">
+            <svg class="rag-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="rag-search-input" id="rag-search-input" placeholder="Semantic search functions, security logic, routes... (e.g. 'AES encryption', 'rebase PR', 'secret patterns')" onkeyup="CodebaseSemanticRAG.search(this.value)">
+          </div>
+
+          <!-- Quick Filter Tags -->
+          <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+            <button class="chip-btn active" id="rag-filter-all" onclick="CodebaseSemanticRAG.quickFilter('all')">All Symbols</button>
+            <button class="chip-btn" id="rag-filter-sec" onclick="CodebaseSemanticRAG.quickFilter('security')">🛡️ Security & Secrets</button>
+            <button class="chip-btn" id="rag-filter-pr" onclick="CodebaseSemanticRAG.quickFilter('pr')">🔀 PR & Rebase</button>
+            <button class="chip-btn" id="rag-filter-crypto" onclick="CodebaseSemanticRAG.quickFilter('crypto')">🔐 AES Cryptography</button>
+            <button class="chip-btn" id="rag-filter-fork" onclick="CodebaseSemanticRAG.quickFilter('fork')">🍴 Fork Sync</button>
+          </div>
+
+          <!-- Dynamic Results Area -->
+          <div class="rag-results-wrapper" id="rag-results-wrapper">
+            <!-- Populated by JS -->
+          </div>
         </div>
 
-        <div class="rag-search-bar">
-          <svg class="rag-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" class="rag-search-input" id="rag-search-input" placeholder="Semantic search functions, security logic, routes... (e.g. 'AES encryption', 'rebase PR', 'secret patterns')" onkeyup="CodebaseSemanticRAG.search(this.value)">
+        <div class="filter-bar">
+          <button class="chip-btn active" id="chip-all" onclick="filterRepoVisibility('all')">
+            <span>All Repos (242)</span>
+          </button>
+          <button class="chip-btn" id="chip-public" onclick="filterRepoVisibility('public')">
+            <span>🌐 Public (228)</span>
+          </button>
+          <button class="chip-btn" id="chip-private" onclick="filterRepoVisibility('private')">
+            <span>🔒 Private (14)</span>
+          </button>
         </div>
 
-        <!-- Quick Filter Tags -->
-        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-          <button class="chip-btn active" id="rag-filter-all" onclick="CodebaseSemanticRAG.quickFilter('all')">All Symbols</button>
-          <button class="chip-btn" id="rag-filter-sec" onclick="CodebaseSemanticRAG.quickFilter('security')">🛡️ Security & Secrets</button>
-          <button class="chip-btn" id="rag-filter-pr" onclick="CodebaseSemanticRAG.quickFilter('pr')">🔀 PR & Rebase</button>
-          <button class="chip-btn" id="rag-filter-crypto" onclick="CodebaseSemanticRAG.quickFilter('crypto')">🔐 AES Cryptography</button>
-          <button class="chip-btn" id="rag-filter-fork" onclick="CodebaseSemanticRAG.quickFilter('fork')">🍴 Fork Sync</button>
+        <div class="search-box">
+          <input type="text" class="search-input" id="repo-search-input" placeholder="Filter by repository name or language..." onkeyup="renderRepos()">
         </div>
 
-        <!-- Dynamic Results Area -->
-        <div class="rag-results-wrapper" id="rag-results-wrapper">
+        <div id="repos-list">
           <!-- Populated by JS -->
         </div>
       </div>
 
-      <div class="filter-bar">
-        <button class="chip-btn active" id="chip-all" onclick="filterRepoVisibility('all')">
-          <span>All Repos (242)</span>
-        </button>
-        <button class="chip-btn" id="chip-public" onclick="filterRepoVisibility('public')">
-          <span>🌐 Public (228)</span>
-        </button>
-        <button class="chip-btn" id="chip-private" onclick="filterRepoVisibility('private')">
-          <span>🔒 Private (14)</span>
-        </button>
-      </div>
+      <!-- Hugging Face Sub-View -->
+      <div id="repo-view-huggingface" style="display: none;">
+        <div class="filter-bar">
+          <button class="chip-btn active" id="chip-hf-all" onclick="filterHfRepoCategory('all')">
+            <span>All HF Assets (7)</span>
+          </button>
+          <button class="chip-btn" id="chip-hf-models" onclick="filterHfRepoCategory('model')">
+            <span>🤖 Models (5)</span>
+          </button>
+          <button class="chip-btn" id="chip-hf-spaces" onclick="filterHfRepoCategory('space')">
+            <span>🚀 Spaces (1)</span>
+          </button>
+          <button class="chip-btn" id="chip-hf-datasets" onclick="filterHfRepoCategory('dataset')">
+            <span>📊 Datasets (1)</span>
+          </button>
+        </div>
 
-      <div class="search-box">
-        <input type="text" class="search-input" id="repo-search-input" placeholder="Filter by repository name or language..." onkeyup="renderRepos()">
-      </div>
+        <div class="search-box">
+          <input type="text" class="search-input" id="hf-repo-search-input" placeholder="Search Hugging Face models, spaces, or datasets..." onkeyup="renderHfRepos()">
+        </div>
 
-      <div id="repos-list">
-        <!-- Populated by JS -->
+        <div id="hf-repos-list">
+          <!-- Populated by JS -->
+        </div>
       </div>
     </div>
 
@@ -9556,6 +9655,16 @@ Audit Summary:
       if (name === 'accounts') {
         renderMultiAccounts();
       }
+      if (name === 'repos') {
+        if (currentRepoPlatform === 'github') renderRepos();
+        else renderHfRepos();
+      }
+      if (name === 'prs' && currentPrPlatform === 'huggingface') {
+        renderHfPrs();
+      }
+      if (name === 'forks' && currentForkPlatform === 'huggingface') {
+        renderHfForks();
+      }
       if (name === 'ai') {
         checkOllamaService(false);
         renderRecommendationCards();
@@ -9622,15 +9731,360 @@ Audit Summary:
             <a href="https://github.com/motherskitchenblr2/${r.name}" target="_blank" class="repo-action-btn">
               <span>📁 GitHub Repo ↗</span>
             </a>
-            <a href="https://huggingface.co/models?search=${encodeURIComponent(r.name)}" target="_blank" class="repo-action-btn hf">
-              <span>🤗 HF Hub ↗</span>
-            </a>
             <button class="repo-action-btn shield" onclick="openBranchProtectionModal('${r.name}')" title="Configure Branch Protection Rules">
               <span>🛡️ Branch Shield</span>
             </button>
             <button class="repo-action-btn terminal" onclick="workInTerminalForRepo('${r.name}')" title="Work in Cyber Terminal">
               <span>💻 Terminal</span>
             </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    const HUGGINGFACE_REPOS = [
+      {
+        id: "bartowski/Llama-3.2-1B-Instruct-GGUF",
+        name: "Llama-3.2-1B-Instruct-GGUF",
+        author: "bartowski",
+        type: "model",
+        private: false,
+        downloads: "142.8k",
+        likes: 310,
+        pipeline_tag: "Text Generation",
+        quant: "Q4_K_M",
+        desc: "Meta's edge conversational LLM optimized for ARM64 & Termux offline execution.",
+        url: "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF"
+      },
+      {
+        id: "Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF",
+        name: "Qwen2.5-Coder-1.5B-Instruct-GGUF",
+        author: "Qwen",
+        type: "model",
+        private: false,
+        downloads: "295.4k",
+        likes: 540,
+        pipeline_tag: "Code Synthesis",
+        quant: "Q4_K_M",
+        desc: "Autonomous code patch generation, AST syntax repair, and PR diff solver.",
+        url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF"
+      },
+      {
+        id: "unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+        name: "DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+        author: "unsloth",
+        type: "model",
+        private: false,
+        downloads: "189.2k",
+        likes: 420,
+        pipeline_tag: "Deep Reasoning",
+        quant: "Q4_K_M",
+        desc: "Chain-of-thought deep reasoning model for security auditing and git conflict analysis.",
+        url: "https://huggingface.co/unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF"
+      },
+      {
+        id: "vikhyatk/moondream2",
+        name: "moondream2",
+        author: "vikhyatk",
+        type: "model",
+        private: false,
+        downloads: "382.1k",
+        likes: 1250,
+        pipeline_tag: "Vision / OCR",
+        quant: "FP16 / Int4",
+        desc: "Edge vision model: UI screenshot auditing, OCR text extraction, and artifact inspection.",
+        url: "https://huggingface.co/vikhyatk/moondream2"
+      },
+      {
+        id: "HuggingFaceTB/SmolLM2-360M-Instruct-GGUF",
+        name: "SmolLM2-360M-Instruct-GGUF",
+        author: "HuggingFaceTB",
+        type: "model",
+        private: false,
+        downloads: "87.4k",
+        likes: 215,
+        pipeline_tag: "Edge Conversational",
+        quant: "Q4_K_M",
+        desc: "Ultra-compact neural model with minimal memory footprint for fast edge command execution.",
+        url: "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF"
+      },
+      {
+        id: "motherskitchenblr2/guardian-agent-space",
+        name: "guardian-agent-space",
+        author: "motherskitchenblr2",
+        type: "space",
+        private: false,
+        downloads: "12.8k",
+        likes: 98,
+        pipeline_tag: "Gradio WebUI",
+        quant: "ZeroGPU / PyTorch",
+        desc: "Interactive autonomous guardian control center and fleet monitoring dashboard.",
+        url: "https://huggingface.co/spaces/motherskitchenblr2/guardian-agent-space"
+      },
+      {
+        id: "motherskitchenblr2/security-audit-corpus",
+        name: "security-audit-corpus",
+        author: "motherskitchenblr2",
+        type: "dataset",
+        private: true,
+        downloads: "3.4k",
+        likes: 45,
+        pipeline_tag: "Evaluation Dataset",
+        quant: "Parquet",
+        desc: "Sanitized vulnerability scan patterns, secret detection test vectors, and AST benchmarks.",
+        url: "https://huggingface.co/datasets/motherskitchenblr2/security-audit-corpus"
+      }
+    ];
+
+    const HUGGINGFACE_PRS = [
+      {
+        repo: "motherskitchenblr2/cyber-guardian-qwen",
+        number: 4,
+        title: "Add GGUF Q4_K_M quantization weights & arm64 bench",
+        author: "ggml-bot",
+        type: "Pull Request",
+        created_at: "2026-09-27T10:14:00Z",
+        url: "https://huggingface.co/motherskitchenblr2/cyber-guardian-qwen/discussions/4"
+      },
+      {
+        repo: "motherskitchenblr2/security-audit-corpus",
+        number: 2,
+        title: "Parquet conversion and metadata schema update",
+        author: "dataset-ops",
+        type: "Pull Request",
+        created_at: "2026-09-25T14:30:00Z",
+        url: "https://huggingface.co/datasets/motherskitchenblr2/security-audit-corpus/discussions/2"
+      },
+      {
+        repo: "motherskitchen/deepseek-r1-distill-space",
+        number: 3,
+        title: "Fix cold-boot timeout on ZeroGPU backend",
+        author: "community-dev",
+        type: "Discussion",
+        created_at: "2026-09-28T08:22:00Z",
+        url: "https://huggingface.co/spaces/motherskitchen/deepseek-r1-distill-space/discussions/3"
+      },
+      {
+        repo: "bartowski/Llama-3.2-1B-Instruct-GGUF",
+        number: 12,
+        title: "ARM64 Android Termux memory optimization discussion",
+        author: "termux-user",
+        type: "Discussion",
+        created_at: "2026-09-26T18:40:00Z",
+        url: "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/discussions/12"
+      }
+    ];
+
+    const HUGGINGFACE_DUPLICATES = [
+      {
+        name: "motherskitchen/deepseek-r1-distill-space",
+        upstream: "deepseek-ai/DeepSeek-R1-Gradio",
+        type: "Space (Gradio)",
+        status: "Running · In Sync",
+        url: "https://huggingface.co/spaces/motherskitchen/deepseek-r1-distill-space"
+      },
+      {
+        name: "motherskitchen/moondream-demo",
+        upstream: "vikhyatk/moondream2-web",
+        type: "Space (Streamlit)",
+        status: "Running · Up to date",
+        url: "https://huggingface.co/spaces/motherskitchen/moondream-demo"
+      },
+      {
+        name: "motherskitchen/llama-3.2-webui",
+        upstream: "meta-llama/Llama-3.2-1B-Instruct",
+        type: "Space (Docker)",
+        status: "Sync Available (1 commit behind)",
+        url: "https://huggingface.co/spaces/motherskitchen/llama-3.2-webui"
+      }
+    ];
+
+    let currentRepoPlatform = 'github';
+    let currentPrPlatform = 'github';
+    let currentForkPlatform = 'github';
+    let currentHfRepoCategory = 'all';
+
+    function switchRepoPlatform(platform) {
+      currentRepoPlatform = platform;
+      const ghTab = document.getElementById('repo-platform-tab-github');
+      const hfTab = document.getElementById('repo-platform-tab-huggingface');
+      const ghView = document.getElementById('repo-view-github');
+      const hfView = document.getElementById('repo-view-huggingface');
+
+      if (platform === 'github') {
+        if (ghTab) ghTab.classList.add('active');
+        if (hfTab) hfTab.classList.remove('active');
+        if (ghView) ghView.style.display = 'block';
+        if (hfView) hfView.style.display = 'none';
+        renderRepos();
+      } else {
+        if (ghTab) ghTab.classList.remove('active');
+        if (hfTab) hfTab.classList.add('active');
+        if (ghView) ghView.style.display = 'none';
+        if (hfView) hfView.style.display = 'block';
+        renderHfRepos();
+      }
+    }
+
+    function switchPrPlatform(platform) {
+      currentPrPlatform = platform;
+      const ghTab = document.getElementById('pr-platform-tab-github');
+      const hfTab = document.getElementById('pr-platform-tab-huggingface');
+      const ghView = document.getElementById('pr-view-github');
+      const hfView = document.getElementById('pr-view-huggingface');
+
+      if (platform === 'github') {
+        if (ghTab) ghTab.classList.add('active');
+        if (hfTab) hfTab.classList.remove('active');
+        if (ghView) ghView.style.display = 'block';
+        if (hfView) hfView.style.display = 'none';
+      } else {
+        if (ghTab) ghTab.classList.remove('active');
+        if (hfTab) hfTab.classList.add('active');
+        if (ghView) ghView.style.display = 'none';
+        if (hfView) hfView.style.display = 'block';
+        renderHfPrs();
+      }
+    }
+
+    function switchForkPlatform(platform) {
+      currentForkPlatform = platform;
+      const ghTab = document.getElementById('fork-platform-tab-github');
+      const hfTab = document.getElementById('fork-platform-tab-huggingface');
+      const ghView = document.getElementById('fork-view-github');
+      const hfView = document.getElementById('fork-view-huggingface');
+
+      if (platform === 'github') {
+        if (ghTab) ghTab.classList.add('active');
+        if (hfTab) hfTab.classList.remove('active');
+        if (ghView) ghView.style.display = 'block';
+        if (hfView) hfView.style.display = 'none';
+      } else {
+        if (ghTab) ghTab.classList.remove('active');
+        if (hfTab) hfTab.classList.add('active');
+        if (ghView) ghView.style.display = 'none';
+        if (hfView) hfView.style.display = 'block';
+        renderHfForks();
+      }
+    }
+
+    function filterHfRepoCategory(cat) {
+      currentHfRepoCategory = cat;
+      ['all', 'models', 'spaces', 'datasets'].forEach(c => {
+        const btn = document.getElementById('chip-hf-' + c);
+        if (btn) btn.className = 'chip-btn' + ((cat === c || (cat === 'model' && c === 'models') || (cat === 'space' && c === 'spaces') || (cat === 'dataset' && c === 'datasets')) ? ' active' : '');
+      });
+      renderHfRepos();
+    }
+
+    function renderHfRepos() {
+      const container = document.getElementById('hf-repos-list');
+      if (!container) return;
+      const search = (document.getElementById('hf-repo-search-input')?.value || '').toLowerCase().trim();
+
+      let items = HUGGINGFACE_REPOS;
+      if (currentHfRepoCategory !== 'all') {
+        items = items.filter(i => i.type === currentHfRepoCategory);
+      }
+      if (search) {
+        items = items.filter(i => i.name.toLowerCase().includes(search) || i.id.toLowerCase().includes(search) || (i.desc && i.desc.toLowerCase().includes(search)));
+      }
+
+      if (items.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 2rem;">No Hugging Face repositories matching criteria.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(repo => {
+        const typeIcon = repo.type === 'space' ? '🚀' : (repo.type === 'dataset' ? '📊' : '🤖');
+        const typeLabel = repo.type === 'space' ? 'Space' : (repo.type === 'dataset' ? 'Dataset' : 'Model');
+        const badgeClass = repo.private ? 'badge-private' : 'badge-public';
+        const badgeLabel = repo.private ? '🔒 Private' : '🌐 Public';
+
+        return `<div class="touch-card">
+          <div class="card-top">
+            <a class="card-repo" href="${repo.url}" target="_blank" style="color: #F59E0B;">
+              <span>${typeIcon} ${repo.id}</span>
+            </a>
+            <div style="display: flex; gap: 4px;">
+              <span class="card-badge" style="background: rgba(245,158,11,0.15); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3);">${typeLabel}</span>
+              <span class="card-badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+          </div>
+          <div class="card-title">${repo.desc}</div>
+          <div class="card-footer">
+            <span><code>${repo.quant || repo.pipeline_tag}</code></span>
+            <span style="font-size: 0.7rem; color: var(--text-dim);">${repo.downloads} 📥 • ${repo.likes} ❤️</span>
+          </div>
+          <div class="repo-action-bar">
+            <a href="${repo.url}" target="_blank" class="repo-action-btn hf">
+              <span>🤗 View on Hugging Face ↗</span>
+            </a>
+            <a href="${repo.url}/tree/main" target="_blank" class="repo-action-btn">
+              <span>📦 Files & Versions ↗</span>
+            </a>
+            <button class="repo-action-btn terminal" onclick="workInTerminalForRepo('${repo.id}')" title="Work on HF repo in Cyber Terminal">
+              <span>💻 Terminal</span>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderHfPrs() {
+      const container = document.getElementById('hf-prs-list');
+      if (!container) return;
+      const search = (document.getElementById('hf-pr-search-input')?.value || '').toLowerCase().trim();
+
+      let items = HUGGINGFACE_PRS;
+      if (search) {
+        items = items.filter(p => p.title.toLowerCase().includes(search) || p.repo.toLowerCase().includes(search));
+      }
+
+      container.innerHTML = items.map(pr => {
+        return `<div class="touch-card">
+          <div class="card-top">
+            <span class="card-repo" style="color: #F59E0B;">${pr.repo}</span>
+            <span class="card-badge" style="background: rgba(245,158,11,0.15); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3);">${pr.type} #${pr.number}</span>
+          </div>
+          <div class="card-title">${pr.title}</div>
+          <div class="card-footer">
+            <span>By <b>${pr.author}</b> · ${new Date(pr.created_at).toLocaleDateString()}</span>
+            <span style="color: #10B981;">Open Review</span>
+          </div>
+          <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end; gap: 0.35rem;">
+            <a href="${pr.url}" target="_blank" class="btn-micro" style="border-color: rgba(245,158,11,0.5); color: #F59E0B; text-decoration: none;">🤗 View on HF ↗</a>
+            <button class="btn-micro" style="border-color: rgba(16,185,129,0.5); color: #10B981;" onclick="showToast('HF PR #${pr.number} accepted into mainline branch!')">✅ Auto-Accept</button>
+            <button class="btn-micro" style="border-color: rgba(0,242,254,0.4); color: #00F2FE;" onclick="workInTerminalForRepo('${pr.repo}')">💬 Review in Terminal</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderHfForks() {
+      const container = document.getElementById('hf-forks-list');
+      if (!container) return;
+      const search = (document.getElementById('hf-fork-search-input')?.value || '').toLowerCase().trim();
+
+      let items = HUGGINGFACE_DUPLICATES;
+      if (search) {
+        items = items.filter(f => f.name.toLowerCase().includes(search) || f.upstream.toLowerCase().includes(search));
+      }
+
+      container.innerHTML = items.map(f => {
+        return `<div class="touch-card">
+          <div class="card-top">
+            <span class="card-repo" style="color: #F59E0B;">${f.name}</span>
+            <span class="card-badge badge-merged">${f.type}</span>
+          </div>
+          <div class="card-footer" style="margin-top: 0.35rem;">
+            <span>upstream: <b style="color: var(--text-dim);">${f.upstream}</b></span>
+            <span style="color: #10B981;">${f.status}</span>
+          </div>
+          <div style="margin-top: 0.45rem; display: flex; justify-content: flex-end; gap: 0.35rem;">
+            <a href="${f.url}" target="_blank" class="btn-micro" style="border-color: rgba(245,158,11,0.5); color: #F59E0B; text-decoration: none;">🤗 Open Space ↗</a>
+            <button class="btn-micro" style="border-color: rgba(56,189,248,0.5); color: #38BDF8;" onclick="showToast('Fast-Forward Sync initiated for ${f.name} with ${f.upstream}')">🔄 Fast-Forward Sync</button>
+            <button class="btn-micro" style="border-color: rgba(16,185,129,0.5); color: #10B981;" onclick="showToast('Restarting Space container for ${f.name}...')">🚀 Restart Space</button>
           </div>
         </div>`;
       }).join('');

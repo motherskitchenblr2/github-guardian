@@ -23,6 +23,9 @@ import {
   Terminal,
   Building2,
   UserCheck,
+  Plus,
+  Rocket,
+  Database,
 } from "lucide-react";
 import { HardwareAdvisor } from "@/components/ai/HardwareAdvisor";
 import { ApiKeyModal } from "@/components/ai/ApiKeyModal";
@@ -71,8 +74,169 @@ interface RepositoryItem {
   updated_at: string;
 }
 
+const HUGGINGFACE_REPOS = [
+  {
+    id: "bartowski/Llama-3.2-1B-Instruct-GGUF",
+    name: "Llama-3.2-1B-Instruct-GGUF",
+    author: "bartowski",
+    type: "model" as const,
+    private: false,
+    downloads: "142.8k",
+    likes: 310,
+    pipeline_tag: "Text Generation",
+    quant: "Q4_K_M",
+    desc: "Meta's edge conversational LLM optimized for ARM64 & Termux offline execution.",
+    url: "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF",
+  },
+  {
+    id: "Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF",
+    name: "Qwen2.5-Coder-1.5B-Instruct-GGUF",
+    author: "Qwen",
+    type: "model" as const,
+    private: false,
+    downloads: "295.4k",
+    likes: 540,
+    pipeline_tag: "Code Synthesis",
+    quant: "Q4_K_M",
+    desc: "Autonomous code patch generation, AST syntax repair, and PR diff solver.",
+    url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF",
+  },
+  {
+    id: "unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+    name: "DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+    author: "unsloth",
+    type: "model" as const,
+    private: false,
+    downloads: "189.2k",
+    likes: 420,
+    pipeline_tag: "Deep Reasoning",
+    quant: "Q4_K_M",
+    desc: "Chain-of-thought deep reasoning model for security auditing and git conflict analysis.",
+    url: "https://huggingface.co/unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+  },
+  {
+    id: "vikhyatk/moondream2",
+    name: "moondream2",
+    author: "vikhyatk",
+    type: "model" as const,
+    private: false,
+    downloads: "382.1k",
+    likes: 1250,
+    pipeline_tag: "Vision / OCR",
+    quant: "FP16 / Int4",
+    desc: "Edge vision model: UI screenshot auditing, OCR text extraction, and artifact inspection.",
+    url: "https://huggingface.co/vikhyatk/moondream2",
+  },
+  {
+    id: "HuggingFaceTB/SmolLM2-360M-Instruct-GGUF",
+    name: "SmolLM2-360M-Instruct-GGUF",
+    author: "HuggingFaceTB",
+    type: "model" as const,
+    private: false,
+    downloads: "87.4k",
+    likes: 215,
+    pipeline_tag: "Edge Conversational",
+    quant: "Q4_K_M",
+    desc: "Ultra-compact neural model with minimal memory footprint for fast edge command execution.",
+    url: "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF",
+  },
+  {
+    id: "motherskitchenblr2/guardian-agent-space",
+    name: "guardian-agent-space",
+    author: "motherskitchenblr2",
+    type: "space" as const,
+    private: false,
+    downloads: "12.8k",
+    likes: 98,
+    pipeline_tag: "Gradio WebUI",
+    quant: "ZeroGPU / PyTorch",
+    desc: "Interactive autonomous guardian control center and fleet monitoring dashboard.",
+    url: "https://huggingface.co/spaces/motherskitchenblr2/guardian-agent-space",
+  },
+  {
+    id: "motherskitchenblr2/security-audit-corpus",
+    name: "security-audit-corpus",
+    author: "motherskitchenblr2",
+    type: "dataset" as const,
+    private: true,
+    downloads: "3.4k",
+    likes: 45,
+    pipeline_tag: "Evaluation Dataset",
+    quant: "Parquet",
+    desc: "Sanitized vulnerability scan patterns, secret detection test vectors, and AST benchmarks.",
+    url: "https://huggingface.co/datasets/motherskitchenblr2/security-audit-corpus",
+  },
+];
+
+const HUGGINGFACE_PRS = [
+  {
+    repo: "motherskitchenblr2/cyber-guardian-qwen",
+    number: 4,
+    title: "Add GGUF Q4_K_M quantization weights & arm64 bench",
+    author: "ggml-bot",
+    type: "Pull Request",
+    created_at: "2026-09-27T10:14:00Z",
+    url: "https://huggingface.co/motherskitchenblr2/cyber-guardian-qwen/discussions/4",
+  },
+  {
+    repo: "motherskitchenblr2/security-audit-corpus",
+    number: 2,
+    title: "Parquet conversion and metadata schema update",
+    author: "dataset-ops",
+    type: "Pull Request",
+    created_at: "2026-09-25T14:30:00Z",
+    url: "https://huggingface.co/datasets/motherskitchenblr2/security-audit-corpus/discussions/2",
+  },
+  {
+    repo: "motherskitchen/deepseek-r1-distill-space",
+    number: 3,
+    title: "Fix cold-boot timeout on ZeroGPU backend",
+    author: "community-dev",
+    type: "Discussion",
+    created_at: "2026-09-28T08:22:00Z",
+    url: "https://huggingface.co/spaces/motherskitchen/deepseek-r1-distill-space/discussions/3",
+  },
+  {
+    repo: "bartowski/Llama-3.2-1B-Instruct-GGUF",
+    number: 12,
+    title: "ARM64 Android Termux memory optimization discussion",
+    author: "termux-user",
+    type: "Discussion",
+    created_at: "2026-09-26T18:40:00Z",
+    url: "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/discussions/12",
+  },
+];
+
+const HUGGINGFACE_DUPLICATES = [
+  {
+    name: "motherskitchen/deepseek-r1-distill-space",
+    upstream: "deepseek-ai/DeepSeek-R1-Gradio",
+    type: "Space (Gradio)",
+    status: "Running · In Sync",
+    url: "https://huggingface.co/spaces/motherskitchen/deepseek-r1-distill-space",
+  },
+  {
+    name: "motherskitchen/moondream-demo",
+    upstream: "vikhyatk/moondream2-web",
+    type: "Space (Streamlit)",
+    status: "Running · Up to date",
+    url: "https://huggingface.co/spaces/motherskitchen/moondream-demo",
+  },
+  {
+    name: "motherskitchen/llama-3.2-webui",
+    upstream: "meta-llama/Llama-3.2-1B-Instruct",
+    type: "Space (Docker)",
+    status: "Sync Available (1 commit behind)",
+    url: "https://huggingface.co/spaces/motherskitchen/llama-3.2-webui",
+  },
+];
+
 export default function GuardianDashboard() {
   const [activeTab, setActiveTab] = useState<"office" | "repos" | "prs" | "forks" | "terminal" | "ai" | "integrations">("office");
+  const [repoPlatform, setRepoPlatform] = useState<"github" | "huggingface">("github");
+  const [prPlatform, setPrPlatform] = useState<"github" | "huggingface">("github");
+  const [forkPlatform, setForkPlatform] = useState<"github" | "huggingface">("github");
+  const [hfRepoCategory, setHfRepoCategory] = useState<"all" | "model" | "space" | "dataset">("all");
   const [repoVisibilityFilter, setRepoVisibilityFilter] = useState<"all" | "public" | "private">("all");
 
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
@@ -250,6 +414,35 @@ export default function GuardianDashboard() {
         r.description.toLowerCase().includes(filterQuery.toLowerCase()) ||
         r.language.toLowerCase().includes(filterQuery.toLowerCase())
     );
+
+  // Filtered Hugging Face Repositories
+  const filteredHfRepos = HUGGINGFACE_REPOS.filter((repo) => {
+    const matchesCategory = hfRepoCategory === "all" || repo.type === hfRepoCategory;
+    const matchesSearch =
+      !filterQuery ||
+      repo.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
+      repo.id.toLowerCase().includes(filterQuery.toLowerCase()) ||
+      repo.desc.toLowerCase().includes(filterQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Filtered Hugging Face PRs & Discussions
+  const filteredHfPrs = HUGGINGFACE_PRS.filter((pr) => {
+    return (
+      !filterQuery ||
+      pr.title.toLowerCase().includes(filterQuery.toLowerCase()) ||
+      pr.repo.toLowerCase().includes(filterQuery.toLowerCase())
+    );
+  });
+
+  // Filtered Hugging Face Duplicates & Spaces
+  const filteredHfForks = HUGGINGFACE_DUPLICATES.filter((fork) => {
+    return (
+      !filterQuery ||
+      fork.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
+      fork.upstream.toLowerCase().includes(filterQuery.toLowerCase())
+    );
+  });
 
   return (
     <div className="flex flex-col min-h-screen pb-32 md:pb-16">
@@ -510,6 +703,45 @@ export default function GuardianDashboard() {
         {/* TAB 1: REPOSITORIES (ALL, PUBLIC, PRIVATE) */}
         {activeTab === "repos" && (
           <div className="space-y-4">
+            {/* Multi-Platform Selector Bar */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/10">
+                <button
+                  onClick={() => setRepoPlatform("github")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    repoPlatform === "github"
+                      ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <FolderGit2 className="w-3.5 h-3.5" />
+                  <span>GitHub ({stats.total_owned})</span>
+                </button>
+                <button
+                  onClick={() => setRepoPlatform("huggingface")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    repoPlatform === "huggingface"
+                      ? "bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/25"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Hugging Face ({HUGGINGFACE_REPOS.length})</span>
+                </button>
+              </div>
+              <button
+                onClick={() => setActiveTab("integrations")}
+                className="text-[11px] text-slate-400 hover:text-sky-300 flex items-center gap-1 py-1 px-2.5 rounded-lg bg-white/5 border border-white/10"
+                title="Manage platform connections"
+              >
+                <Plus className="w-3 h-3" />
+                <span>Add Platform</span>
+              </button>
+            </div>
+
+            {/* GITHUB PLATFORM VIEW */}
+            {repoPlatform === "github" && (
+              <div className="space-y-4">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-1.5 bg-slate-900/50 p-1 rounded-xl border border-white/10">
                 <button
@@ -642,7 +874,7 @@ export default function GuardianDashboard() {
                       </span>
                     </div>
 
-                    {/* Dedicated GitHub & Hugging Face Action Buttons to view and work on individual repositories */}
+                    {/* Dedicated Pure GitHub Action Buttons */}
                     <div className="flex items-center gap-2 pt-2 border-t border-white/5 flex-wrap">
                       <a
                         href={repo.html_url}
@@ -652,17 +884,6 @@ export default function GuardianDashboard() {
                       >
                         <FolderGit2 className="w-3.5 h-3.5 text-sky-400" />
                         <span>GitHub Repo</span>
-                        <ExternalLink className="w-3 h-3 opacity-60" />
-                      </a>
-
-                      <a
-                        href={`https://huggingface.co/models?search=${encodeURIComponent(repo.name)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="py-1.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Hugging Face Hub</span>
                         <ExternalLink className="w-3 h-3 opacity-60" />
                       </a>
 
@@ -696,132 +917,504 @@ export default function GuardianDashboard() {
           </div>
         )}
 
-        {/* TAB 2: PULL REQUESTS */}
-        {activeTab === "prs" && (
+        {/* HUGGING FACE PLATFORM VIEW */}
+        {repoPlatform === "huggingface" && (
           <div className="space-y-4">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-slate-900/50 p-1 rounded-xl border border-white/10">
+                <button
+                  onClick={() => setHfRepoCategory("all")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    hfRepoCategory === "all"
+                      ? "bg-amber-500 text-slate-950 font-bold"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <Layers className="w-3 h-3" />
+                  <span>All ({HUGGINGFACE_REPOS.length})</span>
+                </button>
+
+                <button
+                  onClick={() => setHfRepoCategory("model")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    hfRepoCategory === "model"
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Bot className="w-3 h-3 text-amber-400" />
+                  <span>Models ({HUGGINGFACE_REPOS.filter((r) => r.type === "model").length})</span>
+                </button>
+
+                <button
+                  onClick={() => setHfRepoCategory("space")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    hfRepoCategory === "space"
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Rocket className="w-3 h-3 text-pink-400" />
+                  <span>Spaces ({HUGGINGFACE_REPOS.filter((r) => r.type === "space").length})</span>
+                </button>
+
+                <button
+                  onClick={() => setHfRepoCategory("dataset")}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    hfRepoCategory === "dataset"
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Database className="w-3 h-3 text-emerald-400" />
+                  <span>Datasets ({HUGGINGFACE_REPOS.filter((r) => r.type === "dataset").length})</span>
+                </button>
+              </div>
+
+              <div className="text-[11px] text-slate-400 font-mono">
+                Showing {filteredHfRepos.length} Hugging Face assets
+              </div>
+            </div>
+
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
-                placeholder="Search PR title or repo name..."
-                className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                placeholder="Search Hugging Face models, spaces, or datasets..."
+                className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
               />
             </div>
 
             <div className="space-y-3">
-              {filteredPrs.length === 0 ? (
+              {filteredHfRepos.length === 0 ? (
                 <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
-                  {loading ? "Loading pull requests..." : "No open pull requests matching your search."}
+                  No Hugging Face assets matching filter criteria.
                 </div>
               ) : (
-                filteredPrs.map((pr) => {
-                  const isProcessingMerge = processingId === `merge-${pr.repo}-${pr.number}`;
-                  const isProcessingRebase = processingId === `rebase-${pr.repo}-${pr.number}`;
-
-                  return (
-                    <div
-                      key={`${pr.repo}-${pr.number}`}
-                      className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-3"
-                    >
-                      <div className="flex items-center justify-between gap-2">
+                filteredHfRepos.map((repo) => (
+                  <div
+                    key={repo.id}
+                    className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all flex flex-col gap-2.5"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        {repo.type === "space" ? (
+                          <Rocket className="w-4 h-4 text-pink-400 shrink-0" />
+                        ) : repo.type === "dataset" ? (
+                          <Database className="w-4 h-4 text-emerald-400 shrink-0" />
+                        ) : (
+                          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+                        )}
                         <a
-                          href={pr.url}
+                          href={repo.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-xs sm:text-sm font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 truncate"
+                          className="font-bold text-xs sm:text-sm text-amber-300 hover:text-amber-200 truncate flex items-center gap-1"
                         >
-                          <span className="truncate">{pr.repo}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0 opacity-70" />
+                          <span className="truncate">{repo.id}</span>
+                          <ExternalLink className="w-3 h-3 shrink-0 opacity-60" />
                         </a>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300 shrink-0">
-                          #{pr.number}
-                        </span>
                       </div>
 
-                      <h3 className="text-xs sm:text-sm font-medium text-slate-100 line-clamp-2 leading-relaxed">
-                        {pr.title}
-                      </h3>
-
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-                          <span>{pr.author}</span>
-                        </div>
-                        <span className="text-slate-500">
-                          {new Date(pr.created_at).toLocaleDateString()}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-bold font-mono uppercase">
+                          {repo.type}
                         </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          onClick={() => handleMergePr(pr.repo, pr.number, pr.title)}
-                          disabled={isProcessingMerge}
-                          className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-900/30 touch-press disabled:opacity-50"
-                        >
-                          <Zap className="w-3.5 h-3.5" />
-                          <span>{isProcessingMerge ? "Merging..." : "Squash Merge"}</span>
-                        </button>
-
-                        <button
-                          onClick={() => handleRebasePr(pr.repo, pr.number)}
-                          disabled={isProcessingRebase}
-                          className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 touch-press disabled:opacity-50"
-                        >
-                          <RefreshCw className={`w-3.5 h-3.5 ${isProcessingRebase ? "animate-spin" : ""}`} />
-                          <span>{isProcessingRebase ? "Rebasing..." : "Rebase Conflict"}</span>
-                        </button>
+                        {repo.private ? (
+                          <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/10 text-[10px] font-bold font-mono uppercase">
+                            Private
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold font-mono uppercase">
+                            Public
+                          </span>
+                        )}
                       </div>
                     </div>
-                  );
-                })
+
+                    <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                      {repo.desc}
+                    </p>
+
+                    <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono flex-wrap">
+                      <span className="px-2 py-0.5 rounded bg-white/5 text-slate-300">
+                        {repo.quant || repo.pipeline_tag}
+                      </span>
+                      <span>{repo.downloads} downloads</span>
+                      <span>{repo.likes} likes</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5 flex-wrap">
+                      <a
+                        href={repo.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <span>View on Hugging Face</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
+                      </a>
+
+                      <a
+                        href={`${repo.url}/tree/main`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press"
+                      >
+                        <FolderGit2 className="w-3.5 h-3.5 text-sky-400" />
+                        <span>Files & Versions</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
+                      </a>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab("terminal");
+                          showToast(`Cyber Terminal: Target HF repository set to ${repo.id}`);
+                        }}
+                        className="py-1.5 px-3 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-300 text-xs font-semibold flex items-center gap-1.5 transition-colors touch-press sm:ml-auto"
+                      >
+                        <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Work in Terminal</span>
+                      </button>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
+          </div>
+        )}
+      </div>
+    )}
+
+        {/* TAB 2: PULL REQUESTS */}
+        {activeTab === "prs" && (
+          <div className="space-y-4">
+            {/* Multi-Platform Selector Bar */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/10">
+                <button
+                  onClick={() => setPrPlatform("github")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    prPlatform === "github"
+                      ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <FolderGit2 className="w-3.5 h-3.5" />
+                  <span>GitHub PRs ({stats.open_prs})</span>
+                </button>
+                <button
+                  onClick={() => setPrPlatform("huggingface")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    prPlatform === "huggingface"
+                      ? "bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/25"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Hugging Face PRs & Discussions ({HUGGINGFACE_PRS.length})</span>
+                </button>
+              </div>
+            </div>
+
+            {/* GITHUB PRS VIEW */}
+            {prPlatform === "github" && (
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={filterQuery}
+                    onChange={(e) => setFilterQuery(e.target.value)}
+                    placeholder="Search PR title or repo name..."
+                    className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-colors"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  {filteredPrs.length === 0 ? (
+                    <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
+                      {loading ? "Loading pull requests..." : "No open pull requests matching your search."}
+                    </div>
+                  ) : (
+                    filteredPrs.map((pr) => {
+                      const isProcessingMerge = processingId === `merge-${pr.repo}-${pr.number}`;
+                      const isProcessingRebase = processingId === `rebase-${pr.repo}-${pr.number}`;
+
+                      return (
+                        <div
+                          key={`${pr.repo}-${pr.number}`}
+                          className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all flex flex-col gap-3"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <a
+                              href={pr.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-xs sm:text-sm font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1.5 truncate"
+                            >
+                              <span className="truncate">{pr.repo}</span>
+                              <ExternalLink className="w-3 h-3 shrink-0 opacity-70" />
+                            </a>
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300 shrink-0">
+                              #{pr.number}
+                            </span>
+                          </div>
+
+                          <h3 className="text-xs sm:text-sm font-medium text-slate-100 line-clamp-2 leading-relaxed">
+                            {pr.title}
+                          </h3>
+
+                          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-sky-400"></span>
+                              <span>{pr.author}</span>
+                            </div>
+                            <span className="text-slate-500">
+                              {new Date(pr.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 pt-1">
+                            <button
+                              onClick={() => handleMergePr(pr.repo, pr.number, pr.title)}
+                              disabled={isProcessingMerge}
+                              className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-900/30 touch-press disabled:opacity-50"
+                            >
+                              <Zap className="w-3.5 h-3.5" />
+                              <span>{isProcessingMerge ? "Merging..." : "Squash Merge"}</span>
+                            </button>
+
+                            <button
+                              onClick={() => handleRebasePr(pr.repo, pr.number)}
+                              disabled={isProcessingRebase}
+                              className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 touch-press disabled:opacity-50"
+                            >
+                              <RefreshCw className={`w-3.5 h-3.5 ${isProcessingRebase ? "animate-spin" : ""}`} />
+                              <span>{isProcessingRebase ? "Rebasing..." : "Rebase Conflict"}</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* HUGGING FACE PRS & DISCUSSIONS VIEW */}
+            {prPlatform === "huggingface" && (
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={filterQuery}
+                    onChange={(e) => setFilterQuery(e.target.value)}
+                    placeholder="Search Hugging Face PR or discussion..."
+                    className="w-full bg-slate-900/50 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  {filteredHfPrs.length === 0 ? (
+                    <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-xs sm:text-sm">
+                      No Hugging Face PRs or discussions matching search.
+                    </div>
+                  ) : (
+                    filteredHfPrs.map((pr) => (
+                      <div
+                        key={`${pr.repo}-${pr.number}`}
+                        className="glass-panel p-4 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all flex flex-col gap-3"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <a
+                            href={pr.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs sm:text-sm font-semibold text-amber-300 hover:text-amber-200 flex items-center gap-1.5 truncate"
+                          >
+                            <span className="truncate">{pr.repo}</span>
+                            <ExternalLink className="w-3 h-3 shrink-0 opacity-70" />
+                          </a>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 shrink-0">
+                            {pr.type} #{pr.number}
+                          </span>
+                        </div>
+
+                        <h3 className="text-xs sm:text-sm font-medium text-slate-100 line-clamp-2 leading-relaxed">
+                          {pr.title}
+                        </h3>
+
+                        <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                            <span>{pr.author}</span>
+                          </div>
+                          <span className="text-slate-500">
+                            {new Date(pr.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 pt-1">
+                          <button
+                            onClick={() => showToast(`Accepted Hugging Face PR #${pr.number} for ${pr.repo}`)}
+                            className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-900/30 touch-press"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Auto-Accept</span>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setActiveTab("terminal");
+                              showToast(`Cyber Terminal: Target HF PR #${pr.number} set for ${pr.repo}`);
+                            }}
+                            className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-1.5 touch-press"
+                          >
+                            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>Review in Terminal</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* TAB 3: FORK SYNCHRONIZER */}
         {activeTab === "forks" && (
-          <div className="space-y-3">
-            <div className="p-3.5 bg-sky-950/30 border border-sky-500/20 rounded-2xl flex items-center justify-between gap-3 mb-2">
-              <div className="text-xs text-sky-200">
-                <span className="font-bold">193 Forked Repositories</span> actively tracking upstream origin branches.
+          <div className="space-y-4">
+            {/* Multi-Platform Selector Bar */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-white/10">
+                <button
+                  onClick={() => setForkPlatform("github")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    forkPlatform === "github"
+                      ? "bg-sky-500 text-white shadow-md shadow-sky-500/25"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <FolderGit2 className="w-3.5 h-3.5" />
+                  <span>GitHub Forks ({stats.forks_count})</span>
+                </button>
+                <button
+                  onClick={() => setForkPlatform("huggingface")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 touch-press transition-all ${
+                    forkPlatform === "huggingface"
+                      ? "bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/25"
+                      : "text-slate-400 hover:text-amber-300"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Hugging Face Duplicates & Spaces ({HUGGINGFACE_DUPLICATES.length})</span>
+                </button>
               </div>
             </div>
 
-            {forks.map((fork) => {
-              const isSyncing = processingId === `sync-${fork.full_name}`;
-              return (
-                <div
-                  key={fork.id}
-                  className="glass-panel p-4 rounded-2xl flex items-center justify-between gap-3"
-                >
-                  <div className="min-w-0 flex-1">
-                    <a
-                      href={fork.html_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-xs sm:text-sm font-semibold text-white hover:text-sky-400 truncate block"
+            {/* GITHUB FORKS VIEW */}
+            {forkPlatform === "github" && (
+              <div className="space-y-3">
+                <div className="p-3.5 bg-sky-950/30 border border-sky-500/20 rounded-2xl flex items-center justify-between gap-3 mb-2">
+                  <div className="text-xs text-sky-200">
+                    <span className="font-bold">193 Forked Repositories</span> actively tracking upstream origin branches.
+                  </div>
+                </div>
+
+                {forks.map((fork) => {
+                  const isSyncing = processingId === `sync-${fork.full_name}`;
+                  return (
+                    <div
+                      key={fork.id}
+                      className="glass-panel p-4 rounded-2xl flex items-center justify-between gap-3"
                     >
-                      {fork.name}
-                    </a>
-                    <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                      branch: <span className="text-sky-300">{fork.default_branch}</span>
+                      <div className="min-w-0 flex-1">
+                        <a
+                          href={fork.html_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs sm:text-sm font-semibold text-white hover:text-sky-400 truncate block"
+                        >
+                          {fork.name}
+                        </a>
+                        <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                          branch: <span className="text-sky-300">{fork.default_branch}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleSyncFork(fork.full_name, fork.default_branch)}
+                        disabled={isSyncing}
+                        className="py-2 px-3 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-semibold shrink-0 touch-press hover:bg-sky-500/25 flex items-center gap-1.5"
+                      >
+                        <RefreshCw className={`w-3 h-3 ${isSyncing ? "animate-spin" : ""}`} />
+                        <span>{isSyncing ? "Syncing" : "Sync"}</span>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* HUGGING FACE DUPLICATES & SPACES VIEW */}
+            {forkPlatform === "huggingface" && (
+              <div className="space-y-3">
+                <div className="p-3.5 bg-amber-950/30 border border-amber-500/20 rounded-2xl flex items-center justify-between gap-3 mb-2">
+                  <div className="text-xs text-amber-200">
+                    <span className="font-bold">Hugging Face Duplicates</span> actively tracking upstream model and space repos.
+                  </div>
+                </div>
+
+                {filteredHfForks.map((fork) => (
+                  <div
+                    key={fork.name}
+                    className="glass-panel p-4 rounded-2xl flex items-center justify-between gap-3 flex-wrap"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <a
+                        href={fork.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs sm:text-sm font-semibold text-amber-300 hover:text-amber-200 truncate block"
+                      >
+                        {fork.name}
+                      </a>
+                      <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                        upstream: <span className="text-slate-300">{fork.upstream}</span> · <span className="text-emerald-400">{fork.status}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => showToast(`Fast-Forward Sync initiated for HF Space ${fork.name}`)}
+                        className="py-2 px-3 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-semibold shrink-0 touch-press hover:bg-sky-500/25 flex items-center gap-1.5"
+                      >
+                        <RefreshCw className="w-3 h-3" />
+                        <span>Fast-Forward Sync</span>
+                      </button>
+
+                      <a
+                        href={fork.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-2 px-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold shrink-0 touch-press hover:bg-amber-500/25 flex items-center gap-1.5"
+                      >
+                        <Rocket className="w-3 h-3" />
+                        <span>Open Space</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
+                      </a>
                     </div>
                   </div>
-
-                  <button
-                    onClick={() => handleSyncFork(fork.full_name, fork.default_branch)}
-                    disabled={isSyncing}
-                    className="py-2 px-3 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-semibold shrink-0 touch-press hover:bg-sky-500/25 flex items-center gap-1.5"
-                  >
-                    <RefreshCw className={`w-3 h-3 ${isSyncing ? "animate-spin" : ""}`} />
-                    <span>{isSyncing ? "Syncing" : "Sync"}</span>
-                  </button>
-                </div>
-              );
-            })}
+                ))}
+              </div>
+            )}
           </div>
         )}
 
