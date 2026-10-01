@@ -42,11 +42,25 @@ interface OpenRouterModelItem {
   description: string;
 }
 
+const INITIAL_OPENROUTER_MODELS: OpenRouterModelItem[] = CATALOG_MODELS.filter(
+  (m) => m.provider === "openrouter"
+).map((m) => ({
+  id: m.id,
+  name: m.name,
+  provider: "openrouter",
+  context_length: m.context_length,
+  is_free: m.is_free,
+  pricing_prompt: "0",
+  pricing_completion: "0",
+  category: m.category as any,
+  description: `${m.name} cloud endpoint via OpenRouter.`,
+}));
+
 export function ModelSelectorModal({ isOpen, onClose, onSave }: ModelSelectorModalProps) {
   const [assignments, setAssignments] = useState<ModelAssignments>(DEFAULT_MODEL_ASSIGNMENTS);
 
   // Live OpenRouter models state
-  const [openRouterModels, setOpenRouterModels] = useState<OpenRouterModelItem[]>([]);
+  const [openRouterModels, setOpenRouterModels] = useState<OpenRouterModelItem[]>(INITIAL_OPENROUTER_MODELS);
   const [openRouterLoading, setOpenRouterLoading] = useState(false);
   const [openRouterKeyPresent, setOpenRouterKeyPresent] = useState(false);
   const [openRouterSearch, setOpenRouterSearch] = useState("");
@@ -95,6 +109,20 @@ export function ModelSelectorModal({ isOpen, onClose, onSave }: ModelSelectorMod
   };
 
   const fetchLiveOpenRouterModels = async (key?: string) => {
+    let effectiveKey = key;
+    if (!effectiveKey) {
+      try {
+        const stored = localStorage.getItem("guardian_ai_keys");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.openrouter) {
+            effectiveKey = parsed.openrouter;
+            setOpenRouterKeyPresent(true);
+          }
+        }
+      } catch {}
+    }
+
     setOpenRouterLoading(true);
     try {
       // 1. Direct browser fetch with authorization if present
@@ -102,7 +130,7 @@ export function ModelSelectorModal({ isOpen, onClose, onSave }: ModelSelectorMod
         "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "https://github-guardian.vercel.app",
         "X-Title": "GitHub Guardian",
       };
-      if (key) headers["Authorization"] = `Bearer ${key}`;
+      if (effectiveKey) headers["Authorization"] = `Bearer ${effectiveKey}`;
 
       let fetched = false;
       try {

@@ -233,7 +233,13 @@ export function MultimodalAiSuite({ showToast, onOpenKeyModal, onOpenRouterModal
           responseText = data.response?.trim();
         }
       } catch {
-        // Fallback to Next.js route
+        // Fallback to Next.js route with client-stored custom keys
+        let customKeys = {};
+        try {
+          const stored = localStorage.getItem("guardian_ai_keys");
+          if (stored) customKeys = JSON.parse(stored);
+        } catch {}
+
         const routeRes = await fetch("/api/ai/models", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -241,11 +247,14 @@ export function MultimodalAiSuite({ showToast, onOpenKeyModal, onOpenRouterModal
             action: "test_inference",
             model: modelTag,
             prompt: "In 1 sentence, explain why branch protection prevents force-push in Git.",
+            customKeys,
           }),
         });
         const routeData = await routeRes.json();
         if (routeData.success) {
           responseText = routeData.response;
+        } else if (routeData.error) {
+          throw new Error(routeData.error);
         }
       }
 

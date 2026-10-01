@@ -4,7 +4,7 @@
  * model specialization, and user preferences (Chat, Reasoning, Coding, MoE).
  */
 
-import { CATALOG_MODELS, ModelDefinition } from "./providers";
+import { CATALOG_MODELS, ModelDefinition, ProviderKeys } from "./providers";
 
 export type AutonomyMode = "yolo" | "ask_important" | "always_ask";
 
@@ -26,9 +26,31 @@ export const DEFAULT_MODEL_ASSIGNMENTS: ModelAssignments = {
 
 export class AIRouter {
   private assignments: ModelAssignments;
+  private keys?: ProviderKeys;
 
-  constructor(customAssignments?: Partial<ModelAssignments>) {
-    this.assignments = { ...DEFAULT_MODEL_ASSIGNMENTS, ...customAssignments };
+  constructor(customAssignments?: Partial<ModelAssignments>, keys?: ProviderKeys) {
+    this.keys = keys;
+
+    let base = { ...DEFAULT_MODEL_ASSIGNMENTS };
+
+    const hasOpenRouter = Boolean(keys?.openrouter || process.env.OPENROUTER_API_KEY);
+    const hasGroq = Boolean(keys?.groq || process.env.GROQ_API_KEY);
+    const hasGoogle = Boolean(keys?.google || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
+
+    // If OpenRouter key is present and Groq key is absent, dynamically route default models to OpenRouter
+    if (hasOpenRouter && !hasGroq) {
+      base.chat_model = "meta-llama/llama-3.3-70b-instruct:free";
+      base.reasoning_model = "deepseek/deepseek-r1:free";
+      base.coding_model = "qwen/qwen-2.5-coder-32b-instruct:free";
+      base.fast_model = "google/gemini-2.0-flash-exp:free";
+    } else if (hasGoogle && !hasGroq && !hasOpenRouter) {
+      base.chat_model = "gemini-2.5-flash";
+      base.reasoning_model = "gemini-2.5-pro";
+      base.coding_model = "gemini-2.5-flash";
+      base.fast_model = "gemini-2.5-flash";
+    }
+
+    this.assignments = { ...base, ...customAssignments };
   }
 
   public getAssignments(): ModelAssignments {
