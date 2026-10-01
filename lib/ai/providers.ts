@@ -247,8 +247,11 @@ export async function callAIModel(
       ? "nvidia"
       : (!isVercel ? "ollama" : null);
 
-    if (activeProvider) {
-      const cat = targetModel.category || "chat";
+    if (!activeProvider) {
+      throw new Error("No active AI provider detected. Please add an OpenRouter, Groq, or Google AI key in the AI Settings drawer.");
+    }
+
+    const cat = targetModel.category || "chat";
       if (activeProvider === "openrouter") {
         if (cat === "reasoning") {
           targetModel = CATALOG_MODELS.find((m) => m.id === "deepseek/deepseek-r1:free") || targetModel;
@@ -282,7 +285,6 @@ export async function callAIModel(
           targetModel = CATALOG_MODELS.find((m) => m.id === "meta/llama-3.3-70b-instruct") || targetModel;
         }
       }
-    }
   }
 
   // 1. OpenRouter
