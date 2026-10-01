@@ -5958,8 +5958,100 @@
       border-color: rgba(56, 189, 248, 0.3);
       color: #38BDF8;
     }
-    .repo-action-btn.terminal:hover {
-      background: rgba(56, 189, 248, 0.22);
+    /* AI Models & Autonomy Router Modal Styles */
+    .router-section {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .router-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .router-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #FFF;
+    }
+    .router-model-card {
+      background: rgba(10, 15, 30, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .router-model-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      background: rgba(15, 23, 42, 0.95);
+    }
+    .router-model-card.wired {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: rgba(2, 132, 199, 0.08);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+    }
+    .router-wire-btn {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #E2E8F0;
+      transition: all 0.15s ease;
+    }
+    .router-wire-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #FFF;
+    }
+    .router-wire-btn.active-coding {
+      background: #0284C7;
+      border-color: #38BDF8;
+      color: #FFF;
+    }
+    .router-wire-btn.active-reasoning {
+      background: #4F46E5;
+      border-color: #818CF8;
+      color: #FFF;
+    }
+    .router-wire-btn.active-chat {
+      background: #0D9488;
+      border-color: #2DD4BF;
+      color: #FFF;
+    }
+    .router-wire-btn.active-fast {
+      background: #D97706;
+      border-color: #FBBF24;
+      color: #FFF;
+    }
+    .router-filter-btn {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.8);
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .router-filter-btn.active {
+      background: #0284C7;
+      border-color: #38BDF8;
+      color: #FFF;
     }
   </style>
 </head>
@@ -5983,7 +6075,7 @@
         <span class="header-pulse-dot" title="Active Connection"></span>
       </button>
       <div class="header-sub-row">
-        <div class="autonomy-badge" id="header-autonomy-badge" onclick="openAgentDrawer()" title="Autonomy Level: Full Autonomous (YOLO)">
+        <div class="autonomy-badge" id="header-autonomy-badge" onclick="openRouterModal()" title="AI Models & Autonomy Router">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span>YOLO</span>
         </div>
@@ -7503,6 +7595,11 @@
             <option value="auto">⚡ Auto-detect Local / Cloud Vision</option>
           </select>
         </div>
+
+        <button type="button" class="btn-router-modal-open" onclick="openRouterModal()" style="width: 100%; margin-top: 14px; font-weight: 700; font-size: 0.82rem; padding: 11px 14px; background: linear-gradient(135deg, #0284C7, #4F46E5); color: white; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 12px; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          <span>⚡ Open AI Models & Autonomy Router Modal</span>
+        </button>
       </div>
     </div>
 
@@ -8123,6 +8220,23 @@
           <span>Enforce Protection Rules</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- AI Models & Autonomy Router Modal Backdrop & Modal -->
+  <div class="modal-backdrop" id="router-modal-backdrop" onclick="closeRouterModal()"></div>
+  <div class="github-modal" id="router-modal" style="max-width: 720px;">
+    <div class="drawer-handle" onclick="closeRouterModal()"></div>
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        <span>AI Models & Autonomy Router</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeRouterModal()">✕</button>
+    </div>
+
+    <div class="modal-body" id="router-modal-body" style="padding-bottom: 2rem;">
+      <!-- Dynamically rendered by renderRouterModal() -->
     </div>
   </div>
 
@@ -10090,6 +10204,588 @@ Audit Summary:
       }).join('');
     }
 
+    // ============================================================
+    // AI MODELS & AUTONOMY ROUTER MODAL ENGINE
+    // Multi-Provider Unified Live AI Directory
+    // ============================================================
+    let cachedOpenRouterModels = [];
+    let routerOpenRouterSearch = '';
+    let routerOpenRouterFilter = 'all';
+    let routerOpenRouterLimit = 16;
+    let routerSelectedRoles = {
+      coding: 'qwen2.5-coder:1.5b',
+      reasoning: 'deepseek-r1:1.5b',
+      chat: 'llama-3.1-8b-instant',
+      vision: 'moondream'
+    };
+
+    function openRouterModal() {
+      const modal = document.getElementById('router-modal');
+      const backdrop = document.getElementById('router-modal-backdrop');
+      if (modal) modal.classList.add('open');
+      if (backdrop) backdrop.classList.add('open');
+
+      try {
+        const saved = localStorage.getItem('guardian_model_assignments');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.coding_model) routerSelectedRoles.coding = parsed.coding_model;
+          if (parsed.reasoning_model) routerSelectedRoles.reasoning = parsed.reasoning_model;
+          if (parsed.chat_model) routerSelectedRoles.chat = parsed.chat_model;
+          if (parsed.vision_model) routerSelectedRoles.vision = parsed.vision_model;
+        } else {
+          routerSelectedRoles.coding = document.getElementById('cfg-coding-model')?.value || 'qwen2.5-coder:1.5b';
+          routerSelectedRoles.reasoning = document.getElementById('cfg-reasoning-model')?.value || 'deepseek-r1:1.5b';
+          routerSelectedRoles.chat = document.getElementById('cfg-chat-model')?.value || 'local:smollm2:360m';
+          routerSelectedRoles.vision = document.getElementById('cfg-vision-model')?.value || 'moondream';
+        }
+      } catch (e) {}
+
+      const orKey = GuardianVault.getKey('openrouter') || document.getElementById('key-openrouter')?.value.trim();
+      if (cachedOpenRouterModels.length === 0) {
+        fetchAndCacheOpenRouterModels(orKey);
+      } else {
+        renderRouterModal();
+      }
+    }
+
+    function closeRouterModal() {
+      const modal = document.getElementById('router-modal');
+      const backdrop = document.getElementById('router-modal-backdrop');
+      if (modal) modal.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    async function fetchAndCacheOpenRouterModels(key) {
+      const orContainer = document.getElementById('router-openrouter-list');
+      if (orContainer) {
+        orContainer.innerHTML = '<div style="text-align:center; padding: 1.5rem; color: #38BDF8; font-size: 0.75rem;">Streaming live model catalog from OpenRouter API...</div>';
+      }
+
+      try {
+        const headers = {
+          'HTTP-Referer': window.location.origin || 'http://localhost:8765',
+          'X-Title': 'AntiGravity GitHub Guardian'
+        };
+        if (key) headers['Authorization'] = 'Bearer ' + key;
+
+        const resp = await fetch('https://openrouter.ai/api/v1/models', { headers });
+        if (resp.ok) {
+          const data = await resp.json();
+          const raw = Array.isArray(data.data) ? data.data : [];
+          if (raw.length > 0) {
+            cachedOpenRouterModels = raw.map(m => {
+              const id = m.id || '';
+              const lower = id.toLowerCase();
+              const isFree = id.endsWith(':free') || (m.pricing && m.pricing.prompt === '0' && m.pricing.completion === '0');
+              let category = 'chat';
+              if (lower.includes('coder') || lower.includes('coding') || lower.includes('starcoder')) category = 'coding';
+              else if (lower.includes('r1') || lower.includes('reasoning') || lower.includes('qwq')) category = 'reasoning';
+              else if (lower.includes('flash') || lower.includes('instant') || lower.includes('mini')) category = 'fast';
+              return {
+                id,
+                name: m.name || id.split('/').pop() || id,
+                provider: 'openrouter',
+                context_length: m.context_length || 32768,
+                is_free: isFree,
+                category,
+                description: (m.description || (id + ' endpoint via OpenRouter')).replace(/<[^>]*>?/gm, '').slice(0, 140)
+              };
+            });
+            cachedOpenRouterModels.sort((a, b) => {
+              if (a.is_free && !b.is_free) return -1;
+              if (!a.is_free && b.is_free) return 1;
+              return a.name.localeCompare(b.name);
+            });
+            localStorage.setItem('guardian_openrouter_live_models', JSON.stringify(cachedOpenRouterModels.slice(0, 80)));
+          }
+        }
+      } catch (err) {
+        console.warn('OpenRouter direct fetch fallback:', err);
+        try {
+          const saved = localStorage.getItem('guardian_openrouter_live_models');
+          if (saved) cachedOpenRouterModels = JSON.parse(saved);
+        } catch {}
+      }
+
+      if (cachedOpenRouterModels.length === 0) {
+        cachedOpenRouterModels = [
+          { id: 'deepseek/deepseek-r1:free', name: 'DeepSeek R1 (Free)', provider: 'openrouter', context_length: 64000, is_free: true, category: 'reasoning', description: 'Deep reasoning chain-of-thought model' },
+          { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Llama 3.3 70B (Free)', provider: 'openrouter', context_length: 128000, is_free: true, category: 'coding', description: 'Meta high-capacity open model' },
+          { id: 'qwen/qwen-2.5-coder-32b-instruct:free', name: 'Qwen 2.5 Coder 32B (Free)', provider: 'openrouter', context_length: 32768, is_free: true, category: 'coding', description: 'Top coding and patch synthesis model' },
+          { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp (Free)', provider: 'openrouter', context_length: 1048576, is_free: true, category: 'fast', description: 'High speed agentic multimodal' }
+        ];
+      }
+
+      renderRouterModal();
+    }
+
+    function searchRouterOpenRouter(q) {
+      routerOpenRouterSearch = (q || '').toLowerCase().trim();
+      renderRouterOpenRouterList();
+    }
+
+    function filterRouterOpenRouter(f) {
+      routerOpenRouterFilter = f;
+      renderRouterModal();
+    }
+
+    function wireRouterModel(modelId, role) {
+      routerSelectedRoles[role] = modelId;
+      const roleLabels = { coding: '💻 Coding', reasoning: '🧠 Reasoning', chat: '💬 Chat', vision: '👁️ Vision', fast: '⚡ Fast' };
+      showToast('Wired ' + modelId.split('/').pop() + ' to ' + (roleLabels[role] || role));
+      renderRouterModal();
+    }
+
+    function getRouterModelRoles(modelId) {
+      const roles = [];
+      if (routerSelectedRoles.coding === modelId) roles.push('Coding');
+      if (routerSelectedRoles.reasoning === modelId) roles.push('Reasoning');
+      if (routerSelectedRoles.chat === modelId) roles.push('Chat');
+      if (routerSelectedRoles.vision === modelId) roles.push('Vision');
+      return roles;
+    }
+
+    function renderRouterOpenRouterList() {
+      const container = document.getElementById('router-openrouter-list');
+      if (!container) return;
+
+      let list = cachedOpenRouterModels;
+      if (routerOpenRouterSearch) {
+        list = list.filter(m => m.name.toLowerCase().includes(routerOpenRouterSearch) || m.id.toLowerCase().includes(routerOpenRouterSearch) || m.description.toLowerCase().includes(routerOpenRouterSearch));
+      }
+      if (routerOpenRouterFilter === 'free') list = list.filter(m => m.is_free);
+      else if (routerOpenRouterFilter === 'coding') list = list.filter(m => m.category === 'coding' || m.id.includes('coder'));
+      else if (routerOpenRouterFilter === 'reasoning') list = list.filter(m => m.category === 'reasoning' || m.id.includes('r1') || m.id.includes('qwq'));
+      else if (routerOpenRouterFilter === 'chat') list = list.filter(m => m.category === 'chat');
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: var(--text-dim); padding: 1.5rem; font-size: 0.72rem;">No OpenRouter models match &ldquo;' + routerOpenRouterSearch + '&rdquo;.</div>';
+        return;
+      }
+
+      container.innerHTML = list.slice(0, routerOpenRouterLimit).map(m => {
+        const wiredRoles = getRouterModelRoles(m.id);
+        const isWired = wiredRoles.length > 0;
+        const ctxStr = m.context_length > 1000 ? Math.round(m.context_length / 1000) + 'k' : m.context_length;
+
+        return `
+          <div class="router-model-card ${isWired ? 'wired' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+              <div style="min-width: 0; flex: 1;">
+                <div style="font-weight: 800; color: #FFF; font-size: 0.78rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${m.name}</div>
+                <div style="font-family: monospace; font-size: 0.65rem; color: #94A3B8; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${m.id}</div>
+              </div>
+              <div style="display: flex; gap: 4px; shrink: 0;">
+                <span class="card-badge ${m.is_free ? 'badge-merged' : 'badge-public'}">${m.is_free ? 'FREE' : 'Paid'}</span>
+                <span class="card-badge badge-ai">${ctxStr} ctx</span>
+              </div>
+            </div>
+            <div style="font-size: 0.68rem; color: var(--text-muted); line-height: 1.35; max-height: 2.7em; overflow: hidden;">${m.description}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap;">
+              <div>
+                ${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}
+              </div>
+              <div style="display: flex; gap: 4px;">
+                <button class="router-wire-btn ${routerSelectedRoles.coding === m.id ? 'active-coding' : ''}" onclick="wireRouterModel('${m.id}', 'coding')" title="Wire to Coding engine">💻 Code</button>
+                <button class="router-wire-btn ${routerSelectedRoles.reasoning === m.id ? 'active-reasoning' : ''}" onclick="wireRouterModel('${m.id}', 'reasoning')" title="Wire to Reasoning engine">🧠 Reason</button>
+                <button class="router-wire-btn ${routerSelectedRoles.chat === m.id ? 'active-chat' : ''}" onclick="wireRouterModel('${m.id}', 'chat')" title="Wire to Chat engine">💬 Chat</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') + (list.length > routerOpenRouterLimit ? `
+        <div style="text-align: center; margin-top: 8px;">
+          <button class="btn-micro" style="border-color: #38BDF8; color: #38BDF8; padding: 6px 14px;" onclick="routerOpenRouterLimit += 24; renderRouterOpenRouterList();">Show More OpenRouter Models (${list.length - routerOpenRouterLimit} remaining)</button>
+        </div>
+      ` : '');
+    }
+
+    function renderRouterModal() {
+      const body = document.getElementById('router-modal-body');
+      if (!body) return;
+
+      const installedList = (lastKnownOllamaModels && lastKnownOllamaModels.length > 0) ? lastKnownOllamaModels : [
+        { name: 'qwen2.5-coder:1.5b', size: 986000000, details: { quantization_level: 'Q4_K_M', parameter_size: '1.5B' } },
+        { name: 'deepseek-r1:1.5b', size: 1100000000, details: { quantization_level: 'Q4_K_M', parameter_size: '1.5B' } },
+        { name: 'moondream:latest', size: 830000000, details: { quantization_level: 'Q4_K_M', parameter_size: '1.8B' } },
+        { name: 'smollm2:360m', size: 260000000, details: { quantization_level: 'Q4_K_M', parameter_size: '360M' } }
+      ];
+
+      const groqList = [
+        { id: 'llama-3.3-70b-versatile', name: 'Groq LLaMA 3.3 70B Versatile', speed: '450 tok/s', ctx: '128k', desc: 'Ultra-fast code synthesis & multi-file diff resolution on Groq LPUs.' },
+        { id: 'deepseek-r1-distill-llama-70b', name: 'Groq DeepSeek R1 Distill 70B', speed: '380 tok/s', ctx: '128k', desc: 'Distilled deep mathematical chain-of-thought for architectural review.' },
+        { id: 'qwen-qwq-32b', name: 'Groq QwQ 32B (Deep Reasoning)', speed: '520 tok/s', ctx: '32k', desc: 'Specialized deep reasoning model running at blazing throughput.' },
+        { id: 'llama-3.1-8b-instant', name: 'Groq LLaMA 3.1 8B Instant', speed: '750 tok/s', ctx: '128k', desc: 'Instantaneous triage, rapid git linting, and high-frequency webhook checks.' },
+        { id: 'mixtral-8x7b-32768', name: 'Groq Mixtral 8x7B (MoE)', speed: '580 tok/s', ctx: '32k', desc: 'Mixture of Experts architecture for versatile multi-domain conversation.' }
+      ];
+
+      const googleList = [
+        { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', ctx: '1M Context', desc: 'Next-gen multimodal speed champion with native codebase ingestion.' },
+        { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', ctx: '2M Context', desc: 'Long-horizon architectural reasoning across millions of lines of code.' },
+        { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp (Free Cloud)', ctx: '1M Context', desc: 'Zero-cost high-speed multimodal reasoning for rapid visual inspection.' }
+      ];
+
+      const nvidiaList = [
+        { id: 'meta/llama-3.3-70b-instruct', name: 'NVIDIA NIM LLaMA 3.3 70B', ctx: '128k', desc: 'Enterprise containerized endpoint with TensorRT-LLM execution.' },
+        { id: 'deepseek-ai/deepseek-r1', name: 'NVIDIA NIM DeepSeek R1', ctx: '64k', desc: 'Uncensored raw reasoning endpoint hosted on NVIDIA DGX Cloud.' }
+      ];
+
+      const hfList = [
+        { id: 'hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M', name: 'Llama-3.2-1B-Instruct (GGUF)', size: '~800MB', desc: 'Meta lightweight instruct model quantized by bartowski for ARM64.' },
+        { id: 'hf.co/unsloth/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M', name: 'Qwen2.5-Coder-1.5B-Instruct (GGUF)', size: '~980MB', desc: 'Unsloth fast quantized code specialist for instant AST syntax repairs.' },
+        { id: 'hf.co/vikhyatk/moondream2:latest', name: 'moondream2 (Vision-Language GGUF)', size: '~830MB', desc: 'Reads dense OCR code screenshots, UI mockups, and terminal errors.' },
+        { id: 'hf.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF:Q4_K_M', name: 'SmolLM2-360M-Instruct (GGUF)', size: '~260MB', desc: 'Micro-agent LLM with negligible battery draw for background tasks.' }
+      ];
+
+      body.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 0.82rem; font-weight: 800; color: white;">⚡ Agent Autonomy Gate Policy</div>
+            <span class="card-badge badge-merged">Current: ${currentAutonomy.toUpperCase()}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
+            <button type="button" class="btn-preset ${currentAutonomy === 'yolo' ? 'active' : ''}" onclick="updateAutonomy('yolo'); renderRouterModal();" style="text-align: left; padding: 8px 10px;">
+              <strong>⚡ YOLO (Full Autonomy)</strong><br>
+              <span style="font-size: 0.65rem; color: #94A3B8;">Auto-executes commits, PR merges, & patches.</span>
+            </button>
+            <button type="button" class="btn-preset ${currentAutonomy === 'ask_important' ? 'active' : ''}" onclick="updateAutonomy('ask_important'); renderRouterModal();" style="text-align: left; padding: 8px 10px;">
+              <strong>🛡️ Ask on Important</strong><br>
+              <span style="font-size: 0.65rem; color: #94A3B8;">Auto safe tasks, ask on branch shield or force push.</span>
+            </button>
+            <button type="button" class="btn-preset ${currentAutonomy === 'always_ask' ? 'active' : ''}" onclick="updateAutonomy('always_ask'); renderRouterModal();" style="text-align: left; padding: 8px 10px;">
+              <strong>🛑 Always Ask</strong><br>
+              <span style="font-size: 0.65rem; color: #94A3B8;">Prompts user confirmation on every tool call.</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+          <div style="font-size: 0.82rem; font-weight: 800; color: white; margin-bottom: 8px;">🎯 Active Role Assignments</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px;">
+            <div>
+              <label class="config-label">💻 Coding & Patch Model</label>
+              <select class="config-select" id="modal-cfg-coding-model" onchange="routerSelectedRoles.coding = this.value; renderRouterModal();">
+                <option value="${routerSelectedRoles.coding}">${routerSelectedRoles.coding}</option>
+                <option value="qwen2.5-coder:1.5b">Local Ollama: Qwen 2.5 Coder 1.5B</option>
+                <option value="deepseek/deepseek-r1:free">OpenRouter: DeepSeek R1 (Free)</option>
+                <option value="meta-llama/llama-3.3-70b-instruct:free">OpenRouter: Llama 3.3 70B (Free)</option>
+                <option value="groq:llama-3.3-70b-versatile">Groq: LLaMA 3.3 70B</option>
+              </select>
+            </div>
+            <div>
+              <label class="config-label">🧠 Deep Reasoning Model</label>
+              <select class="config-select" id="modal-cfg-reasoning-model" onchange="routerSelectedRoles.reasoning = this.value; renderRouterModal();">
+                <option value="${routerSelectedRoles.reasoning}">${routerSelectedRoles.reasoning}</option>
+                <option value="deepseek-r1:1.5b">Local Ollama: DeepSeek R1 1.5B</option>
+                <option value="deepseek/deepseek-r1:free">OpenRouter: DeepSeek R1 (Free)</option>
+                <option value="groq:deepseek-r1-distill-llama-70b">Groq: DeepSeek R1 Distill 70B</option>
+                <option value="google:gemini-2.5-pro">Google: Gemini 2.5 Pro</option>
+              </select>
+            </div>
+            <div>
+              <label class="config-label">💬 Chat & Dialogue Model</label>
+              <select class="config-select" id="modal-cfg-chat-model" onchange="routerSelectedRoles.chat = this.value; renderRouterModal();">
+                <option value="${routerSelectedRoles.chat}">${routerSelectedRoles.chat}</option>
+                <option value="llama-3.1-8b-instant">Groq: LLaMA 3.1 8B Instant</option>
+                <option value="local:smollm2:360m">Local Ollama: SmolLM2 360M</option>
+                <option value="google:gemini-2.0-flash">Google: Gemini 2.0 Flash</option>
+              </select>
+            </div>
+            <div>
+              <label class="config-label">👁️ Visual AI Model (OCR / UI)</label>
+              <select class="config-select" id="modal-cfg-vision-model" onchange="routerSelectedRoles.vision = this.value; renderRouterModal();">
+                <option value="${routerSelectedRoles.vision}">${routerSelectedRoles.vision}</option>
+                <option value="moondream">Local Ollama: moondream (1.8B · ~830MB)</option>
+                <option value="qwen2.5-vl:3b">Local Ollama: qwen2.5-vl:3b</option>
+                <option value="google:gemini-2.0-flash">Google AI Studio: Gemini 2.0 Flash</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.88rem; font-weight: 800; color: white; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span>🌐 Connected AI Providers (Individual Directories)</span>
+        </div>
+
+        <!-- 1. OPENROUTER LIVE CLOUD SECTION -->
+        <div class="router-section" style="border-color: rgba(56, 189, 248, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">🌐</span>
+              <span>OpenRouter Live Catalog</span>
+              <span class="card-badge badge-merged" id="badge-openrouter-count">${cachedOpenRouterModels.length} Models Live</span>
+            </div>
+            <button class="btn-micro" onclick="fetchAndCacheOpenRouterModels(GuardianVault.getKey('openrouter'))" title="Refresh from OpenRouter API">🔄 Refresh</button>
+          </div>
+          <p style="font-size: 0.68rem; color: var(--text-dim); margin-bottom: 8px;">
+            Live API model catalog streamed from OpenRouter (deepseek-r1, llama-3.3, qwen-2.5, free tier endpoints).
+          </p>
+          <div style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+            <input type="text" class="config-input" id="router-openrouter-search-input" value="${routerOpenRouterSearch}" oninput="searchRouterOpenRouter(this.value)" placeholder="Search OpenRouter models (e.g. free, deepseek, claude, qwen, llama)..." style="flex: 1; min-width: 180px; padding: 6px 10px; font-size: 0.72rem;">
+            <div style="display: flex; gap: 4px;">
+              <button class="router-filter-btn ${routerOpenRouterFilter === 'all' ? 'active' : ''}" onclick="filterRouterOpenRouter('all')">All</button>
+              <button class="router-filter-btn ${routerOpenRouterFilter === 'free' ? 'active' : ''}" onclick="filterRouterOpenRouter('free')">🟢 Free</button>
+              <button class="router-filter-btn ${routerOpenRouterFilter === 'coding' ? 'active' : ''}" onclick="filterRouterOpenRouter('coding')">Coding</button>
+              <button class="router-filter-btn ${routerOpenRouterFilter === 'reasoning' ? 'active' : ''}" onclick="filterRouterOpenRouter('reasoning')">Reasoning</button>
+            </div>
+          </div>
+          <div id="router-openrouter-list"></div>
+        </div>
+
+        <!-- 2. OLLAMA LOCAL DAEMON SECTION -->
+        <div class="router-section" style="border-color: rgba(16, 185, 129, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">🦙</span>
+              <span>Ollama Local Daemon</span>
+              <span class="card-badge badge-merged">● Port 11434 (${installedList.length} Installed)</span>
+              <span class="card-badge badge-public">ARM64 Offline</span>
+            </div>
+            <button class="btn-micro" onclick="checkOllamaService(true); renderRouterModal();">🔄 Re-scan</button>
+          </div>
+          <p style="font-size: 0.68rem; color: var(--text-dim); margin-bottom: 8px;">
+            Offline neural execution directly in Android Termux device memory with zero external API calls.
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+            ${installedList.map(m => {
+              const wiredRoles = getRouterModelRoles(m.name);
+              const isWired = wiredRoles.length > 0;
+              const sizeMb = ((m.size || 0) / (1024 * 1024)).toFixed(0);
+              const sizeGb = ((m.size || 0) / (1024 * 1024 * 1024)).toFixed(2);
+              const displaySize = sizeMb > 1000 ? `${sizeGb} GB` : `${sizeMb} MB`;
+              const param = m.details?.parameter_size || '1.5B';
+
+              return `
+                <div class="router-model-card ${isWired ? 'wired' : ''}">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                      <div style="font-weight: 800; color: #FFF; font-size: 0.78rem;">${m.name}</div>
+                      <div style="font-size: 0.65rem; color: #10B981; font-family: monospace;">Local Storage • ${displaySize} • ${param}</div>
+                    </div>
+                    <span class="card-badge badge-merged">OFFLINE</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div>${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="router-wire-btn ${routerSelectedRoles.coding === m.name ? 'active-coding' : ''}" onclick="wireRouterModel('${m.name}', 'coding')">💻 Code</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.reasoning === m.name ? 'active-reasoning' : ''}" onclick="wireRouterModel('${m.name}', 'reasoning')">🧠 Reason</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.vision === m.name ? 'active-chat' : ''}" onclick="wireRouterModel('${m.name}', 'vision')">👁️ Vision</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 3. GROQ CLOUD LPU SECTION -->
+        <div class="router-section" style="border-color: rgba(245, 158, 11, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">⚡</span>
+              <span>Groq Cloud LPU</span>
+              <span class="card-badge badge-rebased">⚡ 500+ Tok/s</span>
+              <span class="card-badge badge-merged">Free Tier</span>
+            </div>
+          </div>
+          <p style="font-size: 0.68rem; color: var(--text-dim); margin-bottom: 8px;">
+            Language Processing Units for ultra-low latency code synthesis and git diagnostics.
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+            ${groqList.map(m => {
+              const wiredRoles = getRouterModelRoles(m.id);
+              const isWired = wiredRoles.length > 0;
+              return `
+                <div class="router-model-card ${isWired ? 'wired' : ''}">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                      <div style="font-weight: 800; color: #FFF; font-size: 0.78rem;">${m.name}</div>
+                      <div style="font-size: 0.65rem; color: #F59E0B; font-family: monospace;">${m.speed} • ${m.ctx} Window</div>
+                    </div>
+                    <span class="card-badge badge-rebased">GROQ</span>
+                  </div>
+                  <div style="font-size: 0.66rem; color: var(--text-muted);">${m.desc}</div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div>${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="router-wire-btn ${routerSelectedRoles.coding === m.id ? 'active-coding' : ''}" onclick="wireRouterModel('${m.id}', 'coding')">💻 Code</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.reasoning === m.id ? 'active-reasoning' : ''}" onclick="wireRouterModel('${m.id}', 'reasoning')">🧠 Reason</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.chat === m.id ? 'active-chat' : ''}" onclick="wireRouterModel('${m.id}', 'chat')">💬 Chat</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 4. GOOGLE AI STUDIO SECTION -->
+        <div class="router-section" style="border-color: rgba(99, 102, 241, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">♊</span>
+              <span>Google AI Studio</span>
+              <span class="card-badge badge-ai">✨ 1M - 2M Context</span>
+              <span class="card-badge badge-merged">Multimodal</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+            ${googleList.map(m => {
+              const wiredRoles = getRouterModelRoles(m.id);
+              const isWired = wiredRoles.length > 0;
+              return `
+                <div class="router-model-card ${isWired ? 'wired' : ''}">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                      <div style="font-weight: 800; color: #FFF; font-size: 0.78rem;">${m.name}</div>
+                      <div style="font-size: 0.65rem; color: #818CF8; font-family: monospace;">${m.ctx}</div>
+                    </div>
+                    <span class="card-badge badge-ai">GEMINI</span>
+                  </div>
+                  <div style="font-size: 0.66rem; color: var(--text-muted);">${m.desc}</div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div>${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="router-wire-btn ${routerSelectedRoles.coding === m.id ? 'active-coding' : ''}" onclick="wireRouterModel('${m.id}', 'coding')">💻 Code</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.reasoning === m.id ? 'active-reasoning' : ''}" onclick="wireRouterModel('${m.id}', 'reasoning')">🧠 Reason</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.vision === m.id ? 'active-chat' : ''}" onclick="wireRouterModel('${m.id}', 'vision')">👁️ Vision</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 5. NVIDIA NIM SECTION -->
+        <div class="router-section" style="border-color: rgba(34, 197, 94, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">🟢</span>
+              <span>NVIDIA NIM Endpoints</span>
+              <span class="card-badge badge-public">Developer API</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+            ${nvidiaList.map(m => {
+              const wiredRoles = getRouterModelRoles(m.id);
+              const isWired = wiredRoles.length > 0;
+              return `
+                <div class="router-model-card ${isWired ? 'wired' : ''}">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                      <div style="font-weight: 800; color: #FFF; font-size: 0.78rem;">${m.name}</div>
+                      <div style="font-size: 0.65rem; color: #22C55E; font-family: monospace;">${m.ctx} Context</div>
+                    </div>
+                    <span class="card-badge badge-public">NVIDIA NIM</span>
+                  </div>
+                  <div style="font-size: 0.66rem; color: var(--text-muted);">${m.desc}</div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div>${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="router-wire-btn ${routerSelectedRoles.coding === m.id ? 'active-coding' : ''}" onclick="wireRouterModel('${m.id}', 'coding')">💻 Code</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.reasoning === m.id ? 'active-reasoning' : ''}" onclick="wireRouterModel('${m.id}', 'reasoning')">🧠 Reason</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 6. HUGGING FACE GGUF EDGE SECTION -->
+        <div class="router-section" style="border-color: rgba(236, 72, 153, 0.35);">
+          <div class="router-section-header">
+            <div class="router-section-title">
+              <span style="font-size: 1.1rem;">🤗</span>
+              <span>Hugging Face Edge Hub</span>
+              <span class="card-badge badge-merged">GGUF Quantized</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px;">
+            ${hfList.map(m => {
+              const wiredRoles = getRouterModelRoles(m.id);
+              const isWired = wiredRoles.length > 0;
+              return `
+                <div class="router-model-card ${isWired ? 'wired' : ''}">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                      <div style="font-weight: 800; color: #FFF; font-size: 0.78rem;">${m.name}</div>
+                      <div style="font-size: 0.65rem; color: #EC4899; font-family: monospace;">${m.size} GGUF</div>
+                    </div>
+                    <span class="card-badge" style="background: rgba(236,72,153,0.15); color: #EC4899; border: 1px solid rgba(236,72,153,0.3);">HF GGUF</span>
+                  </div>
+                  <div style="font-size: 0.66rem; color: var(--text-muted);">${m.desc}</div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div>${isWired ? '<span class="card-badge badge-merged" style="font-size: 0.62rem;">⚡ Wired: ' + wiredRoles.join(', ') + '</span>' : '<span style="font-size: 0.65rem; color: #64748B;">Not wired</span>'}</div>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="router-wire-btn ${routerSelectedRoles.coding === m.id ? 'active-coding' : ''}" onclick="wireRouterModel('${m.id}', 'coding')">💻 Code</button>
+                      <button class="router-wire-btn ${routerSelectedRoles.vision === m.id ? 'active-chat' : ''}" onclick="wireRouterModel('${m.id}', 'vision')">👁️ Vision</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; flex-wrap: wrap; gap: 8px;">
+          <div style="font-size: 0.72rem; color: #94A3B8;">
+            Coding: <strong style="color: #FFF;">${routerSelectedRoles.coding.split('/').pop()}</strong> • 
+            Reasoning: <strong style="color: #FFF;">${routerSelectedRoles.reasoning.split('/').pop()}</strong>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-preset" onclick="closeRouterModal()">Cancel</button>
+            <button type="button" class="btn-save-acc-token" onclick="applyRouterModalSettings()" style="background: linear-gradient(135deg, #0284C7, #4F46E5); box-shadow: 0 4px 14px rgba(2,132,199,0.35);">
+              <span>Apply Model Router</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      renderRouterOpenRouterList();
+    }
+
+    function ensureOptionExists(sel, val) {
+      if (!sel || !val) return;
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === val) return;
+      }
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.text = val;
+      sel.add(opt);
+    }
+
+    function applyRouterModalSettings() {
+      const coding = routerSelectedRoles.coding;
+      const reasoning = routerSelectedRoles.reasoning;
+      const chat = routerSelectedRoles.chat;
+      const vision = routerSelectedRoles.vision;
+
+      const inCoding = document.getElementById('cfg-coding-model');
+      if (inCoding) { ensureOptionExists(inCoding, coding); inCoding.value = coding; }
+      const inReasoning = document.getElementById('cfg-reasoning-model');
+      if (inReasoning) { ensureOptionExists(inReasoning, reasoning); inReasoning.value = reasoning; }
+      const inChat = document.getElementById('cfg-chat-model');
+      if (inChat) { ensureOptionExists(inChat, chat); inChat.value = chat; }
+      const inVision = document.getElementById('cfg-vision-model');
+      if (inVision) { ensureOptionExists(inVision, vision); inVision.value = vision; }
+
+      const assignments = {
+        coding_model: coding,
+        reasoning_model: reasoning,
+        chat_model: chat,
+        fast_model: chat,
+        vision_model: vision,
+        autonomy_mode: currentAutonomy
+      };
+      localStorage.setItem('guardian_model_assignments', JSON.stringify(assignments));
+      showToast('Model Router Applied: Autonomy ' + currentAutonomy.toUpperCase());
+      closeRouterModal();
+    }
+
     let currentBranchProtectionRepo = 'motherskitchenblr2/github-guardian';
 
     function openBranchProtectionModal(repoName) {
@@ -11930,6 +12626,9 @@ Audit Summary:
 
           // Auto-save updated provider to vault
           saveAiKeys(true);
+          if (providerId === 'openrouter') {
+            fetchAndCacheOpenRouterModels(key);
+          }
           showToast(`🎉 ${providerId.toUpperCase()} Integrated & Live (${latency}ms)!`);
         }
       } catch (err) {

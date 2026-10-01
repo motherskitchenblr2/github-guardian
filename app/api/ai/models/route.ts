@@ -53,6 +53,48 @@ function getDiskInstalledModels(): any[] {
 }
 
 export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const provider = url.searchParams.get("provider");
+  const openrouterKey = url.searchParams.get("key") || process.env.OPENROUTER_API_KEY;
+
+  // Handle direct OpenRouter models query
+  if (provider === "openrouter") {
+    try {
+      const headers: Record<string, string> = {
+        "HTTP-Referer": "https://github-guardian.vercel.app",
+        "X-Title": "GitHub Guardian",
+      };
+      if (openrouterKey) {
+        headers["Authorization"] = `Bearer ${openrouterKey}`;
+      }
+      const orRes = await fetch("https://openrouter.ai/api/v1/models", {
+        headers,
+      });
+      if (orRes.ok) {
+        const json = await orRes.json();
+        const raw = Array.isArray(json.data) ? json.data : [];
+        const models = raw.map((m: any) => ({
+          id: m.id,
+          name: m.name || m.id,
+          provider: "openrouter",
+          context_length: m.context_length || 32768,
+          is_free: m.id.endsWith(":free") || (m.pricing?.prompt === "0" && m.pricing?.completion === "0"),
+          pricing_prompt: m.pricing?.prompt || "0",
+          pricing_completion: m.pricing?.completion || "0",
+          description: m.description || "",
+          category: m.id.includes("coder") ? "coding" : (m.id.includes("r1") || m.id.includes("reasoning") || m.id.includes("qwq")) ? "reasoning" : (m.id.includes("flash") || m.id.includes("instant")) ? "fast" : "chat",
+        }));
+        return NextResponse.json({
+          provider: "openrouter",
+          models,
+          total: models.length,
+        });
+      }
+    } catch (err: any) {
+      return NextResponse.json({ error: err.message }, { status: 502 });
+    }
+  }
+
   let ollamaOnline = false;
   let installedOllamaModels: any[] = [];
 
