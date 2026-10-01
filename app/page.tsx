@@ -695,6 +695,7 @@ export default function GuardianDashboard() {
         {activeTab === "office" && (
           <ExecutiveOffice
             stats={stats}
+            prs={prs}
             showToast={showToast}
             onNavigateToTab={(tab: any) => setActiveTab(tab)}
           />
