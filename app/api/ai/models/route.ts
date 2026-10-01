@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CATALOG_MODELS } from "@/lib/ai/providers";
+import { CATALOG_MODELS, callAIModel } from "@/lib/ai/providers";
 import { DEFAULT_MODEL_ASSIGNMENTS } from "@/lib/ai/router";
 import fs from "fs";
 import path from "path";
@@ -73,26 +73,45 @@ export async function GET(req: NextRequest) {
       if (orRes.ok) {
         const json = await orRes.json();
         const raw = Array.isArray(json.data) ? json.data : [];
-        const models = raw.map((m: any) => ({
-          id: m.id,
-          name: m.name || m.id,
-          provider: "openrouter",
-          context_length: m.context_length || 32768,
-          is_free: m.id.endsWith(":free") || (m.pricing?.prompt === "0" && m.pricing?.completion === "0"),
-          pricing_prompt: m.pricing?.prompt || "0",
-          pricing_completion: m.pricing?.completion || "0",
-          description: m.description || "",
-          category: m.id.includes("coder") ? "coding" : (m.id.includes("r1") || m.id.includes("reasoning") || m.id.includes("qwq")) ? "reasoning" : (m.id.includes("flash") || m.id.includes("instant")) ? "fast" : "chat",
-        }));
-        return NextResponse.json({
-          provider: "openrouter",
-          models,
-          total: models.length,
-        });
+        if (raw.length > 0) {
+          const models = raw.map((m: any) => ({
+            id: m.id,
+            name: m.name || m.id,
+            provider: "openrouter",
+            context_length: m.context_length || 32768,
+            is_free: m.id.endsWith(":free") || (m.pricing?.prompt === "0" && m.pricing?.completion === "0"),
+            pricing_prompt: m.pricing?.prompt || "0",
+            pricing_completion: m.pricing?.completion || "0",
+            description: m.description || "",
+            category: m.id.includes("coder") ? "coding" : (m.id.includes("r1") || m.id.includes("reasoning") || m.id.includes("qwq")) ? "reasoning" : (m.id.includes("flash") || m.id.includes("instant")) ? "fast" : "chat",
+          }));
+          return NextResponse.json({
+            provider: "openrouter",
+            models,
+            total: models.length,
+          });
+        }
       }
-    } catch (err: any) {
-      return NextResponse.json({ error: err.message }, { status: 502 });
+    } catch {
+      // Remote OpenRouter failed, fall back to curated models
     }
+
+    const curated = CATALOG_MODELS.filter((m) => m.provider === "openrouter").map((m) => ({
+      id: m.id,
+      name: m.name,
+      provider: "openrouter",
+      context_length: m.context_length,
+      is_free: m.is_free,
+      pricing_prompt: "0",
+      pricing_completion: "0",
+      description: `${m.name} free cloud endpoint via OpenRouter.`,
+      category: m.category,
+    }));
+    return NextResponse.json({
+      provider: "openrouter",
+      models: curated,
+      total: curated.length,
+    });
   }
 
   let ollamaOnline = false;
@@ -155,19 +174,22 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { action, model = "qwen2.5-coder:1.5b", prompt } = body;
+    const { action, model = "qwen2.5-coder:1.5b", prompt, customKeys = {} } = body;
 
-    // Test quick inference against installed Ollama model
+    // Test quick inference against installed Ollama model or Cloud AI
     if (action === "test_inference") {
+      const testPrompt = prompt || "Explain how GitHub branch protection prevents git force push in 1 concise sentence.";
+
+      // 1. Try local Ollama first if accessible
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
         const res = await fetch("http://127.0.0.1:11434/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             model,
-            prompt: prompt || "Explain how GitHub branch protection prevents git force push in 1 concise sentence.",
+            prompt: testPrompt,
             stream: false,
           }),
           signal: controller.signal,
@@ -180,9 +202,25 @@ export async function POST(req: NextRequest) {
             success: true,
             model,
             response: data.response?.trim(),
-            total_duration_ms: Math.round(data.total_duration / 1000000),
+            total_duration_ms: Math.round((data.total_duration || 0) / 1000000),
+            source: "ollama",
           });
         }
+      } catch {
+        // Local Ollama unavailable (e.g. deployed on Vercel) -> seamlessly fall back to Cloud AI
+      }
+
+      // 2. Fallback to Cloud AI Model via callAIModel
+      try {
+        const start = Date.now();
+        const aiRes = await callAIModel(model, [{ role: "user", content: testPrompt }], customKeys);
+        return NextResponse.json({
+          success: true,
+          model: aiRes.modelUsed || model,
+          response: aiRes.text?.trim() || "Inference response generated.",
+          total_duration_ms: Date.now() - start,
+          source: "cloud",
+        });
       } catch (err: any) {
         return NextResponse.json({ success: false, error: err.message }, { status: 502 });
       }

@@ -53,6 +53,15 @@ export const CATALOG_MODELS: ModelDefinition[] = [
     is_free: true,
     is_offline: false,
   },
+  {
+    id: "meta-llama/llama-3.1-8b-instruct:free",
+    name: "Llama 3.1 8B Instruct (Free)",
+    provider: "openrouter",
+    category: "chat",
+    context_length: 131072,
+    is_free: true,
+    is_offline: false,
+  },
 
   // Google AI Studio
   {
@@ -198,18 +207,87 @@ export interface ProviderKeys {
 export async function callAIModel(
   modelId: string,
   messages: ChatMessage[],
-  keys: ProviderKeys,
+  keys: ProviderKeys = {},
   tools?: any[]
-): Promise<{ text: string; tool_calls?: any[]; usage?: any }> {
-  const model = CATALOG_MODELS.find((m) => m.id === modelId) || {
+): Promise<{ text: string; tool_calls?: any[]; usage?: any; modelUsed?: string }> {
+  let targetModel = CATALOG_MODELS.find((m) => m.id === modelId) || {
     id: modelId,
     name: modelId,
-    provider: "openrouter",
+    provider: (modelId.startsWith("deepseek/") || modelId.startsWith("meta-llama/") || modelId.startsWith("qwen/") || modelId.includes(":free"))
+      ? "openrouter"
+      : (modelId.includes("gemini") ? "google" : (modelId.includes("llama") || modelId.includes("qwq") ? "groq" : "openrouter")),
+    category: "chat" as const,
   };
 
+  const openrouterKey = keys.openrouter || process.env.OPENROUTER_API_KEY;
+  const groqKey = keys.groq || process.env.GROQ_API_KEY;
+  const googleKey = keys.google || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  const nvidiaKey = keys.nvidia || process.env.NVIDIA_API_KEY;
+  const isVercel = process.env.VERCEL === "1" || Boolean(process.env.VERCEL_ENV);
+
+  // Check if requested provider is configured
+  const isTargetReady = (provider: string) => {
+    if (provider === "openrouter") return Boolean(openrouterKey);
+    if (provider === "groq") return Boolean(groqKey);
+    if (provider === "google") return Boolean(googleKey);
+    if (provider === "nvidia") return Boolean(nvidiaKey);
+    if (provider === "ollama") return !isVercel;
+    return false;
+  };
+
+  // If the target provider is not ready, dynamically route to a configured provider!
+  if (!isTargetReady(targetModel.provider)) {
+    const activeProvider = openrouterKey
+      ? "openrouter"
+      : groqKey
+      ? "groq"
+      : googleKey
+      ? "google"
+      : nvidiaKey
+      ? "nvidia"
+      : (!isVercel ? "ollama" : null);
+
+    if (activeProvider) {
+      const cat = targetModel.category || "chat";
+      if (activeProvider === "openrouter") {
+        if (cat === "reasoning") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "deepseek/deepseek-r1:free") || targetModel;
+        } else if (cat === "coding") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "qwen/qwen-2.5-coder-32b-instruct:free") || targetModel;
+        } else if (cat === "fast") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "google/gemini-2.0-flash-exp:free") || targetModel;
+        } else {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "meta-llama/llama-3.3-70b-instruct:free") ||
+            CATALOG_MODELS.find((m) => m.id === "meta-llama/llama-3.1-8b-instruct:free") ||
+            CATALOG_MODELS.find((m) => m.id === "deepseek/deepseek-r1:free") || targetModel;
+        }
+      } else if (activeProvider === "groq") {
+        if (cat === "reasoning") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "deepseek-r1-distill-llama-70b") || targetModel;
+        } else if (cat === "coding") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "llama-3.3-70b-versatile") || targetModel;
+        } else {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "llama-3.1-8b-instant") || targetModel;
+        }
+      } else if (activeProvider === "google") {
+        if (cat === "reasoning") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "gemini-2.5-pro") || targetModel;
+        } else {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "gemini-2.5-flash") || targetModel;
+        }
+      } else if (activeProvider === "nvidia") {
+        if (cat === "reasoning") {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "deepseek-ai/deepseek-r1") || targetModel;
+        } else {
+          targetModel = CATALOG_MODELS.find((m) => m.id === "meta/llama-3.3-70b-instruct") || targetModel;
+        }
+      }
+    }
+  }
+
   // 1. OpenRouter
-  if (model.provider === "openrouter") {
-    const key = keys.openrouter || process.env.OPENROUTER_API_KEY;
+  if (targetModel.provider === "openrouter") {
+    const key = openrouterKey;
     if (!key) throw new Error("OpenRouter API key is required. Add it in the AI Settings drawer.");
 
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -221,7 +299,7 @@ export async function callAIModel(
         "X-Title": "GitHub Guardian",
       },
       body: JSON.stringify({
-        model: model.id,
+        model: targetModel.id,
         messages,
         tools: tools && tools.length > 0 ? tools : undefined,
       }),
@@ -234,12 +312,13 @@ export async function callAIModel(
       text: choice?.content || "",
       tool_calls: choice?.tool_calls,
       usage: data.usage,
+      modelUsed: targetModel.id,
     };
   }
 
   // 2. Groq
-  if (model.provider === "groq") {
-    const key = keys.groq || process.env.GROQ_API_KEY;
+  if (targetModel.provider === "groq") {
+    const key = groqKey;
     if (!key) throw new Error("Groq API key is required. Add it in the AI Settings drawer.");
 
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -249,7 +328,7 @@ export async function callAIModel(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: model.id,
+        model: targetModel.id,
         messages,
         tools: tools && tools.length > 0 ? tools : undefined,
       }),
@@ -262,15 +341,16 @@ export async function callAIModel(
       text: choice?.content || "",
       tool_calls: choice?.tool_calls,
       usage: data.usage,
+      modelUsed: targetModel.id,
     };
   }
 
   // 3. Google AI Studio (Gemini REST)
-  if (model.provider === "google") {
-    const key = keys.google || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  if (targetModel.provider === "google") {
+    const key = googleKey;
     if (!key) throw new Error("Google AI Studio API key is required. Add it in the AI Settings drawer.");
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model.id}:generateContent?key=${key}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel.id}:generateContent?key=${key}`;
     const contents = messages
       .filter((m) => m.role !== "system")
       .map((m) => ({
@@ -293,12 +373,12 @@ export async function callAIModel(
     if (!res.ok) throw new Error(`Google Gemini Error: ${data?.error?.message || JSON.stringify(data)}`);
     const candidate = data.candidates?.[0];
     const text = candidate?.content?.parts?.[0]?.text || "";
-    return { text };
+    return { text, modelUsed: targetModel.id };
   }
 
   // 4. NVIDIA NIM
-  if (model.provider === "nvidia") {
-    const key = keys.nvidia || process.env.NVIDIA_API_KEY;
+  if (targetModel.provider === "nvidia") {
+    const key = nvidiaKey;
     if (!key) throw new Error("NVIDIA NIM API key is required. Add it in the AI Settings drawer.");
 
     const res = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
@@ -308,7 +388,7 @@ export async function callAIModel(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: model.id,
+        model: targetModel.id,
         messages,
         tools: tools && tools.length > 0 ? tools : undefined,
       }),
@@ -320,28 +400,49 @@ export async function callAIModel(
     return {
       text: choice?.content || "",
       tool_calls: choice?.tool_calls,
+      modelUsed: targetModel.id,
     };
   }
 
   // 5. Ollama (Local Offline / Cloud)
-  if (model.provider === "ollama") {
+  if (targetModel.provider === "ollama") {
     const host = keys.ollama_host || process.env.OLLAMA_HOST || "http://127.0.0.1:11434";
-    const res = await fetch(`${host}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: model.id,
-        messages: messages.map((m) => ({ role: m.role, content: m.content })),
-        stream: false,
-      }),
-    });
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const res = await fetch(`${host}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: targetModel.id,
+          messages: messages.map((m) => ({ role: m.role, content: m.content })),
+          stream: false,
+        }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(`Ollama Error: ${data?.error || JSON.stringify(data)}`);
-    return {
-      text: data.message?.content || "",
-    };
+      const data = await res.json();
+      if (!res.ok) throw new Error(`Ollama Error: ${data?.error || JSON.stringify(data)}`);
+      return {
+        text: data.message?.content || "",
+        modelUsed: targetModel.id,
+      };
+    } catch (ollamaErr: any) {
+      // If Ollama is offline or we are on Vercel, fallback to cloud if any key is available
+      if (openrouterKey || groqKey || googleKey || nvidiaKey) {
+        const fallbackId = openrouterKey
+          ? (targetModel.category === "coding" ? "qwen/qwen-2.5-coder-32b-instruct:free" : "meta-llama/llama-3.3-70b-instruct:free")
+          : groqKey
+          ? "llama-3.1-8b-instant"
+          : googleKey
+          ? "gemini-2.5-flash"
+          : "meta/llama-3.3-70b-instruct";
+        return await callAIModel(fallbackId, messages, keys, tools);
+      }
+      throw new Error(`Local Ollama service at ${host} is unreachable. If running on Vercel, please add an OpenRouter, Groq, or Google AI key in the AI Settings drawer.`);
+    }
   }
 
-  throw new Error(`Unsupported provider: ${model.provider}`);
+  throw new Error("No active AI provider key detected. Please add an OpenRouter, Groq, or Google AI key in the AI Settings drawer.");
 }

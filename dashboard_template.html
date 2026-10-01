@@ -4256,26 +4256,93 @@
       50% { transform: scale(1.05); box-shadow: 0 0 18px rgba(255, 51, 102, 0.9); }
     }
 
-    /* Bottom Navigation Bar */
+    /* Top Persistent Navigation Bar (Desktop & Mobile Tab Selection) */
+    .top-nav-bar {
+      position: sticky;
+      top: 57px;
+      z-index: 55;
+      background: rgba(11, 17, 33, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .top-nav-scroll-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 2px;
+    }
+    .top-nav-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .top-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      color: #94A3B8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .top-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F8FAFC;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .top-tab-btn.active {
+      background: linear-gradient(135deg, #0284C7, #0369A1);
+      color: #FFFFFF;
+      border-color: #38BDF8;
+      box-shadow: 0 2px 12px rgba(56, 189, 248, 0.35);
+      font-weight: 700;
+    }
+    .top-tab-btn.active .tab-svg {
+      stroke: #FFFFFF;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+    }
+    .tab-svg {
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    /* Bottom Navigation Bar (Mobile Optimized with Guaranteed Viewability) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: calc(58px + env(safe-area-inset-bottom, 12px));
-      background: rgba(7, 11, 20, 0.95);
+      background: rgba(7, 11, 20, 0.96);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       border-top: 1px solid var(--card-border);
       display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      padding-top: 5px;
-      padding-left: 2px;
-      padding-right: 2px;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 4px;
+      padding-left: 6px;
+      padding-right: 6px;
       overflow-x: auto;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
       z-index: 50;
+      gap: 3px;
     }
     .bottom-nav::-webkit-scrollbar {
       display: none;
@@ -4285,19 +4352,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 2px;
       background: none;
       border: none;
       color: var(--text-dim);
-      font-size: 0.58rem;
+      font-size: 0.60rem;
       font-weight: 600;
       cursor: pointer;
-      padding: 3px 2px;
+      padding: 4px 6px;
       transition: all 0.2s;
       border-radius: 8px;
-      flex: 1;
-      min-width: 44px;
-      max-width: 58px;
+      flex: 1 0 auto;
+      min-width: 50px;
+      scroll-snap-align: center;
+      user-select: none;
     }
 
     .nav-item:hover {
@@ -4307,6 +4376,7 @@
     .nav-item.active {
       color: var(--primary);
       font-weight: 700;
+      background: rgba(56, 189, 248, 0.08);
     }
 
     .nav-item.active .nav-svg {
@@ -5466,7 +5536,7 @@
         padding: 0 !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       }
-      header, .bottom-nav, .fab-chat, .agent-drawer, .drawer-backdrop, .modal-backdrop, .github-modal, .toast, .pane {
+      header, .top-nav-bar, .bottom-nav, .fab-chat, .agent-drawer, .drawer-backdrop, .modal-backdrop, .github-modal, .toast, .pane {
         display: none !important;
       }
       #printable-office-report {
@@ -6086,6 +6156,44 @@
       </div>
     </div>
   </header>
+
+  <!-- Top Persistent Tab Bar (Desktop & Mobile Navigation) -->
+  <nav class="top-nav-bar" id="top-nav-bar" aria-label="Main Navigation">
+    <div class="top-nav-scroll-container">
+      <button class="top-tab-btn active" data-nav="overview" onclick="switchNav('overview')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Overview</span>
+      </button>
+      <button class="top-tab-btn" data-nav="office" onclick="switchNav('office')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-3"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="9" y1="13" x2="9" y2="13.01"/><line x1="9" y1="17" x2="9" y2="17.01"/></svg>
+        <span>Office</span>
+      </button>
+      <button class="top-tab-btn" data-nav="prs" onclick="switchNav('prs')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 9v12"/><path d="M18 9a9 9 0 0 0-9 9"/></svg>
+        <span>Pull Requests</span>
+      </button>
+      <button class="top-tab-btn" data-nav="forks" onclick="switchNav('forks')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+        <span>Fork Sync</span>
+      </button>
+      <button class="top-tab-btn" data-nav="repos" onclick="switchNav('repos')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>Repositories</span>
+      </button>
+      <button class="top-tab-btn" data-nav="terminal" onclick="switchNav('terminal')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <span>Terminal</span>
+      </button>
+      <button class="top-tab-btn" data-nav="ai" onclick="switchNav('ai')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 8 13.5 11 16.5 12 13.5 13 12 16 10.5 13 7.5 12 10.5 11 12 8"/></svg>
+        <span>AI Suite</span>
+      </button>
+      <button class="top-tab-btn" data-nav="accounts" onclick="switchNav('accounts')">
+        <svg class="tab-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        <span>Accounts</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Main Views / Panes -->
   <main>
@@ -9740,13 +9848,19 @@ Audit Summary:
     }
 
     function switchNav(name) {
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-item, .top-tab-btn').forEach(b => {
+        const isMatch = (b.getAttribute('data-nav') === name) || 
+          (b.getAttribute('data-nav') === null && b.innerText.toLowerCase().includes(name));
+        if (isMatch) {
+          b.classList.add('active');
+          try {
+            b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          } catch {}
+        } else {
+          b.classList.remove('active');
+        }
+      });
       document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-      
-      const targetBtn = Array.from(document.querySelectorAll('.nav-item')).find(b => 
-        (b.getAttribute('data-nav') === name) || b.innerText.toLowerCase().includes(name)
-      );
-      if (targetBtn) targetBtn.classList.add('active');
       const pane = document.getElementById('pane-' + name);
       if (pane) pane.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });

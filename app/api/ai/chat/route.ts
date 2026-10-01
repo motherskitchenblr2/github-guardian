@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid messages payload" }, { status: 400 });
     }
 
-    const router = new AIRouter({ autonomy_mode: autonomyMode as AutonomyMode });
+    const router = new AIRouter({ autonomy_mode: autonomyMode as AutonomyMode }, customKeys);
     const lastUserMessage = messages[messages.length - 1]?.content || "";
 
     // 1. Intelligently route task to the best model if modelId is "auto"
